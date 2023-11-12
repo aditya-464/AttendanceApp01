@@ -38,8 +38,19 @@ export const BORDERRADIUS = {
 };
 
 export const COLORS = {
-  primaryDark: '#40513B',
-  secondaryDark: '#609966',
-  primaryLight: '#EDF1D6',
-  secondaryLight: '#9DC08B',
+  primaryDark: '#393E46',
+  secondaryDark: '#6D9886',
+  primaryLight: '#F7F7F7',
+  secondaryLight: '#F2E7D5',
+};
+
+export const FONTFAMILY = {
+  poppins_regular: "Poppins-Regular",
+  poppins_medium: "Poppins-Medium",
+  poppins_semibold: "Poppins-SemiBold",
+  poppins_bold: "Poppins-Bold",
+  poppins_black: "Poppins-Black",
+  poppins_extrabold: "Poppins-ExtraBold",
+  poppins_light: "Poppins-Light",
+
 };
