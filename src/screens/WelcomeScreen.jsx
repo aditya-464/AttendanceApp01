@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.space_20,
+    marginBottom: SPACING.space_28,
   },
   SignupBtn: {
     width: '48%',

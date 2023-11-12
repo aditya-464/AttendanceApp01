@@ -42,6 +42,7 @@ export const COLORS = {
   secondaryDark: '#6D9886',
   primaryLight: '#F7F7F7',
   secondaryLight: '#F2E7D5',
+  placeholder : "#808080",
 };
 
 export const FONTFAMILY = {
@@ -52,5 +53,4 @@ export const FONTFAMILY = {
   poppins_black: "Poppins-Black",
   poppins_extrabold: "Poppins-ExtraBold",
   poppins_light: "Poppins-Light",
-
 };
