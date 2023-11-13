@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: SPACING.space_4,
+    paddingTop: SPACING.space_2,
     paddingBottom: SPACING.space_2,
   },
   FormFieldIonicons: {

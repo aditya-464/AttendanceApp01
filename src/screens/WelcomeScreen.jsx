@@ -26,7 +26,7 @@ const WelcomeScreen = () => {
           style={styles.BgImageContainer}>
           <View style={styles.InfoContainer}>
             <View>
-              <Text style={styles.WelcomeText}>Welcome!</Text>
+              <Text style={styles.WelcomeText}>Aplixe</Text>
               <Text style={styles.InfoText}>
                 One stop solution for maintaining attendance records and taking
                 notes
@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
     color: COLORS.primaryDark,
     fontSize: FONTSIZE.size_30,
     fontFamily: FONTFAMILY.poppins_semibold,
-    paddingTop: SPACING.space_10,
+    paddingVertical: SPACING.space_8,
+    
   },
   InfoText: {
     color: COLORS.primaryDark,

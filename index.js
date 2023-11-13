@@ -10,4 +10,4 @@ import SignupScreen from './src/screens/SignupScreen';
 import SignupForm from './src/components/SignupForm';
 import LoginScreen from './src/screens/LoginScreen';
 
-AppRegistry.registerComponent(appName, () => SignupScreen);
+AppRegistry.registerComponent(appName, () => WelcomeScreen);
