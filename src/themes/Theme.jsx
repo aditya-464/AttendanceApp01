@@ -42,7 +42,7 @@ export const COLORS = {
   secondaryDark: '#6D9886',
   primaryLight: '#F7F7F7',
   secondaryLight: '#F2E7D5',
-  placeholder : "#808080",
+  placeholder : "#999999",
 };
 
 export const FONTFAMILY = {

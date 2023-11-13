@@ -1,10 +1,15 @@
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import React, {useRef} from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../themes/Theme';
 
 const SignupForm = () => {
   return (
@@ -28,7 +33,7 @@ const SignupForm = () => {
                 onBlur={handleBlur('name')}
                 value={values.name}
                 numberOfLines={1}
-                placeholder="Full Name"
+                placeholder="Name"
                 placeholderTextColor={COLORS.placeholder}
               />
             </View>
@@ -45,6 +50,7 @@ const SignupForm = () => {
                 onChangeText={handleChange('email')}
                 onBlur={handleBlur('email')}
                 value={values.email}
+                keyboardType="email-address"
                 numberOfLines={1}
                 placeholder="Email"
                 placeholderTextColor={COLORS.placeholder}
@@ -87,7 +93,11 @@ const SignupForm = () => {
               />
             </View>
 
-            {/* <Button onPress={handleSubmit} title="Submit" /> */}
+          <TouchableOpacity
+          style={styles.SignupBtn}>
+            <Text 
+            style={styles.SignupText}>Signup</Text>
+          </TouchableOpacity>
           </View>
         )}
       </Formik>
@@ -107,21 +117,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 5,
-    paddingBottom: 5,
-    marginBottom: 5,
+    paddingTop: SPACING.space_4,
+    paddingBottom: SPACING.space_2,
   },
   FormFieldIonicons: {
-    width: '15%',
     display: 'flex',
     alignItems: 'center',
+    paddingRight : SPACING.space_12,
   },
   InputField: {
-    width: '85%',
+    flex: 1,
     fontFamily: FONTFAMILY.poppins_regular,
-    fontSize: FONTSIZE.size_16,
+    fontSize: FONTSIZE.size_14,
     display: 'flex',
     justifyContent: 'center',
-    marginTop : SPACING.space_4,
+    marginTop: SPACING.space_4,
+    borderBottomWidth : 0.2,
+    borderColor: '#cccccc',
   },
+  SignupBtn : {
+    width : "100%",
+    backgroundColor : COLORS.primaryDark,
+    padding : SPACING.space_10,
+    marginTop : SPACING.space_28,
+    borderRadius : 100,
+  },
+  SignupText : {
+    color : COLORS.primaryLight,
+    textAlign : "center",
+    fontFamily : FONTFAMILY.poppins_regular,
+    fontSize : FONTSIZE.size_16,
+  }
 });
