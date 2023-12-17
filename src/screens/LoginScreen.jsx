@@ -12,7 +12,7 @@ const LoginScreen = () => {
         justifyContent: 'space-between',
       }}>
       <View style={styles.LoginContainer}>
-        <Text style={styles.LoginText}>Welcome Back</Text>
+        <Text style={styles.LoginText}>Hello User!</Text>
         <LoginForm></LoginForm>
       </View>
       <Text style={styles.SignupText}>
