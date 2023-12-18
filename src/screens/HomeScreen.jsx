@@ -8,45 +8,65 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const FlatListData = [
   {
-    "id" : "item1",
-    "subject" : "Operating Systems",
-    "semester" : "5th",
-    "section" : "C"
+    id: 'item1',
+    subject: 'Operating Systems',
+    branch: 'IT',
+    semester: '5',
+    section: 'C',
   },
   {
-    "id" : "item2",
-    "subject" : "Artificial Intelligence",
-    "semester" : "5th",
-    "section" : "C"
+    id: 'item2',
+    subject: 'Artificial Intelligence',
+    branch: 'IT',
+    semester: '5',
+    section: 'C',
   },
   {
-    "id" : "item3",
-    "subject" : "Computer Networks",
-    "semester" : "5th",
-    "section" : "C"
+    id: 'item3',
+    subject: 'Computer Networks',
+    branch: 'IT',
+    semester: '5',
+    section: 'C',
   },
   {
-    "id" : "item4",
-    "subject" : "Data Base Management System",
-    "semester" : "5th",
-    "section" : "C"
+    id: 'item4',
+    subject: 'Data Base Management System',
+    branch: 'IT',
+    semester: '5',
+    section: 'C',
   },
   {
-    "id" : "item5",
-    "subject" : "Object Oriented Programming Language",
-    "semester" : "5th",
-    "section" : "C"
+    id: 'item5',
+    subject: 'Object Oriented Programming Language',
+    branch: 'IT',
+    semester: '5',
+    section: 'C',
   },
 ];
 
-const FlatListItem = ({subject, semester, section}) => {
-  <View style={styles.ClassListItem}></View>
-};
+const FlatListItem = ({subject, branch, semester, section}) => (
+  <View style={styles.ClassListItem}>
+    <View style={styles.ClassListItemTop}>
+      <Text style={styles.ClassListItemTopText}>{subject}</Text>
+    </View>
+    <View style={styles.ClassListItemBottom}>
+        <Text style={styles.ClassListItemBottomText}>{branch + " - "}</Text>
+        <Text style={styles.ClassListItemBottomText}>{semester + " - "}</Text>
+        <Text style={styles.ClassListItemBottomText}>{section}</Text>
+    </View>
+  </View>
+);
 
 const HomeScreen = () => {
   return (
@@ -62,19 +82,27 @@ const HomeScreen = () => {
             color={COLORS.primaryDark}></Ionicons>
         </View>
       </View>
-      <View style={styles.MainContent}>
-        <View style={styles.CreateClass}>
-          <TouchableOpacity style={styles.CreateClassButton}>
-            <Ionicons
-              name="add"
-              size={FONTSIZE.size_30}
-              color={COLORS.primaryLight}></Ionicons>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.ClassList}>
-          <FlatList></FlatList>
-        </View>
+      <View style={styles.CreateClass}>
+        <TouchableOpacity style={styles.CreateClassButton}>
+          <Ionicons
+            name="add"
+            size={FONTSIZE.size_30}
+            color={COLORS.primaryLight}></Ionicons>
+        </TouchableOpacity>
       </View>
+      <FlatList
+        data={FlatListData}
+        renderItem={({item}) => (
+          <FlatListItem
+            subject={item.subject}
+            branch={item.branch}
+            semester={item.semester}
+            section={item.section}
+          />
+        )}
+        keyExtractor={item => item.id}
+        scrollEnabled={true}
+      />
     </SafeAreaView>
   );
 };
@@ -85,7 +113,7 @@ const styles = StyleSheet.create({
   TitleBar: {
     width: '100%',
     paddingHorizontal: SPACING.space_12,
-    paddingVertical: SPACING.space_4,
+    paddingVertical: SPACING.space_8,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -109,8 +137,10 @@ const styles = StyleSheet.create({
   },
   CreateClass: {
     position: 'absolute',
-    top: Dimensions.get('window').height - 200,
+    top: Dimensions.get('window').height - 150,
     right: 20,
+    zIndex: 10,
+    elevation: Platform.OS === 'android' ? 50 : 0,
   },
   CreateClassButton: {
     width: 70,
@@ -118,9 +148,35 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 2,
     borderColor: COLORS.primaryLight,
-    backgroundColor: COLORS.secondaryDark,
+    backgroundColor: COLORS.primaryDark,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  ClassListItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: COLORS.secondaryLight,
+    marginBottom: SPACING.space_15,
+    borderRadius: BORDERRADIUS.radius_10,
+    padding: SPACING.space_20,
+    marginHorizontal: SPACING.space_12,
+    zIndex: -10,
+  },
+  ClassListItemTop: {},
+  ClassListItemTopText: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_20,
+    color: COLORS.primaryDark,
+  },
+  ClassListItemBottom: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  ClassListItemBottomText: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryDark,
+    opacity : 0.8,
   },
 });

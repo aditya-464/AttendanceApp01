@@ -41,7 +41,8 @@ export const COLORS = {
   primaryDark: '#393E46',
   secondaryDark: '#6D9886',
   primaryLight: '#F7F7F7',
-  secondaryLight: '#F2E7D5',
+  // secondaryLight: '#F2E7D5',  //Bit Darker
+  secondaryLight : "#EDF1D6",
   placeholder : "#999999",
 };
 
