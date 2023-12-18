@@ -29,7 +29,7 @@ const WelcomeScreen = () => {
               <Text style={styles.WelcomeText}>Welcome!</Text>
               <Text style={styles.InfoText}>
                 One stop solution for maintaining attendance records and taking
-                notes
+                notes for teachers
               </Text>
             </View>
             <View style={styles.BtnContainer}>
