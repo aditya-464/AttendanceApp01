@@ -1,9 +1,9 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import SignupForm from '../components/SignupForm';
 
-const SignupScreen = (props) => {
+const SignupScreen = props => {
   const {navigation} = props;
   return (
     <SafeAreaView
@@ -16,10 +16,15 @@ const SignupScreen = (props) => {
         <Text style={styles.SignupText}>Create Account</Text>
         <SignupForm></SignupForm>
       </View>
-      <Text style={styles.LoginText}>
-        Already have an Account? <Text> </Text>
-        <Text style={styles.Login} onPress={()=>navigation.navigate("Signup")}>Login</Text>
-      </Text>
+      <View style={styles.LoginOption}>
+        <TouchableOpacity disabled={true}>
+          <Text style={styles.LoginText}>Don't have an Account? </Text>
+        </TouchableOpacity>
+        <Text> </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.Login}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -36,17 +41,24 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
   },
+  LoginOption: {
+    paddingBottom: SPACING.space_20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   LoginText: {
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_14,
     color: COLORS.primaryDark,
-    paddingBottom: SPACING.space_20,
   },
   Login: {
+    textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
     color: COLORS.secondaryDark,
-    paddingHorizontal: SPACING.space_10,
+    marginHorizontal: SPACING.space_2,
   },
 });
