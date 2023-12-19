@@ -3,7 +3,8 @@ import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import SignupForm from '../components/SignupForm';
 
-const SignupScreen = () => {
+const SignupScreen = (props) => {
+  const {navigation} = props;
   return (
     <SafeAreaView
       style={{
@@ -17,7 +18,7 @@ const SignupScreen = () => {
       </View>
       <Text style={styles.LoginText}>
         Already have an Account? <Text> </Text>
-        <Text style={styles.Login}>Login</Text>
+        <Text style={styles.Login} onPress={()=>navigation.navigate("Signup")}>Login</Text>
       </Text>
     </SafeAreaView>
   );

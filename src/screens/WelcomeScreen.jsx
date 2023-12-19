@@ -9,14 +9,11 @@ import {
 } from 'react-native';
 import WelcomeImg from '../assets/images/welcome.jpg';
 import React from 'react';
-import {
-  COLORS,
-  FONTFAMILY,
-  FONTSIZE,
-  SPACING,
-} from '../themes/Theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {useNavigation} from '@react-navigation/native';
 
-const WelcomeScreen = () => {
+const WelcomeScreen = props => {
+  const navigation = useNavigation();
   return (
     <>
       <SafeAreaView>
@@ -33,10 +30,14 @@ const WelcomeScreen = () => {
               </Text>
             </View>
             <View style={styles.BtnContainer}>
-              <TouchableOpacity style={styles.SignupBtn}>
+              <TouchableOpacity
+                style={styles.SignupBtn}
+                onPress={() => navigation.push('Signup')}>
                 <Text style={styles.SignupText}>Signup</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.LoginBtn}>
+              <TouchableOpacity
+                style={styles.LoginBtn}
+                onPress={() => navigation.push('Login')}>
                 <Text style={styles.LoginText}>Login</Text>
               </TouchableOpacity>
             </View>
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_30,
     fontFamily: FONTFAMILY.poppins_semibold,
     paddingVertical: SPACING.space_8,
-    
   },
   InfoText: {
     color: COLORS.primaryDark,

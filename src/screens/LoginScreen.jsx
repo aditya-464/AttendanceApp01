@@ -1,9 +1,18 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import LoginForm from '../components/LoginForm';
 
-const LoginScreen = () => {
+const LoginScreen = props => {
+  const {navigation} = props;
   return (
     <SafeAreaView
       style={{
@@ -17,6 +26,7 @@ const LoginScreen = () => {
       </View>
       <Text style={styles.SignupText}>
         Don't have an Account? <Text> </Text>
+        <Pressable onPress={() => navigation.navigate('Signup')}></Pressable>
         <Text style={styles.Signup}>Signup</Text>
       </Text>
     </SafeAreaView>
@@ -42,6 +52,13 @@ const styles = StyleSheet.create({
     color: COLORS.primaryDark,
     paddingBottom: SPACING.space_20,
   },
+  // SignupButton: {
+  //   padding: 0,
+  //   margin: 0,
+  //   // borderWidth : 1,
+  //   // borderColor : "red",
+  //   // width : "auto",
+  // },
   Signup: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
