@@ -24,11 +24,15 @@ const LoginScreen = props => {
         <Text style={styles.LoginText}>Hello User!</Text>
         <LoginForm></LoginForm>
       </View>
-      <Text style={styles.SignupText}>
-        Don't have an Account? <Text> </Text>
-        <Pressable onPress={() => navigation.navigate('Signup')}></Pressable>
-        <Text style={styles.Signup}>Signup</Text>
-      </Text>
+      <View style={styles.SignupOption}>
+        <TouchableOpacity disabled={true}>
+          <Text style={styles.SignupText}>Don't have an Account? </Text>
+        </TouchableOpacity>
+        <Text> </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+          <Text style={styles.Signup}>Signup</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -45,24 +49,24 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
   },
+  SignupOption: {
+    paddingBottom: SPACING.space_20,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   SignupText: {
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_14,
     color: COLORS.primaryDark,
-    paddingBottom: SPACING.space_20,
   },
-  // SignupButton: {
-  //   padding: 0,
-  //   margin: 0,
-  //   // borderWidth : 1,
-  //   // borderColor : "red",
-  //   // width : "auto",
-  // },
   Signup: {
+    textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
     color: COLORS.secondaryDark,
-    paddingHorizontal: SPACING.space_10,
+    marginHorizontal: SPACING.space_2,
   },
 });
