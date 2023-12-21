@@ -24,7 +24,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
-    bgcolor: 'light',
+    bgcolor: 'dark',
   },
   {
     id: 'item2',
@@ -32,7 +32,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
-    bgcolor: 'dark',
+    bgcolor: 'light',
   },
   {
     id: 'item3',
@@ -40,7 +40,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
-    bgcolor: 'light',
+    bgcolor: 'dark',
   },
   {
     id: 'item4',
@@ -48,7 +48,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
-    bgcolor: 'dark',
+    bgcolor: 'light',
   },
   {
     id: 'item5',
@@ -56,7 +56,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
-    bgcolor: 'light',
+    bgcolor: 'dark',
   },
 ];
 
