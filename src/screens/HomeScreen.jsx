@@ -24,6 +24,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
+    bgcolor: 'light',
   },
   {
     id: 'item2',
@@ -31,6 +32,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
+    bgcolor: 'dark',
   },
   {
     id: 'item3',
@@ -38,6 +40,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
+    bgcolor: 'light',
   },
   {
     id: 'item4',
@@ -45,6 +48,7 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
+    bgcolor: 'dark',
   },
   {
     id: 'item5',
@@ -52,25 +56,69 @@ const FlatListData = [
     branch: 'IT',
     semester: '5',
     section: 'C',
+    bgcolor: 'light',
   },
 ];
 
-const FlatListItem = ({subject, branch, semester, section}) => (
-  <View style={styles.ClassListItem}>
+const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
+  <View
+    style={[
+      styles.ClassListItem,
+      {
+        backgroundColor:
+          bgcolor === 'dark' ? COLORS.secondaryDark : COLORS.secondaryLight,
+      },
+    ]}>
     <View style={styles.ClassListItemTop}>
-      <Text style={styles.ClassListItemTopText}>{subject}</Text>
+      <Text
+        style={[
+          styles.ClassListItemTopText,
+          {
+            color:
+              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+          },
+        ]}>
+        {subject}
+      </Text>
     </View>
     <View style={styles.ClassListItemBottom}>
-        <Text style={styles.ClassListItemBottomText}>{branch + " - "}</Text>
-        <Text style={styles.ClassListItemBottomText}>{semester + " - "}</Text>
-        <Text style={styles.ClassListItemBottomText}>{section}</Text>
+      <Text
+        style={[
+          styles.ClassListItemBottomText,
+          {
+            color:
+              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+          },
+        ]}>
+        {branch + ' - '}
+      </Text>
+      <Text
+        style={[
+          styles.ClassListItemBottomText,
+          {
+            color:
+              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+          },
+        ]}>
+        {semester + ' - '}
+      </Text>
+      <Text
+        style={[
+          styles.ClassListItemBottomText,
+          {
+            color:
+              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+          },
+        ]}>
+        {section}
+      </Text>
     </View>
   </View>
 );
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Home</Text>
@@ -98,6 +146,7 @@ const HomeScreen = () => {
             branch={item.branch}
             semester={item.semester}
             section={item.section}
+            bgcolor={item.bgcolor}
           />
         )}
         keyExtractor={item => item.id}
@@ -177,6 +226,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
-    opacity : 0.8,
+    opacity: 0.8,
   },
 });

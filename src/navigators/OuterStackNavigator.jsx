@@ -1,4 +1,4 @@
-import {Easing, StyleSheet, Text, View} from 'react-native';
+import {Easing, StyleSheet} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
@@ -9,7 +9,6 @@ import {
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SignupScreen from '../screens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
-import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createStackNavigator();
 
