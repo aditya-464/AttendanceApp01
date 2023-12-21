@@ -65,10 +65,7 @@ const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
     style={[
       styles.ClassListItem,
       {
-        backgroundColor:
-          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
-        borderWidth: bgcolor === 'dark' ? 0 : 0.3,
-        borderColor: bgcolor === 'dark' ? 'transparent' : COLORS.placeholder,
+        backgroundColor: bgcolor === 'dark' ? COLORS.primaryDark : 'white',
       },
     ]}>
     <View style={styles.ClassListItemTop}>
@@ -210,6 +207,7 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_10,
     padding: SPACING.space_20,
     marginHorizontal: SPACING.space_12,
+    elevation: 2,
     zIndex: -10,
   },
   ClassListItemTop: {},
