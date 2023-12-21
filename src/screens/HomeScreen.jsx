@@ -66,7 +66,9 @@ const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
       styles.ClassListItem,
       {
         backgroundColor:
-          bgcolor === 'dark' ? COLORS.secondaryDark : COLORS.secondaryLight,
+          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
+        borderWidth: bgcolor === 'dark' ? 0 : 0.3,
+        borderColor: bgcolor === 'dark' ? 'transparent' : COLORS.placeholder,
       },
     ]}>
     <View style={styles.ClassListItemTop}>
@@ -134,7 +136,7 @@ const HomeScreen = () => {
         <TouchableOpacity style={styles.CreateClassButton}>
           <Ionicons
             name="add"
-            size={FONTSIZE.size_30}
+            size={FONTSIZE.size_32}
             color={COLORS.primaryLight}></Ionicons>
         </TouchableOpacity>
       </View>
@@ -195,9 +197,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 100,
-    borderWidth: 2,
-    borderColor: COLORS.primaryLight,
-    backgroundColor: COLORS.primaryDark,
+    backgroundColor: COLORS.secondaryDark,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

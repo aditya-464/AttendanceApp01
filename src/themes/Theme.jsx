@@ -13,6 +13,7 @@ export const SPACING = {
   space_30: 30,
   space_32: 32,
   space_36: 36,
+  space_40: 40,
 };
 
 export const FONTSIZE = {
@@ -26,6 +27,9 @@ export const FONTSIZE = {
   size_24: 24,
   size_28: 28,
   size_30: 30,
+  size_32: 32,
+  size_36: 36,
+  size_40: 40,
 };
 
 export const BORDERRADIUS = {

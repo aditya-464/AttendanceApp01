@@ -8,8 +8,8 @@ import CreateNoteScreen from './src/screens/CreateNoteScreen';
 const App = () => {
   return (
     // <OuterStackNavigator></OuterStackNavigator>
-    // <HomeScreen></HomeScreen>
-    <CreateNoteScreen></CreateNoteScreen>
+    <HomeScreen></HomeScreen>
+    // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
   );
 };
