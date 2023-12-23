@@ -5,14 +5,16 @@ import HomeScreen from './src/screens/HomeScreen';
 import CreateClassScreen from './src/screens/CreateClassScreen';
 import CreateNoteScreen from './src/screens/CreateNoteScreen';
 import NotesScreen from './src/screens/NotesScreen';
+import ViewClassScreen from './src/screens/ViewClassScreen';
 
 const App = () => {
   return (
     // <OuterStackNavigator></OuterStackNavigator>
-    <HomeScreen></HomeScreen>
+    // <HomeScreen></HomeScreen>
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
+    <ViewClassScreen></ViewClassScreen>
   );
 };
 
