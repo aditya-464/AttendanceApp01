@@ -6,6 +6,7 @@ import CreateClassScreen from './src/screens/CreateClassScreen';
 import CreateNoteScreen from './src/screens/CreateNoteScreen';
 import NotesScreen from './src/screens/NotesScreen';
 import ViewClassScreen from './src/screens/ViewClassScreen';
+import ViewClassScreenOptionsModal from './src/components/ViewClassScreenOptionsModal';
 
 const App = () => {
   return (
@@ -14,7 +15,8 @@ const App = () => {
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
-    <ViewClassScreen></ViewClassScreen>
+    // <ViewClassScreen></ViewClassScreen>
+    <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
   );
 };
 
