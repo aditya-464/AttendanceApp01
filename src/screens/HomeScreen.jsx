@@ -65,7 +65,8 @@ const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
     style={[
       styles.ClassListItem,
       {
-        backgroundColor: bgcolor === 'dark' ? COLORS.primaryDark : 'white',
+        backgroundColor:
+          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
       },
     ]}>
     <View style={styles.ClassListItemTop}>
@@ -213,7 +214,7 @@ const styles = StyleSheet.create({
   ClassListItemTop: {},
   ClassListItemTopText: {
     fontFamily: FONTFAMILY.poppins_semibold,
-    fontSize: FONTSIZE.size_20,
+    fontSize: FONTSIZE.size_18,
     color: COLORS.primaryDark,
   },
   ClassListItemBottom: {
