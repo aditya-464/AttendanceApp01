@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
   TitleText: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_24,
+    color : COLORS.primaryDark,
   },
   OptionsIcon: {
     width: '10%',
@@ -197,6 +198,8 @@ const styles = StyleSheet.create({
   RollHeadingText: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_20,
+    color : COLORS.primaryDark,
+
   },
   NameHeading: {
     width: '80%',
@@ -207,6 +210,7 @@ const styles = StyleSheet.create({
   NameHeadingText: {
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_20,
+    color : COLORS.primaryDark,
   },
   StudentDetailsItem: {
     display: 'flex',
@@ -226,6 +230,7 @@ const styles = StyleSheet.create({
   StudentRollText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_18,
+    color : COLORS.primaryDark,
   },
   StudentName: {
     width: '80%',
@@ -236,6 +241,7 @@ const styles = StyleSheet.create({
   StudentNameText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_18,
+    color : COLORS.primaryDark,
   },
   ActionButtons: {},
 });
