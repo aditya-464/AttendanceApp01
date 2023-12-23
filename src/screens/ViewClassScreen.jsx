@@ -1,5 +1,12 @@
-import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
@@ -9,13 +16,13 @@ const StudentDetailsData = [
     id: 'item1',
     roll: 1,
     name: 'Radhe Shyam',
-    present: 1,
+    present: 0,
   },
   {
     id: 'item2',
     roll: 2,
     name: 'Aditya Giri',
-    present: 1,
+    present: 0,
   },
   {
     id: 'item3',
@@ -33,26 +40,58 @@ const StudentDetailsData = [
     id: 'item5',
     roll: 5,
     name: 'Pinki Giri',
-    present: 1,
+    present: 0,
   },
 ];
 
-const FlatListItem = ({roll, name, present}) => (
-  <View
-    style={[
-      styles.StudentDetailsItem,
-      {backgroundColor: present ? COLORS.present : COLORS.absent},
-    ]}>
-    <View style={styles.StudentRoll}>
-      <Text style={styles.StudentRollText}>{roll}</Text>
-    </View>
-    <View style={styles.StudentName}>
-      <Text style={styles.StudentNameText}>{name}</Text>
-    </View>
-  </View>
-);
-
 const ViewClassScreen = () => {
+  const [studentsData, setStudentsData] = useState([]);
+
+  useEffect(() => {
+    const newStudentsData = StudentDetailsData.map(object => ({
+      id: object.id,
+      roll: object.roll,
+      name: object.name,
+      present: object.present,
+    }));
+
+    setStudentsData(newStudentsData);
+  }, []);
+
+  const handleStudentClick = (id, roll, name, present) => {
+    const updatedStudentsData = [];
+    for (let i = 0; i < studentsData.length; i++) {
+      if (studentsData[i].id !== id) {
+        updatedStudentsData.push(studentsData[i]);
+      } else {
+        updatedStudentsData.push({
+          id,
+          roll,
+          name,
+          present : !present,
+        });
+      }
+      setStudentsData(updatedStudentsData);
+    }
+  };
+
+  const FlatListItem = ({id, roll, name, present}) => (
+    <TouchableOpacity
+      activeOpacity={0.6}
+      onPress={() => handleStudentClick(id, roll, name, present)}
+      style={[
+        styles.StudentDetailsItem,
+        {backgroundColor: present ? COLORS.present : COLORS.absent},
+      ]}>
+      <View style={styles.StudentRoll}>
+        <Text style={styles.StudentRollText}>{roll}</Text>
+      </View>
+      <View style={styles.StudentName}>
+        <Text style={styles.StudentNameText}>{name}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView>
       <View style={styles.TitleBar}>
@@ -85,18 +124,23 @@ const ViewClassScreen = () => {
           <Text style={styles.NameHeadingText}>Name</Text>
         </View>
       </View>
-      <FlatList
-        data={StudentDetailsData}
-        renderItem={({item}) => (
-          <FlatListItem
-            roll={item.roll}
-            name={item.name}
-            present={item.present}
-          />
-        )}
-        keyExtractor={item => item.id}
-        scrollEnabled={true}
-      />
+      {studentsData && (
+        <FlatList
+          data={studentsData}
+          renderItem={({item}) => (
+            <FlatListItem
+              id={item.id}
+              roll={item.roll}
+              name={item.name}
+              present={item.present}
+            />
+          )}
+          keyExtractor={item => item.id}
+          scrollEnabled={true}
+          ListFooterComponentStyle={{height: 200}}
+          ListFooterComponent={<View></View>}
+        />
+      )}
       <View style={styles.ActionButtons}></View>
     </SafeAreaView>
   );
@@ -124,7 +168,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingLeft : SPACING.space_10,
+    paddingLeft: SPACING.space_10,
   },
   TitleText: {
     fontFamily: FONTFAMILY.poppins_semibold,
@@ -139,13 +183,16 @@ const styles = StyleSheet.create({
   },
   ColumnHeadings: {
     paddingHorizontal: SPACING.space_12,
-    paddingVertical : SPACING.space_4,
+    paddingVertical: SPACING.space_4,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
   },
   RollHeading: {
     width: '20%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   RollHeadingText: {
     fontFamily: FONTFAMILY.poppins_semibold,
@@ -153,6 +200,9 @@ const styles = StyleSheet.create({
   },
   NameHeading: {
     width: '80%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   NameHeadingText: {
     fontFamily: FONTFAMILY.poppins_semibold,
@@ -169,6 +219,9 @@ const styles = StyleSheet.create({
   },
   StudentRoll: {
     width: '20%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   StudentRollText: {
     fontFamily: FONTFAMILY.poppins_medium,
@@ -176,6 +229,9 @@ const styles = StyleSheet.create({
   },
   StudentName: {
     width: '80%',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   StudentNameText: {
     fontFamily: FONTFAMILY.poppins_medium,
