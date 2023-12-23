@@ -48,6 +48,8 @@ export const COLORS = {
   // secondaryLight: '#F2E7D5',  //Bit Darker
   secondaryLight : "#EDF1D6",
   placeholder : "#999999",
+  present : "#9DC08B",
+  absent : "#FA9884",
 };
 
 export const FONTFAMILY = {
