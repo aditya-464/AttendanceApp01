@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import ViewNoteScreenOptionsModal from '../components/ViewNoteScreenOptionsModal';
 
 const ViewNoteScreen = () => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
@@ -53,6 +54,9 @@ const ViewNoteScreen = () => {
             color={COLORS.primaryDark}></SimpleLineIcons>
         </TouchableOpacity>
       </View>
+      <ViewNoteScreenOptionsModal
+        top={titleBarHeight}
+        modalView={modalView}></ViewNoteScreenOptionsModal>
       <ScrollView>
         <View style={styles.NoteSubject}>
           <Text style={styles.NoteSubjectText}>

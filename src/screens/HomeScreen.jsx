@@ -118,20 +118,20 @@ const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
 
 const HomeScreen = () => {
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Home</Text>
         </View>
-        <View style={styles.Menu}>
+        <TouchableOpacity activeOpacity={0.6} style={styles.Menu}>
           <Ionicons
-            name="list"
-            size={FONTSIZE.size_28}
+            name="menu"
+            size={FONTSIZE.size_30}
             color={COLORS.primaryDark}></Ionicons>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.CreateClass}>
-        <TouchableOpacity style={styles.CreateClassButton}>
+        <TouchableOpacity activeOpacity={0.8} style={styles.CreateClassButton}>
           <Ionicons
             name="add"
             size={FONTSIZE.size_32}

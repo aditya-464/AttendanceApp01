@@ -15,7 +15,7 @@ const ViewNoteScreenOptionsModal = props => {
     <View
       style={[
         styles.OptionsModal,
-        {top: top, display: modalView ? 'flex' : 'flex'},
+        {top: top, display: modalView ? 'flex' : 'none'},
       ]}>
       <TouchableOpacity activeOpacity={0.4} style={styles.EditNote}>
         <Text style={styles.EditNoteText}>Edit Note</Text>

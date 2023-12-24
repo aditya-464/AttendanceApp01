@@ -13,14 +13,14 @@ import ViewNoteScreenOptionsModal from './src/components/ViewNoteScreenOptionsMo
 const App = () => {
   return (
     // <OuterStackNavigator></OuterStackNavigator>
-    // <HomeScreen></HomeScreen>
+    <HomeScreen></HomeScreen>
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
     // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
     // <ViewNoteScreen></ViewNoteScreen>
-    <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
+    // <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
   );
 };
 
