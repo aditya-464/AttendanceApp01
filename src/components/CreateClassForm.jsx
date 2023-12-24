@@ -94,7 +94,7 @@ const CreateClassForm = () => {
               />
             </View>
 
-            <TouchableOpacity style={styles.CreateClassBtn}>
+            <TouchableOpacity activeOpacity={0.6} style={styles.CreateClassBtn}>
               <Text style={styles.CreateClassText}>Create</Text>
             </TouchableOpacity>
           </View>
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   CreateClassForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
+    backgroundColor : COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',

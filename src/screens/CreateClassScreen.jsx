@@ -1,11 +1,11 @@
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import CreateClassForm from '../components/CreateClassForm';
-import { FONTFAMILY, FONTSIZE, SPACING } from '../themes/Theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 
 const CreateClassScreen = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: COLORS.primaryLight}}>
       <View style={styles.CreateClassContainer}>
         <Text style={styles.CreateClassText}>Create Class</Text>
         <CreateClassForm></CreateClassForm>
@@ -25,5 +25,7 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_28,
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
+    color: COLORS.primaryDark,
+    opacity : 0.8,
   },
 });

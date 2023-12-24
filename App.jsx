@@ -8,6 +8,7 @@ import NotesScreen from './src/screens/NotesScreen';
 import ViewClassScreen from './src/screens/ViewClassScreen';
 import ViewClassScreenOptionsModal from './src/components/ViewClassScreenOptionsModal';
 import ViewNoteScreen from './src/screens/ViewNoteScreen';
+import ViewNoteScreenOptionsModal from './src/components/ViewNoteScreenOptionsModal';
 
 const App = () => {
   return (
@@ -18,7 +19,8 @@ const App = () => {
     // <NotesScreen></NotesScreen>
     // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
-    <ViewNoteScreen></ViewNoteScreen>
+    // <ViewNoteScreen></ViewNoteScreen>
+    <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
   );
 };
 

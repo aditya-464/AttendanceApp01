@@ -1,5 +1,6 @@
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -52,6 +53,23 @@ const ViewNoteScreen = () => {
             color={COLORS.primaryDark}></SimpleLineIcons>
         </TouchableOpacity>
       </View>
+      <ScrollView>
+        <View style={styles.NoteSubject}>
+          <Text style={styles.NoteSubjectText}>
+            Operating Systems Unit Test - II
+          </Text>
+        </View>
+        <View style={styles.NoteContent}>
+          <Text style={styles.NoteContentText}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
+            tenetur sit numquam nam odit maxime, animi modi earum odio, dolore
+            voluptate ex quisquam unde iure. Quos commodi quaerat voluptatem
+            laboriosam temporibus, non nesciunt, alias odit minus blanditiis
+            rerum quo placeat maxime voluptate dignissimos nam quidem earum
+            asperiores numquam quod obcaecati et sint dolores delectus.
+          </Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -91,5 +109,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
+  },
+  NoteSubject: {
+    width: '100%',
+    padding: SPACING.space_12,
+    paddingBottom: SPACING.space_8,
+  },
+  NoteSubjectText: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_24,
+    color: COLORS.primaryDark,
+  },
+  NoteContent: {
+    width: '100%',
+    paddingHorizontal: SPACING.space_12,
+  },
+  NoteContentText: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryDark,
   },
 });

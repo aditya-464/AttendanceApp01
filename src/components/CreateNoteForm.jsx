@@ -58,7 +58,7 @@ const CreateNoteForm = () => {
               />
             </View>
 
-            <TouchableOpacity style={styles.CreateNoteBtn}>
+            <TouchableOpacity activeOpacity={0.6} style={styles.CreateNoteBtn}>
               <Text style={styles.CreateNoteText}>Create</Text>
             </TouchableOpacity>
           </View>
@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   CreateNoteForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
+    backgroundColor : COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',
