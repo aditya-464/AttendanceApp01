@@ -146,7 +146,12 @@ const ViewClassScreen = () => {
 
   return (
     <SafeAreaView
-      style={{zIndex: -10, height: "100%", width : "100%"}}>
+      style={{
+        zIndex: -10,
+        height: '100%',
+        width: '100%',
+        backgroundColor: COLORS.primaryLight,
+      }}>
       <View onLayout={onLayoutTitlebar} style={styles.TitleBar}>
         <View style={styles.BackIcon}>
           <Ionicon
@@ -317,7 +322,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: SPACING.space_16,
+    padding: SPACING.space_20,
     zIndex: 10,
     backgroundColor: COLORS.primaryLight,
   },
@@ -331,7 +336,7 @@ const styles = StyleSheet.create({
   },
   CancelButtonText: {
     fontFamily: FONTFAMILY.poppins_regular,
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
     textAlign: 'center',
   },
@@ -345,7 +350,7 @@ const styles = StyleSheet.create({
   },
   SubmitButtonText: {
     fontFamily: FONTFAMILY.poppins_regular,
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
   },

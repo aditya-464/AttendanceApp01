@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   SignupForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
+    backgroundColor : COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',

@@ -11,6 +11,7 @@ const SignupScreen = props => {
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
+        backgroundColor : COLORS.primaryLight,
       }}>
       <View style={styles.SignupContainer}>
         <Text style={styles.SignupText}>Create Account</Text>

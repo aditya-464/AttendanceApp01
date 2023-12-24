@@ -10,12 +10,12 @@ import ViewClassScreenOptionsModal from './src/components/ViewClassScreenOptions
 
 const App = () => {
   return (
-    // <OuterStackNavigator></OuterStackNavigator>
+    <OuterStackNavigator></OuterStackNavigator>
     // <HomeScreen></HomeScreen>
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
-    <ViewClassScreen></ViewClassScreen>
+    // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
   );
 };

@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
   LoginForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
+    backgroundColor : COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',

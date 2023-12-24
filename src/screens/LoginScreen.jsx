@@ -17,6 +17,7 @@ const LoginScreen = props => {
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
+        backgroundColor : COLORS.primaryLight,
       }}>
       <View style={styles.LoginContainer}>
         <Text style={styles.LoginText}>Hello User!</Text>

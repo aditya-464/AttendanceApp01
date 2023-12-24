@@ -16,7 +16,7 @@ const WelcomeScreen = props => {
   const navigation = useNavigation();
   return (
     <>
-      <SafeAreaView>
+      <SafeAreaView style={{backgroundColor: COLORS.primaryLight}}>
         <ImageBackground
           source={WelcomeImg}
           resizeMode="cover"
@@ -91,11 +91,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.primaryDark,
     borderRadius: 100,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   SignupText: {
     color: COLORS.primaryDark,
     textAlign: 'center',
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_regular,
   },
   LoginBtn: {
     width: '48%',
@@ -104,10 +109,15 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primaryDark,
     borderRadius: 100,
     backgroundColor: COLORS.primaryDark,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   LoginText: {
     color: COLORS.primaryLight,
     textAlign: 'center',
-    fontSize: FONTSIZE.size_18,
+    fontSize: FONTSIZE.size_16,
+    fontFamily: FONTFAMILY.poppins_regular,
   },
 });
