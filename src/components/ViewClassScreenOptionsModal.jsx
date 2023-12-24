@@ -1,10 +1,22 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {
+  BORDERRADIUS,
+  COLORS,
+  FONTFAMILY,
+  FONTSIZE,
+  SPACING,
+} from '../themes/Theme';
 
-const ViewClassScreenOptionsModal = () => {
+const ViewClassScreenOptionsModal = props => {
+  const {top, modalView} = props;
+
   return (
-    <View style={styles.OptionsModal}>
+    <View
+      style={[
+        styles.OptionsModal,
+        {top: top, display: modalView ? 'flex' : 'none'},
+      ]}>
       <TouchableOpacity activeOpacity={0.4} style={styles.AddStudent}>
         <Text style={styles.AddStudentText}>Add Student</Text>
       </TouchableOpacity>
@@ -17,6 +29,9 @@ const ViewClassScreenOptionsModal = () => {
       <TouchableOpacity activeOpacity={0.4} style={styles.GenerateReport}>
         <Text style={styles.GenerateReportText}>Generate Report</Text>
       </TouchableOpacity>
+      <TouchableOpacity activeOpacity={0.4} style={styles.DeleteClass}>
+        <Text style={styles.DeleteClassText}>Delete Class</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -26,9 +41,15 @@ export default ViewClassScreenOptionsModal;
 const styles = StyleSheet.create({
   OptionsModal: {
     width: '50%',
+    flexDirection: 'column',
     padding: SPACING.space_8,
     elevation: 2,
-    borderRadius : BORDERRADIUS.radius_10,
+    borderRadius: BORDERRADIUS.radius_10,
+    backgroundColor: COLORS.primaryLight,
+    position: 'absolute',
+    right: SPACING.space_12,
+    zIndex: 10,
+    elevation: Platform.OS === 'android' ? 10 : 0,
   },
   AddStudent: {
     padding: SPACING.space_8,
@@ -58,6 +79,14 @@ const styles = StyleSheet.create({
     padding: SPACING.space_8,
   },
   GenerateReportText: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryDark,
+  },
+  DeleteClass: {
+    padding: SPACING.space_8,
+  },
+  DeleteClassText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,

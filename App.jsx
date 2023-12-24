@@ -15,8 +15,8 @@ const App = () => {
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
-    // <ViewClassScreen></ViewClassScreen>
-    <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
+    <ViewClassScreen></ViewClassScreen>
+    // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
   );
 };
 
