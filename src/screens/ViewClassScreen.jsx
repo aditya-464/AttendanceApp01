@@ -1,7 +1,5 @@
 import {
-  Dimensions,
   FlatList,
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -153,13 +151,13 @@ const ViewClassScreen = () => {
         backgroundColor: COLORS.primaryLight,
       }}>
       <View onLayout={onLayoutTitlebar} style={styles.TitleBar}>
-        <View style={styles.BackIcon}>
+        <TouchableOpacity activeOpacity={0.6} style={styles.BackIcon}>
           <Ionicon
             name="chevron-back"
             size={FONTSIZE.size_28}
             color={COLORS.primaryDark}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.TitleTextView}>
           <Text style={[styles.TitleText, {paddingLeft: SPACING.space_8}]}>
             OS

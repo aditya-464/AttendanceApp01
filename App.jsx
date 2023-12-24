@@ -7,16 +7,18 @@ import CreateNoteScreen from './src/screens/CreateNoteScreen';
 import NotesScreen from './src/screens/NotesScreen';
 import ViewClassScreen from './src/screens/ViewClassScreen';
 import ViewClassScreenOptionsModal from './src/components/ViewClassScreenOptionsModal';
+import ViewNoteScreen from './src/screens/ViewNoteScreen';
 
 const App = () => {
   return (
-    <OuterStackNavigator></OuterStackNavigator>
+    // <OuterStackNavigator></OuterStackNavigator>
     // <HomeScreen></HomeScreen>
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
     // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
+    <ViewNoteScreen></ViewNoteScreen>
   );
 };
 

@@ -58,7 +58,7 @@ const LoginForm = () => {
               />
             </View>
 
-            <TouchableOpacity style={styles.LoginBtn}>
+            <TouchableOpacity activeOpacity={0.6} style={styles.LoginBtn}>
               <Text style={styles.LoginText}>Login</Text>
             </TouchableOpacity>
           </View>

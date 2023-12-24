@@ -31,11 +31,13 @@ const WelcomeScreen = props => {
             </View>
             <View style={styles.BtnContainer}>
               <TouchableOpacity
+                activeOpacity={0.6}
                 style={styles.SignupBtn}
                 onPress={() => navigation.push('Signup')}>
                 <Text style={styles.SignupText}>Signup</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                activeOpacity={0.6}
                 style={styles.LoginBtn}
                 onPress={() => navigation.push('Login')}>
                 <Text style={styles.LoginText}>Login</Text>
