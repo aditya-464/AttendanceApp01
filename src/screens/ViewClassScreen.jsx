@@ -11,6 +11,7 @@ import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ViewClassScreenOptionsModal from '../components/ViewClassScreenOptionsModal';
+import AddStudentModal from '../components/AddStudentModal';
 
 const StudentDetailsData = [
   {
@@ -86,7 +87,8 @@ const StudentDetailsData = [
 const ViewClassScreen = () => {
   const [studentsData, setStudentsData] = useState([]);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
-  const [modalView, setModalView] = useState(false);
+  const [optionsModalView, setOptionsModalView] = useState(false);
+  const [addStudentModalView, setAddStudentModalView] = useState(false);
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -94,7 +96,14 @@ const ViewClassScreen = () => {
   };
 
   const handleOptionsModal = () => {
-    setModalView(prev => !prev);
+    setOptionsModalView(prev => !prev);
+  };
+
+  const handleOpenAddStudentModal = value => {
+    setAddStudentModalView(value);
+  };
+  const handleCloseAddStudentModal = value => {
+    setAddStudentModalView(value);
   };
 
   useEffect(() => {
@@ -175,7 +184,15 @@ const ViewClassScreen = () => {
             color={COLORS.primaryDark}></SimpleLineIcons>
         </TouchableOpacity>
       </View>
-      <ViewClassScreenOptionsModal top={titleBarHeight} modalView={modalView} />
+      <ViewClassScreenOptionsModal
+        top={titleBarHeight}
+        optionsModalView={optionsModalView}
+        handleOpenAddStudentModal={handleOpenAddStudentModal}
+      />
+      <AddStudentModal
+        handleCloseAddStudentModal={handleCloseAddStudentModal}
+        addStudentModalView={addStudentModalView}
+      />
       <View style={styles.ColumnHeadings}>
         <View style={styles.RollHeading}>
           <Text style={styles.RollHeadingText}>Roll</Text>

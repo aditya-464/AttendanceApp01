@@ -9,15 +9,18 @@ import {
 } from '../themes/Theme';
 
 const ViewClassScreenOptionsModal = props => {
-  const {top, modalView} = props;
+  const {top, optionsModalView, handleOpenAddStudentModal} = props;
 
   return (
     <View
       style={[
         styles.OptionsModal,
-        {top: top, display: modalView ? 'flex' : 'none'},
+        {top: top, display: optionsModalView ? 'flex' : 'none'},
       ]}>
-      <TouchableOpacity activeOpacity={0.4} style={styles.AddStudent}>
+      <TouchableOpacity
+        onPress={() => handleOpenAddStudentModal(true)}
+        activeOpacity={0.4}
+        style={styles.AddStudent}>
         <Text style={styles.AddStudentText}>Add Student</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.4} style={styles.RemoveStudent}>
