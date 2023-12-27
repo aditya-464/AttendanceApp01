@@ -15,6 +15,7 @@ import ViewRecordModal from './src/components/ViewRecordModal';
 import GenerateReportModal from './src/components/GenerateReportModal';
 import DeleteClassModal from './src/components/DeleteClassModal';
 import ImportDataModal from './src/components/ImportDataModal';
+import EditNoteModal from './src/components/EditNoteModal';
 
 const App = () => {
   return (
@@ -23,9 +24,9 @@ const App = () => {
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
     // <NotesScreen></NotesScreen>
-    <ViewClassScreen></ViewClassScreen>
+    // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
-    // <ViewNoteScreen></ViewNoteScreen>
+    <ViewNoteScreen></ViewNoteScreen>
     // <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
     // <AddStudentModal></AddStudentModal>
     // <RemoveStudentModal></RemoveStudentModal>
@@ -33,6 +34,7 @@ const App = () => {
     // <GenerateReportModal></GenerateReportModal>
     // <DeleteClassModal></DeleteClassModal>
     // <ImportDataModal></ImportDataModal>
+    // <EditNoteModal></EditNoteModal>
   );
 };
 

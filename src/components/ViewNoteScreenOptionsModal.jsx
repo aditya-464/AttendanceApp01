@@ -9,7 +9,7 @@ import {
 } from '../themes/Theme';
 
 const ViewNoteScreenOptionsModal = props => {
-  const {top, modalView} = props;
+  const {top, modalView, handleOpenEditNoteModalView} = props;
 
   return (
     <View
@@ -17,7 +17,10 @@ const ViewNoteScreenOptionsModal = props => {
         styles.OptionsModal,
         {top: top, display: modalView ? 'flex' : 'none'},
       ]}>
-      <TouchableOpacity activeOpacity={0.4} style={styles.EditNote}>
+      <TouchableOpacity
+        onPress={() => handleOpenEditNoteModalView(true)}
+        activeOpacity={0.4}
+        style={styles.EditNote}>
         <Text style={styles.EditNoteText}>Edit Note</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.4} style={styles.DeleteNote}>

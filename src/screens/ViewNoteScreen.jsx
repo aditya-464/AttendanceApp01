@@ -11,13 +11,23 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import ViewNoteScreenOptionsModal from '../components/ViewNoteScreenOptionsModal';
+import EditNoteModal from '../components/EditNoteModal';
 
 const ViewNoteScreen = () => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [modalView, setModalView] = useState(false);
+  const [editNoteModalView, setEditNoteModalView] = useState(false);
 
   const handleOptionsModal = () => {
     setModalView(prev => !prev);
+  };
+
+  // EditNoteModalView Functions
+  const handleOpenEditNoteModalView = value => {
+    setEditNoteModalView(value);
+  };
+  const handleCloseEditNoteModalView = value => {
+    setEditNoteModalView(value);
   };
 
   const onLayoutTitlebar = event => {
@@ -56,7 +66,13 @@ const ViewNoteScreen = () => {
       </View>
       <ViewNoteScreenOptionsModal
         top={titleBarHeight}
-        modalView={modalView}></ViewNoteScreenOptionsModal>
+        modalView={modalView}
+        handleOpenEditNoteModalView={handleOpenEditNoteModalView}
+      />
+      <EditNoteModal
+        handleCloseEditNoteModalView={handleCloseEditNoteModalView}
+        editNoteModalView={editNoteModalView}
+      />
       <ScrollView>
         <View style={styles.NoteSubject}>
           <Text style={styles.NoteSubjectText}>
