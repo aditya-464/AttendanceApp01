@@ -17,6 +17,7 @@ import DeleteClassModal from './src/components/DeleteClassModal';
 import ImportDataModal from './src/components/ImportDataModal';
 import EditNoteModal from './src/components/EditNoteModal';
 import DeleteNoteModal from './src/components/DeleteNoteModal';
+import AboutScreen from './src/screens/AboutScreen';
 
 const App = () => {
   return (
@@ -27,7 +28,7 @@ const App = () => {
     // <NotesScreen></NotesScreen>
     // <ViewClassScreen></ViewClassScreen>
     // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
-    <ViewNoteScreen></ViewNoteScreen>
+    // <ViewNoteScreen></ViewNoteScreen>
     // <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
     // <AddStudentModal></AddStudentModal>
     // <RemoveStudentModal></RemoveStudentModal>
@@ -37,6 +38,7 @@ const App = () => {
     // <ImportDataModal></ImportDataModal>
     // <EditNoteModal></EditNoteModal>
     // <DeleteNoteModal></DeleteNoteModal>
+    <AboutScreen></AboutScreen>
   );
 };
 
