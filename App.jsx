@@ -18,6 +18,7 @@ import ImportDataModal from './src/components/ImportDataModal';
 import EditNoteModal from './src/components/EditNoteModal';
 import DeleteNoteModal from './src/components/DeleteNoteModal';
 import AboutScreen from './src/screens/AboutScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 
 const App = () => {
   return (
@@ -38,7 +39,8 @@ const App = () => {
     // <ImportDataModal></ImportDataModal>
     // <EditNoteModal></EditNoteModal>
     // <DeleteNoteModal></DeleteNoteModal>
-    <AboutScreen></AboutScreen>
+    // <AboutScreen></AboutScreen>
+    <ProfileScreen></ProfileScreen>
   );
 };
 
