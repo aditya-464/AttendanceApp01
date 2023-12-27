@@ -30,8 +30,12 @@ const AboutScreen = () => {
           experience, ensuring efficient attendance tracking for students.
         </Text>
         <Text style={styles.DevelopedByText}>Developer Info :- </Text>
-        <Text style={styles.MyNameText}>Aditya Giri</Text>
-        <Text style={styles.MyEmailText}>adityagiri1911@gmail.com</Text>
+        <Text selectable={true} style={styles.MyNameText}>
+          Aditya Giri
+        </Text>
+        <Text selectable={true} style={styles.MyEmailText}>
+          adityagiri1911@gmail.com
+        </Text>
         <Text style={styles.CollegeInfoText}>IT Dept. of NSEC</Text>
       </View>
     </SafeAreaView>
@@ -76,28 +80,28 @@ const styles = StyleSheet.create({
   },
   DevelopedByText: {
     marginTop: SPACING.space_30,
-    marginBottom : SPACING.space_12,
+    marginBottom: SPACING.space_12,
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
-    opacity : 0.9,
+    opacity: 0.9,
   },
   MyNameText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
-    opacity : 0.9,
+    opacity: 0.9,
   },
   MyEmailText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
-    opacity : 0.9,
+    opacity: 0.9,
   },
   CollegeInfoText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
-    opacity : 0.9,
+    opacity: 0.9,
   },
 });
