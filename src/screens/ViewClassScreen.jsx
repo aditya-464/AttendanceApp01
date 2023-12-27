@@ -12,6 +12,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ViewClassScreenOptionsModal from '../components/ViewClassScreenOptionsModal';
 import AddStudentModal from '../components/AddStudentModal';
+import RemoveStudentModal from '../components/RemoveStudentModal';
 
 const StudentDetailsData = [
   {
@@ -89,6 +90,7 @@ const ViewClassScreen = () => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
   const [addStudentModalView, setAddStudentModalView] = useState(false);
+  const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -99,11 +101,20 @@ const ViewClassScreen = () => {
     setOptionsModalView(prev => !prev);
   };
 
+  // AddStudentModalView Functions
   const handleOpenAddStudentModal = value => {
     setAddStudentModalView(value);
   };
   const handleCloseAddStudentModal = value => {
     setAddStudentModalView(value);
+  };
+
+  // RemoveStudentModalView Functions
+  const handleOpenRemoveStudentModal = value => {
+    setRemoveStudentModalView(value);
+  };
+  const handleCloseRemoveStudentModal = value => {
+    setRemoveStudentModalView(value);
   };
 
   useEffect(() => {
@@ -188,11 +199,15 @@ const ViewClassScreen = () => {
         top={titleBarHeight}
         optionsModalView={optionsModalView}
         handleOpenAddStudentModal={handleOpenAddStudentModal}
+        handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
       />
       <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}
         addStudentModalView={addStudentModalView}
       />
+      <RemoveStudentModal
+        handleCloseRemoveStudentModal={handleCloseRemoveStudentModal}
+        removeStudentModalView={removeStudentModalView}></RemoveStudentModal>
       <View style={styles.ColumnHeadings}>
         <View style={styles.RollHeading}>
           <Text style={styles.RollHeadingText}>Roll</Text>

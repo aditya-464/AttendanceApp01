@@ -1,13 +1,13 @@
 import {
-  Modal,
   Platform,
   SafeAreaView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -16,13 +16,16 @@ import {
   SPACING,
 } from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Modal from 'react-native-modal';
 
 const AddStudentModal = props => {
   const {addStudentModalView, handleCloseAddStudentModal} = props;
+  const [studentName, setStudentName] = useState(null);
+  const [studentRoll, setStudentRoll] = useState(null);
 
   return (
     <SafeAreaView>
-      <Modal transparent animationType="slide" visible={addStudentModalView}>
+      <Modal useNativeDriver={true} isVisible={addStudentModalView}>
         <View
           style={{
             height: '100%',
@@ -43,14 +46,22 @@ const AddStudentModal = props => {
               </TouchableOpacity>
             </View>
             <Text style={styles.AddStudentTitle}>Add Student</Text>
-            <Text style={styles.AddStudentInfoText}>
-              Select the Excel file to import student details
-            </Text>
+            <TextInput
+              style={styles.InputField}
+              placeholder="Name"
+              value={studentName}
+              onChangeText={text => setStudentName(text)}></TextInput>
+            <TextInput
+              style={styles.InputField}
+              placeholder="Roll"
+              value={studentRoll}
+              onChangeText={text => setStudentRoll(text)}></TextInput>
+
             <View style={styles.ButtonView}>
               <TouchableOpacity
                 activeOpacity={0.6}
-                style={styles.SelectFileButton}>
-                <Text style={styles.SelectFileButtonText}>Select File</Text>
+                style={styles.AddStudentButton}>
+                <Text style={styles.AddStudentText}>Add</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -64,7 +75,6 @@ export default AddStudentModal;
 
 const styles = StyleSheet.create({
   AddStudentModal: {
-    marginHorizontal: SPACING.space_20,
     backgroundColor: COLORS.primaryLight,
     borderRadius: BORDERRADIUS.radius_10,
     shadowColor: '#000',
@@ -86,11 +96,13 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_28,
     color: COLORS.primaryDark,
   },
-  AddStudentInfoText: {
-    fontFamily: FONTFAMILY.poppins_medium,
+  InputField: {
+    fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
+    marginTop: SPACING.space_4,
+    borderBottomWidth: 0.2,
+    borderColor: '#cccccc',
     color: COLORS.primaryDark,
-    marginTop: SPACING.space_12,
   },
   ButtonView: {
     marginTop: SPACING.space_20,
@@ -99,13 +111,13 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  SelectFileButton: {
+  AddStudentButton: {
     width: '50%',
     backgroundColor: COLORS.primaryDark,
     padding: SPACING.space_12,
     borderRadius: 50,
   },
-  SelectFileButtonText: {
+  AddStudentText: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,

@@ -9,7 +9,12 @@ import {
 } from '../themes/Theme';
 
 const ViewClassScreenOptionsModal = props => {
-  const {top, optionsModalView, handleOpenAddStudentModal} = props;
+  const {
+    top,
+    optionsModalView,
+    handleOpenAddStudentModal,
+    handleOpenRemoveStudentModal,
+  } = props;
 
   return (
     <View
@@ -23,7 +28,10 @@ const ViewClassScreenOptionsModal = props => {
         style={styles.AddStudent}>
         <Text style={styles.AddStudentText}>Add Student</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.4} style={styles.RemoveStudent}>
+      <TouchableOpacity
+        onPress={() => handleOpenRemoveStudentModal(true)}
+        activeOpacity={0.4}
+        style={styles.RemoveStudent}>
         <Text style={styles.RemoveStudentText}>Remove Student</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.4} style={styles.ViewRecord}>
