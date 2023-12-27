@@ -13,6 +13,7 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ViewClassScreenOptionsModal from '../components/ViewClassScreenOptionsModal';
 import AddStudentModal from '../components/AddStudentModal';
 import RemoveStudentModal from '../components/RemoveStudentModal';
+import ViewRecordModal from '../components/ViewRecordModal';
 
 const StudentDetailsData = [
   {
@@ -91,6 +92,7 @@ const ViewClassScreen = () => {
   const [optionsModalView, setOptionsModalView] = useState(false);
   const [addStudentModalView, setAddStudentModalView] = useState(false);
   const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
+  const [viewRecordModalView, setViewRecordModalView] = useState(false);
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -115,6 +117,14 @@ const ViewClassScreen = () => {
   };
   const handleCloseRemoveStudentModal = value => {
     setRemoveStudentModalView(value);
+  };
+
+  // ViewRecordModalView Functions
+  const handleOpenViewRecordModal = value => {
+    setViewRecordModalView(value);
+  };
+  const handleCloseViewRecordModal = value => {
+    setViewRecordModalView(value);
   };
 
   useEffect(() => {
@@ -200,6 +210,7 @@ const ViewClassScreen = () => {
         optionsModalView={optionsModalView}
         handleOpenAddStudentModal={handleOpenAddStudentModal}
         handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
+        handleOpenViewRecordModal={handleOpenViewRecordModal}
       />
       <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}
@@ -207,7 +218,12 @@ const ViewClassScreen = () => {
       />
       <RemoveStudentModal
         handleCloseRemoveStudentModal={handleCloseRemoveStudentModal}
-        removeStudentModalView={removeStudentModalView}></RemoveStudentModal>
+        removeStudentModalView={removeStudentModalView}
+      />
+      <ViewRecordModal
+        handleCloseViewRecordModal={handleCloseViewRecordModal}
+        viewRecordModalView={viewRecordModalView}
+      />
       <View style={styles.ColumnHeadings}>
         <View style={styles.RollHeading}>
           <Text style={styles.RollHeadingText}>Roll</Text>

@@ -11,6 +11,7 @@ import ViewNoteScreen from './src/screens/ViewNoteScreen';
 import ViewNoteScreenOptionsModal from './src/components/ViewNoteScreenOptionsModal';
 import AddStudentModal from './src/components/AddStudentModal';
 import RemoveStudentModal from './src/components/RemoveStudentModal';
+import ViewRecordModal from './src/components/ViewRecordModal';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
     // <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
     // <AddStudentModal></AddStudentModal>
     // <RemoveStudentModal></RemoveStudentModal>
+    // <ViewRecordModal></ViewRecordModal>
   );
 };
 
