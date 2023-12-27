@@ -1,5 +1,6 @@
 import {
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -37,7 +38,7 @@ const ProfileScreen = () => {
             color={COLORS.primaryDark}></Ionicons>
         </TouchableOpacity>
       </View>
-      <View style={styles.ProfileContent}>
+      <ScrollView style={styles.ProfileContent}>
         <Text style={styles.PlaceholderText}>Name</Text>
         <TextInput
           autoCorrect={false}
@@ -101,7 +102,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -175,6 +176,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.space_18,
   },
   Password: {
+    minWidth : "70%",
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,

@@ -41,8 +41,8 @@ const App = () => {
     // <EditNoteModal></EditNoteModal>
     // <DeleteNoteModal></DeleteNoteModal>
     // <AboutScreen></AboutScreen>
-    // <ProfileScreen></ProfileScreen>
-    <LogoutScreen></LogoutScreen>
+    <ProfileScreen></ProfileScreen>
+    // <LogoutScreen></LogoutScreen>
   );
 };
 
