@@ -60,8 +60,17 @@ const FlatListData = [
   },
 ];
 
-const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
-  <View
+const FlatListItem = ({
+  navigation,
+  subject,
+  branch,
+  semester,
+  section,
+  bgcolor,
+}) => (
+  <TouchableOpacity
+    onPress={() => navigation.navigate('ViewClassScreen')}
+    activeOpacity={0.6}
     style={[
       styles.ClassListItem,
       {
@@ -113,10 +122,11 @@ const FlatListItem = ({subject, branch, semester, section, bgcolor}) => (
         {section}
       </Text>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
-const HomeScreen = () => {
+const HomeScreen = props => {
+  const {navigation} = props;
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
       <View style={styles.TitleBar}>
@@ -131,7 +141,10 @@ const HomeScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.CreateClass}>
-        <TouchableOpacity activeOpacity={0.8} style={styles.CreateClassButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CreateClassScreen')}
+          activeOpacity={0.8}
+          style={styles.CreateClassButton}>
           <Ionicons
             name="add"
             size={FONTSIZE.size_32}
@@ -142,6 +155,7 @@ const HomeScreen = () => {
         data={FlatListData}
         renderItem={({item}) => (
           <FlatListItem
+            navigation={navigation}
             subject={item.subject}
             branch={item.branch}
             semester={item.semester}

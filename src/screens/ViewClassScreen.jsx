@@ -89,7 +89,8 @@ const StudentDetailsData = [
   },
 ];
 
-const ViewClassScreen = () => {
+const ViewClassScreen = props => {
+  const {navigation} = props;
   const [studentsData, setStudentsData] = useState([]);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
@@ -211,7 +212,10 @@ const ViewClassScreen = () => {
         backgroundColor: COLORS.primaryLight,
       }}>
       <View onLayout={onLayoutTitlebar} style={styles.TitleBar}>
-        <TouchableOpacity activeOpacity={0.6} style={styles.BackIcon}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Home')}
+          activeOpacity={0.6}
+          style={styles.BackIcon}>
           <Ionicon
             name="chevron-back"
             size={FONTSIZE.size_28}
@@ -323,6 +327,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    paddingBottom: SPACING.space_4,
   },
   TitleTextView: {
     width: '80%',

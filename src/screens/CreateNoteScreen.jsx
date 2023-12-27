@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
     color: COLORS.primaryDark,
-    opacity : 0.8,
+    opacity: 0.8,
   },
 });
