@@ -19,7 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const ProfileScreen = () => {
   const [name, setName] = useState('Radhe Shyam');
   const [email, setEmail] = useState('adityagiri1911@gmail.com');
-  const [password, setPassword] = useState('**********');
+  const [password, setPassword] = useState('JaiShreeRadhe');
   const [showUpdateAndCancelButtons, setShowUpdateAndCancelButtons] =
     useState(false);
 
@@ -39,18 +39,22 @@ const ProfileScreen = () => {
       <View style={styles.ProfileContent}>
         <Text style={styles.PlaceholderText}>Name</Text>
         <TextInput
+          autoCorrect={false}
           style={styles.Name}
           editable={showUpdateAndCancelButtons}
           value={name}
           onChangeText={text => setName(text)}></TextInput>
         <Text style={styles.PlaceholderText}>Email</Text>
         <TextInput
+          autoCorrect={false}
           style={styles.Email}
           editable={showUpdateAndCancelButtons}
           value={email}
           onChangeText={text => setEmail(text)}></TextInput>
         <Text style={styles.PlaceholderText}>Password</Text>
         <TextInput
+          autoCorrect={false}
+          secureTextEntry={true}
           style={styles.Password}
           editable={showUpdateAndCancelButtons}
           value={password}
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     padding: SPACING.space_12,
     borderWidth: 1,
     borderColor: COLORS.primaryDark,
-    borderRadius: BORDERRADIUS.radius_10,
+    borderRadius: BORDERRADIUS.radius_4,
     marginBottom: SPACING.space_18,
   },
   Email: {
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     padding: SPACING.space_12,
     borderWidth: 1,
     borderColor: COLORS.primaryDark,
-    borderRadius: BORDERRADIUS.radius_10,
+    borderRadius: BORDERRADIUS.radius_4,
     marginBottom: SPACING.space_18,
   },
   Password: {
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
     padding: SPACING.space_12,
     borderWidth: 1,
     borderColor: COLORS.primaryDark,
-    borderRadius: BORDERRADIUS.radius_10,
+    borderRadius: BORDERRADIUS.radius_4,
     marginBottom: SPACING.space_18,
   },
   ActionButtons: {
