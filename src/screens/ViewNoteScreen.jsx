@@ -12,11 +12,13 @@ import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import ViewNoteScreenOptionsModal from '../components/ViewNoteScreenOptionsModal';
 import EditNoteModal from '../components/EditNoteModal';
+import DeleteNoteModal from '../components/DeleteNoteModal';
 
 const ViewNoteScreen = () => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [modalView, setModalView] = useState(false);
   const [editNoteModalView, setEditNoteModalView] = useState(false);
+  const [deleteNoteModalView, setDeleteNoteModalView] = useState(false);
 
   const handleOptionsModal = () => {
     setModalView(prev => !prev);
@@ -28,6 +30,14 @@ const ViewNoteScreen = () => {
   };
   const handleCloseEditNoteModalView = value => {
     setEditNoteModalView(value);
+  };
+
+  // DeleteNoteModalView Functions
+  const handleOpenDeleteNoteModalView = value => {
+    setDeleteNoteModalView(value);
+  };
+  const handleCloseDeleteNoteModalView = value => {
+    setDeleteNoteModalView(value);
   };
 
   const onLayoutTitlebar = event => {
@@ -68,10 +78,15 @@ const ViewNoteScreen = () => {
         top={titleBarHeight}
         modalView={modalView}
         handleOpenEditNoteModalView={handleOpenEditNoteModalView}
+        handleOpenDeleteNoteModalView={handleOpenDeleteNoteModalView}
       />
       <EditNoteModal
         handleCloseEditNoteModalView={handleCloseEditNoteModalView}
         editNoteModalView={editNoteModalView}
+      />
+      <DeleteNoteModal
+        handleCloseDeleteNoteModalView={handleCloseDeleteNoteModalView}
+        deleteNoteModalView={deleteNoteModalView}
       />
       <ScrollView>
         <View style={styles.NoteSubject}>

@@ -16,6 +16,7 @@ import GenerateReportModal from './src/components/GenerateReportModal';
 import DeleteClassModal from './src/components/DeleteClassModal';
 import ImportDataModal from './src/components/ImportDataModal';
 import EditNoteModal from './src/components/EditNoteModal';
+import DeleteNoteModal from './src/components/DeleteNoteModal';
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
     // <DeleteClassModal></DeleteClassModal>
     // <ImportDataModal></ImportDataModal>
     // <EditNoteModal></EditNoteModal>
+    // <DeleteNoteModal></DeleteNoteModal>
   );
 };
 
