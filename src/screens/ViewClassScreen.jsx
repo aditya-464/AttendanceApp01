@@ -16,6 +16,7 @@ import RemoveStudentModal from '../components/RemoveStudentModal';
 import ViewRecordModal from '../components/ViewRecordModal';
 import GenerateReportModal from '../components/GenerateReportModal';
 import DeleteClassModal from '../components/DeleteClassModal';
+import ImportDataModal from '../components/ImportDataModal';
 
 const StudentDetailsData = [
   {
@@ -92,6 +93,7 @@ const ViewClassScreen = () => {
   const [studentsData, setStudentsData] = useState([]);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
+  const [importDataModalView, setImportDataModalView] = useState(false);
   const [addStudentModalView, setAddStudentModalView] = useState(false);
   const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
@@ -105,6 +107,14 @@ const ViewClassScreen = () => {
 
   const handleOptionsModal = () => {
     setOptionsModalView(prev => !prev);
+  };
+
+  // ImportDataModalView Functions
+  const handleOpenImportDataModal = value => {
+    setImportDataModalView(value);
+  };
+  const handleCloseImportDataModal = value => {
+    setImportDataModalView(value);
   };
 
   // AddStudentModalView Functions
@@ -228,11 +238,16 @@ const ViewClassScreen = () => {
       <ViewClassScreenOptionsModal
         top={titleBarHeight}
         optionsModalView={optionsModalView}
+        handleOpenImportDataModal={handleOpenImportDataModal}
         handleOpenAddStudentModal={handleOpenAddStudentModal}
         handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
         handleOpenViewRecordModal={handleOpenViewRecordModal}
         handleOpenGenerateReportModal={handleOpenGenerateReportModal}
         handleOpenDeleteClassModal={handleOpenDeleteClassModal}
+      />
+      <ImportDataModal
+        handleCloseImportDataModal={handleCloseImportDataModal}
+        importDataModalView={importDataModalView}
       />
       <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}

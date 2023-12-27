@@ -12,6 +12,7 @@ const ViewClassScreenOptionsModal = props => {
   const {
     top,
     optionsModalView,
+    handleOpenImportDataModal,
     handleOpenAddStudentModal,
     handleOpenRemoveStudentModal,
     handleOpenViewRecordModal,
@@ -25,7 +26,10 @@ const ViewClassScreenOptionsModal = props => {
         styles.OptionsModal,
         {top: top, display: optionsModalView ? 'flex' : 'none'},
       ]}>
-      <TouchableOpacity activeOpacity={0.4} style={styles.ImportData}>
+      <TouchableOpacity
+        onPress={() => handleOpenImportDataModal(true)}
+        activeOpacity={0.4}
+        style={styles.ImportData}>
         <Text style={styles.ImportDataText}>Import Data</Text>
       </TouchableOpacity>
       <TouchableOpacity
