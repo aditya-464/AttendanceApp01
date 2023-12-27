@@ -12,6 +12,7 @@ import ViewNoteScreenOptionsModal from './src/components/ViewNoteScreenOptionsMo
 import AddStudentModal from './src/components/AddStudentModal';
 import RemoveStudentModal from './src/components/RemoveStudentModal';
 import ViewRecordModal from './src/components/ViewRecordModal';
+import GenerateReportModal from './src/components/GenerateReportModal';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
     // <AddStudentModal></AddStudentModal>
     // <RemoveStudentModal></RemoveStudentModal>
     // <ViewRecordModal></ViewRecordModal>
+    // <GenerateReportModal></GenerateReportModal>
   );
 };
 

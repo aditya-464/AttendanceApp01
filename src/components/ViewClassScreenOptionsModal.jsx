@@ -15,6 +15,7 @@ const ViewClassScreenOptionsModal = props => {
     handleOpenAddStudentModal,
     handleOpenRemoveStudentModal,
     handleOpenViewRecordModal,
+    handleOpenGenerateReportModal,
   } = props;
 
   return (
@@ -44,7 +45,10 @@ const ViewClassScreenOptionsModal = props => {
         style={styles.ViewRecord}>
         <Text style={styles.ViewRecordText}>View Record</Text>
       </TouchableOpacity>
-      <TouchableOpacity activeOpacity={0.4} style={styles.GenerateReport}>
+      <TouchableOpacity
+        onPress={() => handleOpenGenerateReportModal(true)}
+        activeOpacity={0.4}
+        style={styles.GenerateReport}>
         <Text style={styles.GenerateReportText}>Generate Report</Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.4} style={styles.DeleteClass}>

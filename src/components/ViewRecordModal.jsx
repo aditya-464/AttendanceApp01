@@ -96,11 +96,6 @@ const styles = StyleSheet.create({
   ViewRecordModal: {
     backgroundColor: COLORS.primaryLight,
     borderRadius: BORDERRADIUS.radius_10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 3},
-    shadowOpacity: 0.5,
-    shadowRadius: 3,
-    elevation: Platform.OS === 'android' ? 5 : 0,
     padding: SPACING.space_16,
   },
   CloseModal: {
