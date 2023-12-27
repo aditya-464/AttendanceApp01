@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.space_4,
   },
   ProfileContent: {
-    paddingHorizontal: SPACING.space_12,
+    paddingHorizontal: SPACING.space_16,
     paddingTop: SPACING.space_4,
   },
   PlaceholderText: {
