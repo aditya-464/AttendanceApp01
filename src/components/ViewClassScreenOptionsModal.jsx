@@ -22,6 +22,9 @@ const ViewClassScreenOptionsModal = props => {
         styles.OptionsModal,
         {top: top, display: optionsModalView ? 'flex' : 'none'},
       ]}>
+      <TouchableOpacity activeOpacity={0.4} style={styles.ImportData}>
+        <Text style={styles.ImportDataText}>Import Data</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => handleOpenAddStudentModal(true)}
         activeOpacity={0.4}
@@ -60,6 +63,14 @@ const styles = StyleSheet.create({
     right: SPACING.space_12,
     zIndex: 10,
     elevation: Platform.OS === 'android' ? 2 : 0,
+  },
+  ImportData: {
+    padding: SPACING.space_8,
+  },
+  ImportDataText: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.primaryDark,
   },
   AddStudent: {
     padding: SPACING.space_8,
