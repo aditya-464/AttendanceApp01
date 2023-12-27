@@ -13,6 +13,7 @@ import AddStudentModal from './src/components/AddStudentModal';
 import RemoveStudentModal from './src/components/RemoveStudentModal';
 import ViewRecordModal from './src/components/ViewRecordModal';
 import GenerateReportModal from './src/components/GenerateReportModal';
+import DeleteClassModal from './src/components/DeleteClassModal';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
     // <RemoveStudentModal></RemoveStudentModal>
     // <ViewRecordModal></ViewRecordModal>
     // <GenerateReportModal></GenerateReportModal>
+    // <DeleteClassModal></DeleteClassModal>
   );
 };
 

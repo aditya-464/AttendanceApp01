@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   GenerateReportButton: {
-    width: '50%',
+    width: '48%',
     backgroundColor: COLORS.primaryDark,
     padding: SPACING.space_12,
     borderRadius: 50,

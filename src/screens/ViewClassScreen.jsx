@@ -15,6 +15,7 @@ import AddStudentModal from '../components/AddStudentModal';
 import RemoveStudentModal from '../components/RemoveStudentModal';
 import ViewRecordModal from '../components/ViewRecordModal';
 import GenerateReportModal from '../components/GenerateReportModal';
+import DeleteClassModal from '../components/DeleteClassModal';
 
 const StudentDetailsData = [
   {
@@ -95,6 +96,7 @@ const ViewClassScreen = () => {
   const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
+  const [deleteClassModalView, setDeleteClassModalView] = useState(false);
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -135,6 +137,14 @@ const ViewClassScreen = () => {
   };
   const handleCloseGenerateReportModal = value => {
     setGenerateReportModalView(value);
+  };
+
+  // DeleteClassModalView Functions
+  const handleOpenDeleteClassModal = value => {
+    setDeleteClassModalView(value);
+  };
+  const handleCloseDeleteClassModal = value => {
+    setDeleteClassModalView(value);
   };
 
   useEffect(() => {
@@ -222,6 +232,7 @@ const ViewClassScreen = () => {
         handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
         handleOpenViewRecordModal={handleOpenViewRecordModal}
         handleOpenGenerateReportModal={handleOpenGenerateReportModal}
+        handleOpenDeleteClassModal={handleOpenDeleteClassModal}
       />
       <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}
@@ -238,6 +249,10 @@ const ViewClassScreen = () => {
       <GenerateReportModal
         handleCloseGenerateReportModal={handleCloseGenerateReportModal}
         generateReportModalView={generateReportModalView}
+      />
+      <DeleteClassModal
+        handleCloseDeleteClassModal={handleCloseDeleteClassModal}
+        deleteClassModalView={deleteClassModalView}
       />
       <View style={styles.ColumnHeadings}>
         <View style={styles.RollHeading}>

@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   RemoveStudentButton: {
-    width: '50%',
+    width: '48%',
     backgroundColor: COLORS.primaryDark,
     padding: SPACING.space_12,
     borderRadius: 50,
