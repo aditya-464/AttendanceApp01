@@ -21,6 +21,7 @@ import AboutScreen from './src/screens/AboutScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import LogoutScreen from './src/screens/LogoutScreen';
 import HomeStackNavigator from './src/navigators/HomeStackNavigator';
+import NoteStackNavigator from './src/navigators/NoteStackNavigator';
 
 const App = () => {
   return (
@@ -44,7 +45,8 @@ const App = () => {
     // <AboutScreen></AboutScreen>
     // <ProfileScreen></ProfileScreen>
     // <LogoutScreen></LogoutScreen>
-    <HomeStackNavigator></HomeStackNavigator>
+    // <HomeStackNavigator></HomeStackNavigator>
+    <NoteStackNavigator></NoteStackNavigator>
   );
 };
 

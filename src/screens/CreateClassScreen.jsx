@@ -18,7 +18,7 @@ const CreateClassScreen = props => {
         <View style={styles.TitleBar}>
           <TouchableOpacity
             activeOpacity={0.6}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('HomeScreen')}
             style={styles.BackIcon}>
             <Ionicon
               name="chevron-back"

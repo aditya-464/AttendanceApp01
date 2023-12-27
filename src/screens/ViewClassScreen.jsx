@@ -213,7 +213,7 @@ const ViewClassScreen = props => {
       }}>
       <View onLayout={onLayoutTitlebar} style={styles.TitleBar}>
         <TouchableOpacity
-          onPress={() => navigation.navigate('Home')}
+          onPress={() => navigation.navigate('HomeScreen')}
           activeOpacity={0.6}
           style={styles.BackIcon}>
           <Ionicon

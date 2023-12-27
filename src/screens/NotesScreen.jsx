@@ -50,8 +50,10 @@ const FlatListData = [
   },
 ];
 
-const FlatListItem = ({title, bgcolor}) => (
-  <View
+const FlatListItem = ({navigation, title, bgcolor}) => (
+  <TouchableOpacity
+    onPress={() => navigation.navigate('ViewNoteScreen')}
+    activeOpacity={0.6}
     style={[
       styles.NotesListItem,
       {
@@ -70,57 +72,30 @@ const FlatListItem = ({title, bgcolor}) => (
         {title}
       </Text>
     </View>
-    {/* <View style={styles.ClassListItemBottom}>
-      <Text
-        style={[
-          styles.ClassListItemBottomText,
-          {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
-          },
-        ]}>
-        {branch + ' - '}
-      </Text>
-      <Text
-        style={[
-          styles.ClassListItemBottomText,
-          {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
-          },
-        ]}>
-        {semester + ' - '}
-      </Text>
-      <Text
-        style={[
-          styles.ClassListItemBottomText,
-          {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
-          },
-        ]}>
-        {section}
-      </Text>
-    </View> */}
-  </View>
+  </TouchableOpacity>
 );
 
-const NotesScreen = () => {
+const NotesScreen = props => {
+  const {navigation} = props;
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Notes</Text>
         </View>
-        <View style={styles.Menu}>
+        <TouchableOpacity activeOpacity={0.6} style={styles.Menu}>
           <Ionicons
-            name="list"
-            size={FONTSIZE.size_28}
+            name="menu"
+            size={FONTSIZE.size_30}
             color={COLORS.primaryDark}></Ionicons>
-        </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.CreateNote}>
-        <TouchableOpacity style={styles.CreateNoteButton}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('CreateNoteScreen')}
+          activeOpacity={0.6}
+          style={styles.CreateNoteButton}>
           <Ionicons
             name="add"
             size={FONTSIZE.size_32}
@@ -130,7 +105,11 @@ const NotesScreen = () => {
       <FlatList
         data={FlatListData}
         renderItem={({item}) => (
-          <FlatListItem title={item.title} bgcolor={item.bgcolor} />
+          <FlatListItem
+            navigation={navigation}
+            title={item.title}
+            bgcolor={item.bgcolor}
+          />
         )}
         keyExtractor={item => item.id}
         scrollEnabled={true}

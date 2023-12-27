@@ -43,9 +43,9 @@ const HomeStackNavigator = () => {
           cardStyleInterpolator:
             CardStyleInterpolators.forFadeFromBottomAndroid,
         }}
-        initialRouteName="Home">
+        initialRouteName="HomeScreen">
         <Stack.Screen
-          name="Home"
+          name="HomeScreen"
           component={HomeScreen}
           options={{
             headerShown: false,
@@ -71,5 +71,3 @@ const HomeStackNavigator = () => {
 };
 
 export default HomeStackNavigator;
-
-const styles = StyleSheet.create({});
