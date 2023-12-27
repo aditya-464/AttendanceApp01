@@ -22,6 +22,7 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState('JaiShreeRadhe');
   const [showUpdateAndCancelButtons, setShowUpdateAndCancelButtons] =
     useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <SafeAreaView>
@@ -52,13 +53,27 @@ const ProfileScreen = () => {
           value={email}
           onChangeText={text => setEmail(text)}></TextInput>
         <Text style={styles.PlaceholderText}>Password</Text>
-        <TextInput
-          autoCorrect={false}
-          secureTextEntry={true}
-          style={styles.Password}
-          editable={showUpdateAndCancelButtons}
-          value={password}
-          onChangeText={text => setPassword(text)}></TextInput>
+        <View style={styles.PasswordContainer}>
+          <TextInput
+            autoCorrect={false}
+            secureTextEntry={!showPassword}
+            style={styles.Password}
+            maxLength={20}
+            editable={showUpdateAndCancelButtons}
+            value={password}
+            onChangeText={text => setPassword(text)}></TextInput>
+          <View style={{borderLeftWidth: 1, borderColor: COLORS.placeholder}}>
+            <TouchableOpacity
+              onPress={() => setShowPassword(prev => !prev)}
+              activeOpacity={0.6}
+              style={styles.PasswordIconButton}>
+              <Ionicons
+                name={showPassword ? 'eye' : 'eye-off'}
+                size={FONTSIZE.size_24}
+                color={COLORS.placeholder}></Ionicons>
+            </TouchableOpacity>
+          </View>
+        </View>
 
         {!showUpdateAndCancelButtons && (
           <View style={styles.ActionButtons}>
@@ -149,15 +164,24 @@ const styles = StyleSheet.create({
     borderRadius: BORDERRADIUS.radius_4,
     marginBottom: SPACING.space_18,
   },
+  PasswordContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.primaryDark,
+    borderRadius: BORDERRADIUS.radius_4,
+    marginBottom: SPACING.space_18,
+  },
   Password: {
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
     padding: SPACING.space_12,
-    borderWidth: 1,
-    borderColor: COLORS.primaryDark,
-    borderRadius: BORDERRADIUS.radius_4,
-    marginBottom: SPACING.space_18,
+  },
+  PasswordIconButton: {
+    paddingHorizontal: SPACING.space_12,
   },
   ActionButtons: {
     marginTop: SPACING.space_24,
