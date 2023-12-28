@@ -45,11 +45,11 @@ export const COLORS = {
   primaryDark: '#393E46',
   secondaryDark: '#6D9886',
   primaryLight: '#F7F7F7',
-  // secondaryLight: '#F2E7D5',  //Bit Darker
   secondaryLight : "#EDF1D6",
   placeholder : "#999999",
   present : "#9DC08B",
   absent : "#FA9884",
+  drawerItem : "#d3e0db",
 };
 
 export const FONTFAMILY = {

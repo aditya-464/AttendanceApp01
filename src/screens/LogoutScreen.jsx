@@ -6,22 +6,23 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {
-  COLORS,
-  FONTFAMILY,
-  FONTSIZE,
-  SPACING,
-} from '../themes/Theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const LogoutScreen = () => {
+const LogoutScreen = props => {
+  const {navigation} = props;
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Logout</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.6} style={styles.Menu}>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          activeOpacity={0.6}
+          style={styles.Menu}>
           <Ionicons
             name="menu"
             size={FONTSIZE.size_30}
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.space_20,
   },
   LogoutInfoText: {
-    fontFamily: FONTFAMILY.poppins_regular,
+    fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
     textAlign: 'center',

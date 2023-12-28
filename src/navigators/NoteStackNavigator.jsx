@@ -1,6 +1,5 @@
 import {Easing} from 'react-native';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -33,7 +32,6 @@ const closeConfig = {
 
 const NoteStackNavigator = () => {
   return (
-    // <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           transitionSpec: {
@@ -66,7 +64,6 @@ const NoteStackNavigator = () => {
           }}
         />
       </Stack.Navigator>
-    // </NavigationContainer>
   );
 };
 

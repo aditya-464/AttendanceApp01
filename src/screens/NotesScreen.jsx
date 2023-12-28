@@ -15,6 +15,7 @@ import {
   FONTSIZE,
   SPACING,
 } from '../themes/Theme';
+import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const FlatListData = [
@@ -79,12 +80,15 @@ const NotesScreen = props => {
   const {navigation} = props;
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Notes</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.6} style={styles.Menu}>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          activeOpacity={0.6}
+          style={styles.Menu}>
           <Ionicons
             name="menu"
             size={FONTSIZE.size_30}
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     backgroundColor: COLORS.secondaryLight,
-    marginBottom: SPACING.space_15,
+    marginBottom: SPACING.space_20,
     borderRadius: BORDERRADIUS.radius_10,
     padding: SPACING.space_20,
     marginHorizontal: SPACING.space_12,

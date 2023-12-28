@@ -1,6 +1,5 @@
-import {Easing, StyleSheet} from 'react-native';
+import {Easing} from 'react-native';
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -33,40 +32,37 @@ const closeConfig = {
 
 const HomeStackNavigator = () => {
   return (
-    // <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          transitionSpec: {
-            open: config,
-            close: closeConfig,
-          },
-          cardStyleInterpolator:
-            CardStyleInterpolators.forFadeFromBottomAndroid,
+    <Stack.Navigator
+      screenOptions={{
+        transitionSpec: {
+          open: config,
+          close: closeConfig,
+        },
+        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+      }}
+      initialRouteName="HomeScreen">
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
         }}
-        initialRouteName="HomeScreen">
-        <Stack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="CreateClassScreen"
-          component={CreateClassScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ViewClassScreen"
-          component={ViewClassScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
-    // </NavigationContainer>
+      />
+      <Stack.Screen
+        name="CreateClassScreen"
+        component={CreateClassScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ViewClassScreen"
+        component={ViewClassScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 

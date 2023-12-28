@@ -15,9 +15,11 @@ import {
   FONTSIZE,
   SPACING,
 } from '../themes/Theme';
+import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ProfileScreen = () => {
+const ProfileScreen = props => {
+  const {navigation} = props;
   const [name, setName] = useState('Radhe Shyam');
   const [email, setEmail] = useState('adityagiri1911@gmail.com');
   const [password, setPassword] = useState('JaiShreeRadhe');
@@ -26,12 +28,15 @@ const ProfileScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
       <View style={styles.TitleBar}>
         <View style={styles.Title}>
           <Text style={styles.TitleText}>Profile</Text>
         </View>
-        <TouchableOpacity activeOpacity={0.6} style={styles.Menu}>
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          activeOpacity={0.6}
+          style={styles.Menu}>
           <Ionicons
             name="menu"
             size={FONTSIZE.size_30}
@@ -176,7 +181,7 @@ const styles = StyleSheet.create({
     marginBottom: SPACING.space_18,
   },
   Password: {
-    minWidth : "70%",
+    minWidth: '70%',
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
