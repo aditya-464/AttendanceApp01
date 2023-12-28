@@ -33,7 +33,7 @@ const closeConfig = {
 
 const HomeStackNavigator = () => {
   return (
-    <NavigationContainer>
+    // <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           transitionSpec: {
@@ -66,7 +66,7 @@ const HomeStackNavigator = () => {
           }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
   );
 };
 

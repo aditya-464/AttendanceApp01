@@ -33,7 +33,7 @@ const closeConfig = {
 
 const NoteStackNavigator = () => {
   return (
-    <NavigationContainer>
+    // <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           transitionSpec: {
@@ -66,7 +66,7 @@ const NoteStackNavigator = () => {
           }}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
   );
 };
 

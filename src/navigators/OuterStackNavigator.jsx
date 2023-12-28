@@ -9,6 +9,7 @@ import {
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SignupScreen from '../screens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
+import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createStackNavigator();
 
@@ -66,6 +67,13 @@ const OuterStackNavigator = () => {
             headerShown: false,
           }}
         />
+        {/* <Stack.Screen
+          name="DrawerNavigator"
+          component={DrawerNavigator}
+          options={{
+            headerShown: false,
+          }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

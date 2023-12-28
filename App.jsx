@@ -22,6 +22,7 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import LogoutScreen from './src/screens/LogoutScreen';
 import HomeStackNavigator from './src/navigators/HomeStackNavigator';
 import NoteStackNavigator from './src/navigators/NoteStackNavigator';
+import DrawerNavigator from './src/navigators/DrawerNavigator';
 
 const App = () => {
   return (
@@ -46,7 +47,8 @@ const App = () => {
     // <ProfileScreen></ProfileScreen>
     // <LogoutScreen></LogoutScreen>
     // <HomeStackNavigator></HomeStackNavigator>
-    <NoteStackNavigator></NoteStackNavigator>
+    // <NoteStackNavigator></NoteStackNavigator>
+    <DrawerNavigator></DrawerNavigator>
   );
 };
 
