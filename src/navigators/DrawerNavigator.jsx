@@ -6,12 +6,7 @@ import NoteStackNavigator from './NoteStackNavigator';
 import ProfileScreen from '../screens/ProfileScreen';
 import LogoutScreen from '../screens/LogoutScreen';
 import AboutScreen from '../screens/AboutScreen';
-import {
-  COLORS,
-  FONTFAMILY,
-  FONTSIZE,
-  SPACING,
-} from '../themes/Theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -32,8 +27,10 @@ const DrawerNavigator = () => {
           drawerActiveBackgroundColor: COLORS.drawerItem,
           drawerItemStyle: {
             paddingLeft: SPACING.space_8,
-            marginHorizontal: SPACING.space_12,
+            marginHorizontal: SPACING.space_16,
+            borderRadius: 5,
           },
+          drawerType: 'front',
         }}>
         <Drawer.Screen
           name="HomeStackNavigator"
