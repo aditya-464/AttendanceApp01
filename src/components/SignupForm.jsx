@@ -1,25 +1,47 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useRef} from 'react';
+import React, {useState} from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import auth from '@react-native-firebase/auth';
 
 const SignupForm = () => {
+  const [error, setError] = useState(null);
+
+  const handleSignup = async values => {
+    try {
+      const {name, email, password, confirmPassword} = values;
+      if (password == confirmPassword) {
+        const signup = await auth().createUserWithEmailAndPassword(
+          email,
+          password,
+        );
+        if (signup) {
+          console.log(signup);
+        }
+      } else {
+        setError('Password and Confirm Password are not matching');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Formik
         initialValues={{name: '', email: '', password: '', confirmPassword: ''}}
-        onSubmit={values => console.log(values)}>
+        onSubmit={values => handleSignup(values)}>
         {({handleChange, handleBlur, handleSubmit, values}) => (
-          <View style={styles.SignupForm}>
+          <ScrollView style={styles.SignupForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
                 <Ionicons
@@ -71,8 +93,10 @@ const SignupForm = () => {
                 onBlur={handleBlur('password')}
                 value={values.password}
                 numberOfLines={1}
+                maxLength={20}
                 placeholder="Password"
                 placeholderTextColor={COLORS.placeholder}
+                secureTextEntry={true}
               />
             </View>
             <View style={styles.FormField}>
@@ -89,15 +113,20 @@ const SignupForm = () => {
                 onBlur={handleBlur('confirmPassword')}
                 value={values.confirmPassword}
                 numberOfLines={1}
+                maxLength={20}
                 placeholder="Confirm Password"
                 placeholderTextColor={COLORS.placeholder}
+                secureTextEntry={true}
               />
             </View>
 
-            <TouchableOpacity activeOpacity={0.6} style={styles.SignupBtn}>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              activeOpacity={0.6}
+              style={styles.SignupBtn}>
               <Text style={styles.SignupText}>Signup</Text>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
         )}
       </Formik>
     </>
