@@ -19,7 +19,7 @@ const SignupScreen = props => {
       </View>
       <View style={styles.LoginOption}>
         <TouchableOpacity disabled={true}>
-          <Text style={styles.LoginText}>Don't have an Account? </Text>
+          <Text style={styles.LoginText}>Already have an Account? </Text>
         </TouchableOpacity>
         <Text> </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
