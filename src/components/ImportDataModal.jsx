@@ -15,9 +15,40 @@ import {
 } from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import DocumentPicker from 'react-native-document-picker';
+import {excelToJson} from './excelToJson';
 
 const ImportDataModal = props => {
   const {handleCloseImportDataModal, importDataModalView} = props;
+
+  const selectFile = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.xls, DocumentPicker.types.xlsx],
+        allowMultiSelection: false,
+      });
+      if (doc) {
+        const data = await excelToJson(doc[0].uri);
+        if (data) {
+          // console.log('Received data - ', data);
+          const studentsDataArray = [];
+          for (let i = 1; i < data.length; i++) {
+            studentsDataArray.push({
+              roll: data[i][0],
+              name: data[i][1],
+            });
+          }
+          console.log('Final studentsDataArray is - ', studentsDataArray);
+        }
+      }
+    } catch (error) {
+      if (DocumentPicker.isCancel(error)) {
+        console.log('DOcument not picked!', error);
+      } else {
+        console.log(error);
+      }
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -47,6 +78,10 @@ const ImportDataModal = props => {
             </Text>
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                onPress={() => {
+                  handleCloseImportDataModal(false);
+                  selectFile();
+                }}
                 activeOpacity={0.6}
                 style={styles.ImportDataButton}>
                 <Text style={styles.ImportDataText}>Select File</Text>

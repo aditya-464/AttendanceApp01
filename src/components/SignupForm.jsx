@@ -25,7 +25,7 @@ const SignupForm = () => {
           password,
         );
         if (signup) {
-          console.log(signup);
+          console.log(signup.user.uid);
         }
       } else {
         setError('Password and Confirm Password are not matching');

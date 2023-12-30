@@ -26,7 +26,7 @@ import DrawerNavigator from './src/navigators/DrawerNavigator';
 
 const App = () => {
   return (
-    <OuterStackNavigator></OuterStackNavigator>
+    // <OuterStackNavigator></OuterStackNavigator>
     // <HomeScreen></HomeScreen>
     // <CreateNoteScreen></CreateNoteScreen>
     // <CreateClassScreen></CreateClassScreen>
@@ -48,7 +48,7 @@ const App = () => {
     // <LogoutScreen></LogoutScreen>
     // <HomeStackNavigator></HomeStackNavigator>
     // <NoteStackNavigator></NoteStackNavigator>
-    // <DrawerNavigator></DrawerNavigator>
+    <DrawerNavigator></DrawerNavigator>
   );
 };
 
