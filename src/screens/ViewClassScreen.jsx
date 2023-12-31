@@ -17,6 +17,7 @@ import ViewRecordModal from '../components/ViewRecordModal';
 import GenerateReportModal from '../components/GenerateReportModal';
 import DeleteClassModal from '../components/DeleteClassModal';
 import ImportDataModal from '../components/ImportDataModal';
+import {useRoute} from '@react-navigation/native';
 
 const StudentDetailsData = [
   {
@@ -100,6 +101,7 @@ const ViewClassScreen = props => {
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
+  const route = useRoute();
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -224,10 +226,12 @@ const ViewClassScreen = props => {
         </TouchableOpacity>
         <View style={styles.TitleTextView}>
           <Text style={[styles.TitleText, {paddingLeft: SPACING.space_8}]}>
-            OS
+            {route.params?.initials}
           </Text>
           <Text style={styles.TitleText}>-</Text>
-          <Text style={styles.TitleText}>IT-5-C</Text>
+          <Text style={styles.TitleText}>
+            {route.params.branch}-{route.params.semester}-{route.params.section}
+          </Text>
         </View>
         <TouchableOpacity
           activeOpacity={0.6}

@@ -18,14 +18,38 @@ const CreateClassForm = () => {
   const {uid} = useSelector(state => state.authDetails);
   const dispatch = useDispatch();
 
+  const getInitials = subject => {
+    subject = subject.trim();
+
+    let initials = '';
+    for (let i = 0; i < subject.length; i++) {
+      if (i === 0) {
+        initials += subject[i];
+      } else {
+        if (subject[i - 1] === ' ') {
+          initials += subject[i];
+        }
+      }
+    }
+    initials = initials.toUpperCase();
+    return initials;
+  };
+
   const handleCreateClass = async values => {
     try {
-      const {subject, branch, semester, section} = values;
+      let {subject, branch, semester, section} = values;
+      let initials = getInitials(subject);
+      subject = subject.trim();
+      branch = branch.trim();
+      semester = semester.trim();
+      section = section.trim();
+
       const createClass = await firestore().collection('Classes').add({
         subject: subject,
         branch: branch,
         semester: semester,
         section: section,
+        initials: initials,
         studentDetails: [],
       });
 
@@ -42,6 +66,7 @@ const CreateClassForm = () => {
           branch: branch,
           semester: semester,
           section: section,
+          initials: initials,
           bgcolor: tempArray.length % 2 == 0 ? 'dark' : 'light',
         });
 

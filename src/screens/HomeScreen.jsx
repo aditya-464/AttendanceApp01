@@ -65,14 +65,24 @@ import firestore from '@react-native-firebase/firestore';
 
 const FlatListItem = ({
   navigation,
+  id,
   subject,
   branch,
   semester,
   section,
+  initials,
   bgcolor,
 }) => (
   <TouchableOpacity
-    onPress={() => navigation.navigate('ViewClassScreen')}
+    onPress={() =>
+      navigation.navigate('ViewClassScreen', {
+        id,
+        initials,
+        branch,
+        semester,
+        section,
+      })
+    }
     activeOpacity={0.6}
     style={[
       styles.ClassListItem,
@@ -181,10 +191,12 @@ const HomeScreen = props => {
         renderItem={({item}) => (
           <FlatListItem
             navigation={navigation}
+            id={item.id}
             subject={item.subject}
             branch={item.branch}
             semester={item.semester}
             section={item.section}
+            initials={item.initials}
             bgcolor={item.bgcolor}
           />
         )}

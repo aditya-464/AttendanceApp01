@@ -30,7 +30,6 @@ const ImportDataModal = props => {
       if (doc) {
         const data = await excelToJson(doc[0].uri);
         if (data) {
-          // console.log('Received data - ', data);
           const studentsDataArray = [];
           for (let i = 1; i < data.length; i++) {
             studentsDataArray.push({
@@ -43,7 +42,7 @@ const ImportDataModal = props => {
       }
     } catch (error) {
       if (DocumentPicker.isCancel(error)) {
-        console.log('DOcument not picked!', error);
+        console.log('Document not picked!', error);
       } else {
         console.log(error);
       }
