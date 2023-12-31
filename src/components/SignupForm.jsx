@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
 import {useDispatch} from 'react-redux';
 import {saveAuthDetails} from '../redux/auth';
@@ -33,6 +34,11 @@ const SignupForm = props => {
       });
       if (signup) {
         isSignupDone(true);
+        await firestore().collection('Users').doc(signup.user.uid).set({
+          name: name,
+          email: email,
+          classes: [],
+        });
         storeAuthDetailsLocally({
           name,
           email,

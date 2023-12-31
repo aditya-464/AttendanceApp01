@@ -16,7 +16,8 @@ const WelcomeScreen = props => {
   const navigation = useNavigation();
   return (
     <>
-      <SafeAreaView style={{backgroundColor: COLORS.primaryLight}}>
+      <SafeAreaView
+        style={{height: '100%', backgroundColor: COLORS.primaryLight}}>
         <ImageBackground
           source={WelcomeImg}
           resizeMode="cover"
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: SPACING.space_28,
+    marginBottom: SPACING.space_12,
   },
   SignupBtn: {
     width: '48%',

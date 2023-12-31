@@ -15,10 +15,11 @@ import {loginSchema} from './FormValidationSchemas/LoginFormValidationSchema';
 import auth from '@react-native-firebase/auth';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {saveAuthDetails} from '../redux/auth';
 
 const LoginForm = props => {
-  const dispatch = useDispatch();
   const {isLoginDone} = props;
+  const dispatch = useDispatch();
 
   const handleLogin = async values => {
     try {
@@ -29,7 +30,7 @@ const LoginForm = props => {
         storeAuthDetailsLocally({
           name: login.user.displayName,
           email,
-          uid: signup.user.uid,
+          uid: login.user.uid,
           password: '12345678',
         });
         dispatch(
