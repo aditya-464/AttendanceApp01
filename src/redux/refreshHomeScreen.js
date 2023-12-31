@@ -8,7 +8,7 @@ export const refreshHomeSlice = createSlice({
   name: 'refreshHomeDetails',
   initialState,
   reducers: {
-    refreshDetails: (state, action) => {
+    refreshDetails: state => {
       state.refreshHomeValue = !state.refreshHomeValue;
     },
   },

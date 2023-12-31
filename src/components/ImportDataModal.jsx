@@ -17,9 +17,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import DocumentPicker from 'react-native-document-picker';
 import {excelToJson} from './excelToJson';
+import firestore from '@react-native-firebase/firestore';
+import {useDispatch} from 'react-redux';
+import {refreshClassDetailsFunc} from '../redux/refreshViewClassScreen';
 
 const ImportDataModal = props => {
-  const {handleCloseImportDataModal, importDataModalView} = props;
+  const {handleCloseImportDataModal, importDataModalView, id} = props;
+  const dispatch = useDispatch();
 
   const selectFile = async () => {
     try {
@@ -33,11 +37,21 @@ const ImportDataModal = props => {
           const studentsDataArray = [];
           for (let i = 1; i < data.length; i++) {
             studentsDataArray.push({
+              id: data[i][0],
               roll: data[i][0],
               name: data[i][1],
+              present: 0,
             });
           }
-          console.log('Final studentsDataArray is - ', studentsDataArray);
+          firestore()
+            .collection('Classes')
+            .doc(id)
+            .update({
+              studentDetails: studentsDataArray,
+            })
+            .then(() => {
+              dispatch(refreshClassDetailsFunc());
+            });
         }
       }
     } catch (error) {

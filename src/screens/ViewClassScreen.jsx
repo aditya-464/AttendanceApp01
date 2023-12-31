@@ -18,77 +18,79 @@ import GenerateReportModal from '../components/GenerateReportModal';
 import DeleteClassModal from '../components/DeleteClassModal';
 import ImportDataModal from '../components/ImportDataModal';
 import {useRoute} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
-const StudentDetailsData = [
-  {
-    id: 'item1',
-    roll: 1,
-    name: 'Radhe Shyam',
-    present: 0,
-  },
-  {
-    id: 'item2',
-    roll: 2,
-    name: 'Aditya Giri',
-    present: 0,
-  },
-  {
-    id: 'item3',
-    roll: 3,
-    name: 'Gauri Shankar',
-    present: 0,
-  },
-  {
-    id: 'item4',
-    roll: 4,
-    name: 'Siya Ram',
-    present: 0,
-  },
-  {
-    id: 'item5',
-    roll: 5,
-    name: 'Pinki Giri',
-    present: 0,
-  },
+// const StudentDetailsData = [
+//   {
+//     id: 'item1',
+//     roll: 1,
+//     name: 'Radhe Shyam',
+//     present: 0,
+//   },
+//   {
+//     id: 'item2',
+//     roll: 2,
+//     name: 'Aditya Giri',
+//     present: 0,
+//   },
+//   {
+//     id: 'item3',
+//     roll: 3,
+//     name: 'Gauri Shankar',
+//     present: 0,
+//   },
+//   {
+//     id: 'item4',
+//     roll: 4,
+//     name: 'Siya Ram',
+//     present: 0,
+//   },
+//   {
+//     id: 'item5',
+//     roll: 5,
+//     name: 'Pinki Giri',
+//     present: 0,
+//   },
 
-  {
-    id: 'item6',
-    roll: 1,
-    name: 'Radhe Shyam',
-    present: 0,
-  },
-  {
-    id: 'item7',
-    roll: 2,
-    name: 'Aditya Giri',
-    present: 0,
-  },
-  {
-    id: 'item8',
-    roll: 3,
-    name: 'Gauri Shankar',
-    present: 0,
-  },
+//   {
+//     id: 'item6',
+//     roll: 1,
+//     name: 'Radhe Shyam',
+//     present: 0,
+//   },
+//   {
+//     id: 'item7',
+//     roll: 2,
+//     name: 'Aditya Giri',
+//     present: 0,
+//   },
+//   {
+//     id: 'item8',
+//     roll: 3,
+//     name: 'Gauri Shankar',
+//     present: 0,
+//   },
 
-  {
-    id: 'item9',
-    roll: 1,
-    name: 'Radhe Shyam',
-    present: 0,
-  },
-  {
-    id: 'item10',
-    roll: 2,
-    name: 'Aditya Giri',
-    present: 0,
-  },
-  {
-    id: 'item11',
-    roll: 3,
-    name: 'Gauri Shankar',
-    present: 0,
-  },
-];
+//   {
+//     id: 'item9',
+//     roll: 1,
+//     name: 'Radhe Shyam',
+//     present: 0,
+//   },
+//   {
+//     id: 'item10',
+//     roll: 2,
+//     name: 'Aditya Giri',
+//     present: 0,
+//   },
+//   {
+//     id: 'item11',
+//     roll: 3,
+//     name: 'Gauri Shankar',
+//     present: 0,
+//   },
+// ];
 
 const ViewClassScreen = props => {
   const {navigation} = props;
@@ -102,6 +104,7 @@ const ViewClassScreen = props => {
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
   const route = useRoute();
+  const {refreshClassValue} = useSelector(state => state.refreshClassDetails);
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -160,16 +163,23 @@ const ViewClassScreen = props => {
     setDeleteClassModalView(value);
   };
 
-  useEffect(() => {
-    const newStudentsData = StudentDetailsData.map(object => ({
-      id: object.id,
-      roll: object.roll,
-      name: object.name,
-      present: object.present,
-    }));
+  const getClassDetails = async id => {
+    try {
+      const classDetails = await firestore()
+        .collection('Classes')
+        .doc(id)
+        .get();
+      if (classDetails._data.studentDetails) {
+        setStudentsData(classDetails._data.studentDetails);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    setStudentsData(newStudentsData);
-  }, []);
+  useEffect(() => {
+    getClassDetails(route.params.id);
+  }, [refreshClassValue]);
 
   const handleStudentClick = (id, roll, name, present) => {
     const updatedStudentsData = [];
@@ -184,8 +194,21 @@ const ViewClassScreen = props => {
           present: !present,
         });
       }
-      setStudentsData(updatedStudentsData);
     }
+    setStudentsData(updatedStudentsData);
+  };
+
+  const handleResetAttendance = () => {
+    const updatedStudentsData = [];
+    for (let i = 0; i < studentsData.length; i++) {
+      updatedStudentsData.push({
+        id: studentsData[i].id,
+        roll: studentsData[i].roll,
+        name: studentsData[i].name,
+        present: 0,
+      });
+    }
+    setStudentsData(updatedStudentsData);
   };
 
   const FlatListItem = ({id, roll, name, present}) => (
@@ -204,6 +227,20 @@ const ViewClassScreen = props => {
       </View>
     </TouchableOpacity>
   );
+
+  const NoDataComponent = () => {
+    <View style={{marginTop: SPACING.space_15}}>
+      <Text
+        style={{
+          fontFamily: FONTFAMILY.poppins_semibold,
+          fontSize: FONTSIZE.size_18,
+          color: COLORS.placeholder,
+          textAlign: 'center',
+        }}>
+        No Data Available
+      </Text>
+    </View>;
+  };
 
   return (
     <SafeAreaView
@@ -256,6 +293,7 @@ const ViewClassScreen = props => {
       <ImportDataModal
         handleCloseImportDataModal={handleCloseImportDataModal}
         importDataModalView={importDataModalView}
+        id={route.params.id}
       />
       <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}
@@ -277,40 +315,47 @@ const ViewClassScreen = props => {
         handleCloseDeleteClassModal={handleCloseDeleteClassModal}
         deleteClassModalView={deleteClassModalView}
       />
-      <View style={styles.ColumnHeadings}>
-        <View style={styles.RollHeading}>
-          <Text style={styles.RollHeadingText}>Roll</Text>
-        </View>
-        <View style={styles.NameHeading}>
-          <Text style={styles.NameHeadingText}>Name</Text>
-        </View>
-      </View>
-      {studentsData && (
-        <FlatList
-          data={studentsData}
-          renderItem={({item}) => (
-            <FlatListItem
-              id={item.id}
-              roll={item.roll}
-              name={item.name}
-              present={item.present}
+      {
+        <>
+          <View style={styles.ColumnHeadings}>
+            <View style={styles.RollHeading}>
+              <Text style={styles.RollHeadingText}>Roll</Text>
+            </View>
+            <View style={styles.NameHeading}>
+              <Text style={styles.NameHeadingText}>Name</Text>
+            </View>
+          </View>
+          {studentsData && (
+            <FlatList
+              data={studentsData}
+              renderItem={({item}) => (
+                <FlatListItem
+                  id={item.id}
+                  roll={item.roll}
+                  name={item.name}
+                  present={item.present}
+                />
+              )}
+              keyExtractor={item => item.id}
+              scrollEnabled={true}
+              ListFooterComponentStyle={{height: 150}}
+              ListFooterComponent={<View></View>}
             />
           )}
-          keyExtractor={item => item.id}
-          scrollEnabled={true}
-          ListFooterComponentStyle={{height: 150}}
-          ListFooterComponent={<View></View>}
-        />
-      )}
 
-      <View style={styles.ActionButtons}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.CancelButton}>
-          <Text style={styles.CancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={styles.SubmitButton}>
-          <Text style={styles.SubmitButtonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={styles.ActionButtons}>
+            <TouchableOpacity
+              onPress={handleResetAttendance}
+              activeOpacity={0.5}
+              style={styles.CancelButton}>
+              <Text style={styles.CancelButtonText}>Reset</Text>
+            </TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.5} style={styles.SubmitButton}>
+              <Text style={styles.SubmitButtonText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      }
     </SafeAreaView>
   );
 };
