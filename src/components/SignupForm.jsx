@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import auth from '@react-native-firebase/auth';
+import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
 
 const SignupForm = () => {
   const [error, setError] = useState(null);
@@ -24,9 +25,11 @@ const SignupForm = () => {
           email,
           password,
         );
-        if (signup) {
-          console.log(signup.user.uid);
-        }
+        await signup.user.updateProfile({
+          displayName: name,
+        });
+        const user = auth().currentUser;
+        console.log(user);
       } else {
         setError('Password and Confirm Password are not matching');
       }
@@ -38,9 +41,10 @@ const SignupForm = () => {
   return (
     <>
       <Formik
+        validationSchema={signupSchema}
         initialValues={{name: '', email: '', password: '', confirmPassword: ''}}
         onSubmit={values => handleSignup(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
           <ScrollView style={styles.SignupForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
@@ -121,11 +125,36 @@ const SignupForm = () => {
             </View>
 
             <TouchableOpacity
+              disabled={
+                errors.name ||
+                errors.email ||
+                errors.password ||
+                errors.confirmPassword
+                  ? true
+                  : false
+              }
               onPress={handleSubmit}
               activeOpacity={0.6}
               style={styles.SignupBtn}>
               <Text style={styles.SignupText}>Signup</Text>
             </TouchableOpacity>
+
+            <View style={{marginTop: SPACING.space_15}}>
+              {errors.name && (
+                <Text style={styles.FormFieldError}>{errors.name}</Text>
+              )}
+              {errors.email && (
+                <Text style={styles.FormFieldError}>{errors.email}</Text>
+              )}
+              {errors.password && (
+                <Text style={styles.FormFieldError}>{errors.password}</Text>
+              )}
+              {errors.confirmPassword && (
+                <Text style={styles.FormFieldError}>
+                  {errors.confirmPassword}
+                </Text>
+              )}
+            </View>
           </ScrollView>
         )}
       </Formik>
@@ -176,5 +205,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
+  },
+  FormFieldError: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

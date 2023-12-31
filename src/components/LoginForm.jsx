@@ -9,16 +9,17 @@ import React from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {loginSchema} from './FormValidationSchemas/LoginFormValidationSchema';
 
 const LoginForm = () => {
   return (
     <>
       <Formik
-        initialValues={{name: '', email: '', password: '', confirmPassword: ''}}
+        validationSchema={loginSchema}
+        initialValues={{email: '', password: ''}}
         onSubmit={values => console.log(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
           <View style={styles.LoginForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
@@ -58,9 +59,21 @@ const LoginForm = () => {
               />
             </View>
 
-            <TouchableOpacity activeOpacity={0.6} style={styles.LoginBtn}>
+            <TouchableOpacity
+              disabled={errors.email || errors.password ? true : false}
+              activeOpacity={0.6}
+              style={styles.LoginBtn}>
               <Text style={styles.LoginText}>Login</Text>
             </TouchableOpacity>
+
+            <View style={{marginTop: SPACING.space_15}}>
+              {errors.email && (
+                <Text style={styles.FormFieldError}>{errors.email}</Text>
+              )}
+              {errors.password && (
+                <Text style={styles.FormFieldError}>{errors.password}</Text>
+              )}
+            </View>
           </View>
         )}
       </Formik>
@@ -74,7 +87,7 @@ const styles = StyleSheet.create({
   LoginForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
-    backgroundColor : COLORS.primaryLight,
+    backgroundColor: COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',
@@ -111,5 +124,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
+  },
+  FormFieldError: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });
