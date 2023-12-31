@@ -15,6 +15,7 @@ import auth from '@react-native-firebase/auth';
 import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
 import {useDispatch} from 'react-redux';
 import {saveAuthDetails} from '../redux/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupForm = props => {
   const {isSignupDone} = props;
@@ -31,18 +32,36 @@ const SignupForm = props => {
         displayName: name,
       });
       if (signup) {
+        isSignupDone(true);
+        storeAuthDetailsLocally({
+          name,
+          email,
+          uid: signup.user.uid,
+          password: '12345678',
+        });
         dispatch(
           saveAuthDetails({
             name,
             email,
             uid: signup.user.uid,
-            password: '12345678910',
+            password: '12345678',
           }),
         );
-        isSignupDone(true);
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const storeAuthDetailsLocally = async values => {
+    try {
+      const {name, email, uid, password} = values;
+      await AsyncStorage.setItem('name', name);
+      await AsyncStorage.setItem('email', email);
+      await AsyncStorage.setItem('uid', uid);
+      await AsyncStorage.setItem('password', password);
+    } catch (error) {
+      console.log(error);
     }
   };
 

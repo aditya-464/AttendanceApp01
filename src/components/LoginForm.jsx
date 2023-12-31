@@ -1,4 +1,5 @@
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -11,16 +12,60 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import {loginSchema} from './FormValidationSchemas/LoginFormValidationSchema';
+import auth from '@react-native-firebase/auth';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginForm = () => {
+const LoginForm = props => {
+  const dispatch = useDispatch();
+  const {isLoginDone} = props;
+
+  const handleLogin = async values => {
+    try {
+      const {email, password} = values;
+      const login = await auth().signInWithEmailAndPassword(email, password);
+      if (login) {
+        isLoginDone(true);
+        storeAuthDetailsLocally({
+          name: login.user.displayName,
+          email,
+          uid: signup.user.uid,
+          password: '12345678',
+        });
+        dispatch(
+          saveAuthDetails({
+            name: login.user.displayName,
+            email,
+            uid: login.user.uid,
+            password: '12345678',
+          }),
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const storeAuthDetailsLocally = async values => {
+    try {
+      const {name, email, uid, password} = values;
+      await AsyncStorage.setItem('name', name);
+      await AsyncStorage.setItem('email', email);
+      await AsyncStorage.setItem('uid', uid);
+      await AsyncStorage.setItem('password', password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Formik
         validationSchema={loginSchema}
         initialValues={{email: '', password: ''}}
-        onSubmit={values => console.log(values)}>
+        onSubmit={values => handleLogin(values)}>
         {({handleChange, handleBlur, handleSubmit, values, errors}) => (
-          <View style={styles.LoginForm}>
+          <ScrollView style={styles.LoginForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
                 <Fontisto
@@ -56,11 +101,13 @@ const LoginForm = () => {
                 numberOfLines={1}
                 placeholder="Password"
                 placeholderTextColor={COLORS.placeholder}
+                secureTextEntry={true}
               />
             </View>
 
             <TouchableOpacity
               disabled={errors.email || errors.password ? true : false}
+              onPress={handleSubmit}
               activeOpacity={0.6}
               style={styles.LoginBtn}>
               <Text style={styles.LoginText}>Login</Text>
@@ -74,7 +121,7 @@ const LoginForm = () => {
                 <Text style={styles.FormFieldError}>{errors.password}</Text>
               )}
             </View>
-          </View>
+          </ScrollView>
         )}
       </Formik>
     </>

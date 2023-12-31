@@ -11,17 +11,23 @@ import LoginForm from '../components/LoginForm';
 
 const LoginScreen = props => {
   const {navigation} = props;
+  const isLoginDone = value => {
+    if (value) {
+      navigation.navigate('DrawerNavigator');
+    }
+  };
+
   return (
     <SafeAreaView
       style={{
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
-        backgroundColor : COLORS.primaryLight,
+        backgroundColor: COLORS.primaryLight,
       }}>
       <View style={styles.LoginContainer}>
         <Text style={styles.LoginText}>Hello User!</Text>
-        <LoginForm></LoginForm>
+        <LoginForm isLoginDone={isLoginDone}></LoginForm>
       </View>
       <View style={styles.SignupOption}>
         <TouchableOpacity disabled={true}>
