@@ -6,32 +6,40 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import auth from '@react-native-firebase/auth';
 import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
+import {useDispatch} from 'react-redux';
+import {saveAuthDetails} from '../redux/auth';
 
-const SignupForm = () => {
-  const [error, setError] = useState(null);
+const SignupForm = props => {
+  const {isSignupDone} = props;
+  const dispatch = useDispatch();
 
   const handleSignup = async values => {
     try {
-      const {name, email, password, confirmPassword} = values;
-      if (password == confirmPassword) {
-        const signup = await auth().createUserWithEmailAndPassword(
-          email,
-          password,
+      const {name, email, password} = values;
+      const signup = await auth().createUserWithEmailAndPassword(
+        email,
+        password,
+      );
+      await signup.user.updateProfile({
+        displayName: name,
+      });
+      if (signup) {
+        dispatch(
+          saveAuthDetails({
+            name,
+            email,
+            uid: signup.user.uid,
+            password: '12345678910',
+          }),
         );
-        await signup.user.updateProfile({
-          displayName: name,
-        });
-        const user = auth().currentUser;
-        console.log(user);
-      } else {
-        setError('Password and Confirm Password are not matching');
+        isSignupDone(true);
       }
     } catch (err) {
       console.log(err);

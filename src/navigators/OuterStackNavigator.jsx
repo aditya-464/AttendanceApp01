@@ -67,13 +67,13 @@ const OuterStackNavigator = () => {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="DrawerNavigator"
           component={DrawerNavigator}
           options={{
             headerShown: false,
           }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

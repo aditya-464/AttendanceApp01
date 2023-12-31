@@ -1,21 +1,32 @@
-import {SafeAreaView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import SignupForm from '../components/SignupForm';
 
 const SignupScreen = props => {
   const {navigation} = props;
+  const isSignupDone = value => {
+    if (value) {
+      navigation.navigate('DrawerNavigator');
+    }
+  };
   return (
     <SafeAreaView
       style={{
         height: '100%',
         display: 'flex',
         justifyContent: 'space-between',
-        backgroundColor : COLORS.primaryLight,
+        backgroundColor: COLORS.primaryLight,
       }}>
       <View style={styles.SignupContainer}>
         <Text style={styles.SignupText}>Create Account</Text>
-        <SignupForm></SignupForm>
+        <SignupForm isSignupDone={isSignupDone}></SignupForm>
       </View>
       <View style={styles.LoginOption}>
         <TouchableOpacity disabled={true}>

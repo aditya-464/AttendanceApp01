@@ -23,32 +23,36 @@ import LogoutScreen from './src/screens/LogoutScreen';
 import HomeStackNavigator from './src/navigators/HomeStackNavigator';
 import NoteStackNavigator from './src/navigators/NoteStackNavigator';
 import DrawerNavigator from './src/navigators/DrawerNavigator';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
 
 const App = () => {
   return (
-    <OuterStackNavigator></OuterStackNavigator>
-    // <HomeScreen></HomeScreen>
-    // <CreateNoteScreen></CreateNoteScreen>
-    // <CreateClassScreen></CreateClassScreen>
-    // <NotesScreen></NotesScreen>
-    // <ViewClassScreen></ViewClassScreen>
-    // <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal>
-    // <ViewNoteScreen></ViewNoteScreen>
-    // <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal>
-    // <AddStudentModal></AddStudentModal>
-    // <RemoveStudentModal></RemoveStudentModal>
-    // <ViewRecordModal></ViewRecordModal>
-    // <GenerateReportModal></GenerateReportModal>
-    // <DeleteClassModal></DeleteClassModal>
-    // <ImportDataModal></ImportDataModal>
-    // <EditNoteModal></EditNoteModal>
-    // <DeleteNoteModal></DeleteNoteModal>
-    // <AboutScreen></AboutScreen>
-    // <ProfileScreen></ProfileScreen>
-    // <LogoutScreen></LogoutScreen>
-    // <HomeStackNavigator></HomeStackNavigator>
-    // <NoteStackNavigator></NoteStackNavigator>
-    // <DrawerNavigator></DrawerNavigator>
+    <Provider store={store}>
+      <OuterStackNavigator></OuterStackNavigator>
+      {/* <HomeScreen></HomeScreen> */}
+      {/* <CreateNoteScreen></CreateNoteScreen> */}
+      {/* <CreateClassScreen></CreateClassScreen> */}
+      {/* <NotesScreen></NotesScreen> */}
+      {/* <ViewClassScreen></ViewClassScreen> */}
+      {/* <ViewClassScreenOptionsModal></ViewClassScreenOptionsModal> */}
+      {/* <ViewNoteScreen></ViewNoteScreen> */}
+      {/* <ViewNoteScreenOptionsModal></ViewNoteScreenOptionsModal> */}
+      {/* <AddStudentModal></AddStudentModal> */}
+      {/* <RemoveStudentModal></RemoveStudentModal> */}
+      {/* <ViewRecordModal></ViewRecordModal> */}
+      {/* <GenerateReportModal></GenerateReportModal> */}
+      {/* <DeleteClassModal></DeleteClassModal> */}
+      {/* <ImportDataModal></ImportDataModal> */}
+      {/* <EditNoteModal></EditNoteModal> */}
+      {/* <DeleteNoteModal></DeleteNoteModal> */}
+      {/* <AboutScreen></AboutScreen> */}
+      {/* <ProfileScreen></ProfileScreen> */}
+      {/* <LogoutScreen></LogoutScreen> */}
+      {/* <HomeStackNavigator></HomeStackNavigator> */}
+      {/* <NoteStackNavigator></NoteStackNavigator> */}
+      {/* <DrawerNavigator></DrawerNavigator> */}
+    </Provider>
   );
 };
 
