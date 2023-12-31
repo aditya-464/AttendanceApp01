@@ -9,14 +9,62 @@ import React from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../themes/Theme';
+import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import firestore from '@react-native-firebase/firestore';
+import {useDispatch, useSelector} from 'react-redux';
+import {refreshDetails} from '../redux/refreshHomeScreen';
 
 const CreateClassForm = () => {
+  const {uid} = useSelector(state => state.authDetails);
+  const dispatch = useDispatch();
+
+  const handleCreateClass = async values => {
+    try {
+      const {subject, branch, semester, section} = values;
+      const createClass = await firestore().collection('Classes').add({
+        subject: subject,
+        branch: branch,
+        semester: semester,
+        section: section,
+        studentDetails: [],
+      });
+
+      const getOldClassesArray = await firestore()
+        .collection('Users')
+        .doc(uid)
+        .get();
+
+      if (getOldClassesArray && createClass) {
+        const tempArray = getOldClassesArray._data.classes;
+        tempArray.push({
+          id: createClass.id,
+          subject: subject,
+          branch: branch,
+          semester: semester,
+          section: section,
+          bgcolor: tempArray.length % 2 == 0 ? 'dark' : 'light',
+        });
+
+        firestore()
+          .collection('Users')
+          .doc(uid)
+          .update({
+            classes: tempArray,
+          })
+          .then(() => {
+            dispatch(refreshDetails());
+          });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Formik
         initialValues={{subject: '', branch: '', semester: '', section: ''}}
-        onSubmit={values => console.log(values)}>
+        onSubmit={values => handleCreateClass(values)}>
         {({handleChange, handleBlur, handleSubmit, values}) => (
           <View style={styles.CreateClassForm}>
             <View style={styles.FormField}>
@@ -69,7 +117,7 @@ const CreateClassForm = () => {
                 onChangeText={handleChange('semester')}
                 onBlur={handleBlur('semester')}
                 value={values.semester}
-                keyboardType='numeric'
+                keyboardType="numeric"
                 numberOfLines={1}
                 placeholder="Semester"
                 placeholderTextColor={COLORS.placeholder}
@@ -94,7 +142,10 @@ const CreateClassForm = () => {
               />
             </View>
 
-            <TouchableOpacity activeOpacity={0.6} style={styles.CreateClassBtn}>
+            <TouchableOpacity
+              onPress={handleSubmit}
+              activeOpacity={0.6}
+              style={styles.CreateClassBtn}>
               <Text style={styles.CreateClassText}>Create</Text>
             </TouchableOpacity>
           </View>
@@ -110,7 +161,7 @@ const styles = StyleSheet.create({
   CreateClassForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
-    backgroundColor : COLORS.primaryLight,
+    backgroundColor: COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',

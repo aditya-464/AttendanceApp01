@@ -129,19 +129,16 @@ const FlatListItem = ({
 );
 
 const HomeScreen = props => {
-  const {classesData, setClassesData} = useState([]);
+  const [classesData, setClassesData] = useState([]);
   const {navigation} = props;
   const {uid} = useSelector(state => state.authDetails);
   const {refreshHomeValue} = useSelector(state => state.refreshHomeDetails);
 
   const getUserDetails = async uid => {
     try {
-      console.log(uid);
       const user = await firestore().collection('Users').doc(uid).get();
       if (user._data) {
-        if (classesData) {
-          setClassesData(user._data.classes);
-        }
+        setClassesData(user._data.classes);
       }
     } catch (error) {
       console.log(error);
