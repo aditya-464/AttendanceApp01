@@ -107,6 +107,7 @@ const ImportDataModal = props => {
                 <Text style={styles.ImportDataText}>Select File</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.DummyText}>-</Text>
           </View>
         </View>
       </Modal>
@@ -158,5 +159,11 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
   },
 });

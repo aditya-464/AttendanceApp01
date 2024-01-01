@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  Keyboard,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -25,34 +27,69 @@ const ViewRecordModal = props => {
     id,
     handleMoveToViewRecordScreen,
   } = props;
-  const [date, setDate] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [year, setYear] = useState(null);
+  const [date, setDate] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   const [error, setError] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+
+  const clearDateValues = () => {
+    setDate('');
+    setMonth('');
+    setYear('');
+    setError(null);
+  };
+
+  const getDateAsKeyValidity = dateAsKey => {
+    if (dateAsKey.length !== 10) {
+      setError('Enter Date In Valid Format');
+      setShowLoader(false);
+      return false;
+    } else {
+      if (date > 31 || date < 1 || month > 12 || month < 1) {
+        setError('Enter Valid Date');
+        setShowLoader(false);
+        return false;
+      }
+    }
+    return true;
+  };
 
   const handleViewRecord = async () => {
     try {
+      Keyboard.dismiss();
       const dateAsKey = '' + date + '-' + month + '-' + year;
-      const attendanceRecords = await firestore()
-        .collection('Attendance')
-        .doc(id)
-        .get();
+      const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
 
-      if (attendanceRecords) {
-        const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
-        if (attendanceBinaryArray) {
-          setError(null);
-          handleCloseViewRecordModal(false);
-          handleMoveToViewRecordScreen({
-            dateAsKey,
-            attendanceBinaryArray,
-          });
-        } else {
-          setError('No Data Available');
+      if (isDateAsKeyValid) {
+        const attendanceRecords = await firestore()
+          .collection('Attendance')
+          .doc(id)
+          .get();
+
+        if (attendanceRecords) {
+          const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
+          if (attendanceBinaryArray) {
+            handleCloseViewRecordModal(false);
+            handleMoveToViewRecordScreen({
+              dateAsKey,
+              attendanceBinaryArray,
+            });
+            clearDateValues();
+            setError(null);
+
+            setTimeout(() => {
+              setShowLoader(false);
+            }, 3000);
+          } else {
+            setError('No Data Available');
+            setShowLoader(false);
+          }
         }
       }
     } catch (error) {
       console.log(error);
+      setShowLoader(false);
     }
   };
 
@@ -71,7 +108,10 @@ const ViewRecordModal = props => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.CloseModalButton}
-                onPress={() => handleCloseViewRecordModal(false)}>
+                onPress={() => {
+                  handleCloseViewRecordModal(false);
+                  clearDateValues();
+                }}>
                 <Ionicons
                   name="close"
                   size={FONTSIZE.size_30}
@@ -88,7 +128,7 @@ const ViewRecordModal = props => {
                 value={date}
                 onChangeText={text => setDate(text)}
                 keyboardType="numeric"></TextInput>
-              <Text style={{marginHorizontal: SPACING.space_8}}>/</Text>
+              <Text style={{marginHorizontal: SPACING.space_8}}>-</Text>
               <TextInput
                 style={styles.InputField}
                 placeholder="MM"
@@ -97,7 +137,7 @@ const ViewRecordModal = props => {
                 value={month}
                 onChangeText={text => setMonth(text)}
                 keyboardType="numeric"></TextInput>
-              <Text style={{marginHorizontal: SPACING.space_8}}>/</Text>
+              <Text style={{marginHorizontal: SPACING.space_8}}>-</Text>
               <TextInput
                 style={styles.InputField}
                 placeholder="YYYY"
@@ -109,10 +149,23 @@ const ViewRecordModal = props => {
             </View>
             <View style={styles.ButtonView}>
               <TouchableOpacity
-                onPress={handleViewRecord}
+                disabled={
+                  date === '' || month === '' || year === '' ? true : false
+                }
+                onPress={() => {
+                  handleViewRecord();
+                  setShowLoader(true);
+                }}
                 activeOpacity={0.6}
                 style={styles.ViewRecordButton}>
-                <Text style={styles.ViewRecordText}>View</Text>
+                {!showLoader && <Text style={styles.ViewRecordText}>View</Text>}
+                {showLoader && (
+                  <ActivityIndicator
+                    animating={showLoader}
+                    size={26}
+                    color={COLORS.primaryLight}
+                  />
+                )}
               </TouchableOpacity>
             </View>
             <Text style={styles.ErrorText}>{error}</Text>
@@ -179,7 +232,7 @@ const styles = StyleSheet.create({
   },
   ErrorText: {
     marginTop: SPACING.space_10,
-    fontFamily: FONTFAMILY.poppins_medium,
+    fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_14,
     color: COLORS.absent,
   },
