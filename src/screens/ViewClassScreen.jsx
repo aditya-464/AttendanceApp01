@@ -119,8 +119,8 @@ const ViewClassScreen = props => {
     setOptionsModalView(prev => !prev);
   };
 
-  const handleShowLoader = () => {
-    setShowLoader(true);
+  const handleShowLoader = value => {
+    setShowLoader(value);
   };
 
   // ImportDataModalView Functions

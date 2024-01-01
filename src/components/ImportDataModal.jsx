@@ -60,6 +60,7 @@ const ImportDataModal = props => {
         }
       }
     } catch (error) {
+      handleShowLoader(false);
       if (DocumentPicker.isCancel(error)) {
         console.log('Document not picked!', error);
       } else {
@@ -99,7 +100,7 @@ const ImportDataModal = props => {
                 onPress={() => {
                   handleCloseImportDataModal(false);
                   selectFile();
-                  handleShowLoader();
+                  handleShowLoader(true);
                 }}
                 activeOpacity={0.6}
                 style={styles.ImportDataButton}>
