@@ -17,6 +17,7 @@ import ViewRecordModal from '../components/ViewRecordModal';
 import GenerateReportModal from '../components/GenerateReportModal';
 import DeleteClassModal from '../components/DeleteClassModal';
 import ImportDataModal from '../components/ImportDataModal';
+import SelectDateModal from '../components/SelectDateModal';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
@@ -103,6 +104,7 @@ const ViewClassScreen = props => {
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
+  const [selectDateModalView, setSelectDateModalView] = useState(false);
   const route = useRoute();
   const {refreshClassValue} = useSelector(state => state.refreshClassDetails);
 
@@ -161,6 +163,14 @@ const ViewClassScreen = props => {
   };
   const handleCloseDeleteClassModal = value => {
     setDeleteClassModalView(value);
+  };
+
+  // SelectDateModalView Functions
+  const handleOpenSelectDateModal = value => {
+    setSelectDateModalView(value);
+  };
+  const handleCloseSelectDateModal = value => {
+    setSelectDateModalView(value);
   };
 
   const getClassDetails = async id => {
@@ -263,7 +273,7 @@ const ViewClassScreen = props => {
         </TouchableOpacity>
         <View style={styles.TitleTextView}>
           <Text style={[styles.TitleText, {paddingLeft: SPACING.space_8}]}>
-            {route.params?.initials}
+            {route.params.initials}
           </Text>
           <Text style={styles.TitleText}>-</Text>
           <Text style={styles.TitleText}>
@@ -315,6 +325,12 @@ const ViewClassScreen = props => {
         handleCloseDeleteClassModal={handleCloseDeleteClassModal}
         deleteClassModalView={deleteClassModalView}
       />
+      <SelectDateModal
+        handleCloseSelectDateModal={handleCloseSelectDateModal}
+        selectDateModalView={selectDateModalView}
+        studentsData={studentsData}
+        id={route.params.id}
+      />
       {
         <>
           <View style={styles.ColumnHeadings}>
@@ -325,7 +341,7 @@ const ViewClassScreen = props => {
               <Text style={styles.NameHeadingText}>Name</Text>
             </View>
           </View>
-          {studentsData && (
+          {studentsData != [] && (
             <FlatList
               data={studentsData}
               renderItem={({item}) => (
@@ -336,21 +352,23 @@ const ViewClassScreen = props => {
                   present={item.present}
                 />
               )}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.id.toString()}
               scrollEnabled={true}
               ListFooterComponentStyle={{height: 150}}
-              ListFooterComponent={<View></View>}
             />
           )}
 
           <View style={styles.ActionButtons}>
             <TouchableOpacity
               onPress={handleResetAttendance}
-              activeOpacity={0.5}
+              activeOpacity={0.6}
               style={styles.CancelButton}>
               <Text style={styles.CancelButtonText}>Reset</Text>
             </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.5} style={styles.SubmitButton}>
+            <TouchableOpacity
+              onPress={() => handleOpenSelectDateModal(true)}
+              activeOpacity={0.6}
+              style={styles.SubmitButton}>
               <Text style={styles.SubmitButtonText}>Save</Text>
             </TouchableOpacity>
           </View>

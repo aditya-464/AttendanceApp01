@@ -51,6 +51,7 @@ const CreateClassForm = () => {
         section: section,
         initials: initials,
         studentDetails: [],
+        totalAttendance : [],
       });
 
       const getOldClassesArray = await firestore()
