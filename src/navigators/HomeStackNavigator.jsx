@@ -7,6 +7,7 @@ import {
 import HomeScreen from '../screens/HomeScreen';
 import CreateClassScreen from '../screens/CreateClassScreen';
 import ViewClassScreen from '../screens/ViewClassScreen';
+import ViewRecordScreen from '../screens/ViewRecordScreen';
 
 const Stack = createStackNavigator();
 
@@ -58,6 +59,13 @@ const HomeStackNavigator = () => {
       <Stack.Screen
         name="ViewClassScreen"
         component={ViewClassScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ViewRecordScreen"
+        component={ViewRecordScreen}
         options={{
           headerShown: false,
         }}

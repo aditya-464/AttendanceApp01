@@ -252,6 +252,18 @@ const ViewClassScreen = props => {
     </View>;
   };
 
+  const handleMoveToViewRecordScreen = ({dateAsKey, attendanceBinaryArray}) => {
+    navigation.navigate('ViewRecordScreen', {
+      initials: route.params.initials,
+      branch: route.params.branch,
+      semester: route.params.semester,
+      section: route.params.section,
+      studentsData,
+      attendanceBinaryArray,
+      dateAsKey,
+    });
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -316,6 +328,8 @@ const ViewClassScreen = props => {
       <ViewRecordModal
         handleCloseViewRecordModal={handleCloseViewRecordModal}
         viewRecordModalView={viewRecordModalView}
+        id={route.params.id}
+        handleMoveToViewRecordScreen={handleMoveToViewRecordScreen}
       />
       <GenerateReportModal
         handleCloseGenerateReportModal={handleCloseGenerateReportModal}

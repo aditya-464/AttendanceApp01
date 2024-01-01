@@ -16,13 +16,45 @@ import {
 } from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import firestore from '@react-native-firebase/firestore';
 
 const ViewRecordModal = props => {
+  const {
+    handleCloseViewRecordModal,
+    viewRecordModalView,
+    id,
+    handleMoveToViewRecordScreen,
+  } = props;
   const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
   const [year, setYear] = useState(null);
+  const [error, setError] = useState(null);
 
-  const {handleCloseViewRecordModal, viewRecordModalView} = props;
+  const handleViewRecord = async () => {
+    try {
+      const dateAsKey = '' + date + '-' + month + '-' + year;
+      const attendanceRecords = await firestore()
+        .collection('Attendance')
+        .doc(id)
+        .get();
+
+      if (attendanceRecords) {
+        const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
+        if (attendanceBinaryArray) {
+          setError(null);
+          handleCloseViewRecordModal(false);
+          handleMoveToViewRecordScreen({
+            dateAsKey,
+            attendanceBinaryArray,
+          });
+        } else {
+          setError('No Data Available');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView>
@@ -77,11 +109,13 @@ const ViewRecordModal = props => {
             </View>
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                onPress={handleViewRecord}
                 activeOpacity={0.6}
                 style={styles.ViewRecordButton}>
                 <Text style={styles.ViewRecordText}>View</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.ErrorText}>{error}</Text>
           </View>
         </View>
       </Modal>
@@ -142,5 +176,11 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });
