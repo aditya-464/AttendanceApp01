@@ -56,8 +56,8 @@ const DeleteClassModal = props => {
           )
           .then(() => {
             dispatch(refreshDetails());
+            // handleCloseDeleteClassModal(false);
             handleMoveToHomeScreen();
-            handleCloseDeleteClassModal(false);
             setTimeout(() => {
               setShowLoader(false);
             }, 3000);
