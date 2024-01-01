@@ -264,6 +264,10 @@ const ViewClassScreen = props => {
     });
   };
 
+  const handleMoveToHomeScreen = () => {
+    navigation.navigate('HomeScreen');
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -338,6 +342,8 @@ const ViewClassScreen = props => {
       <DeleteClassModal
         handleCloseDeleteClassModal={handleCloseDeleteClassModal}
         deleteClassModalView={deleteClassModalView}
+        id={route.params.id}
+        handleMoveToHomeScreen={handleMoveToHomeScreen}
       />
       <SelectDateModal
         handleCloseSelectDateModal={handleCloseSelectDateModal}
