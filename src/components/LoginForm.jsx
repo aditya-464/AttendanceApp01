@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -6,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -19,6 +20,8 @@ import {saveAuthDetails} from '../redux/auth';
 
 const LoginForm = props => {
   const {isLoginDone} = props;
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const handleLogin = async values => {
@@ -41,9 +44,17 @@ const LoginForm = props => {
             password: '12345678',
           }),
         );
+        setTimeout(() => {
+          setShowLoader(false);
+        }, 5000);
       }
     } catch (err) {
-      console.log(err);
+      setShowLoader(false);
+      setError(err.message);
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
@@ -108,13 +119,25 @@ const LoginForm = props => {
 
             <TouchableOpacity
               disabled={errors.email || errors.password ? true : false}
-              onPress={handleSubmit}
+              onPress={() => {
+                handleSubmit();
+                setShowLoader(true);
+                setError(null);
+              }}
               activeOpacity={0.6}
               style={styles.LoginBtn}>
-              <Text style={styles.LoginText}>Login</Text>
+              {!showLoader && <Text style={styles.LoginText}>Login</Text>}
+              {showLoader && (
+                <ActivityIndicator
+                  animating={showLoader}
+                  size={26}
+                  color={COLORS.primaryLight}
+                />
+              )}
             </TouchableOpacity>
 
             <View style={{marginTop: SPACING.space_15}}>
+              {error && <Text style={styles.FormFieldError}>{error}</Text>}
               {errors.email && (
                 <Text style={styles.FormFieldError}>{errors.email}</Text>
               )}
