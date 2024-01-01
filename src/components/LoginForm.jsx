@@ -118,7 +118,14 @@ const LoginForm = props => {
             </View>
 
             <TouchableOpacity
-              disabled={errors.email || errors.password ? true : false}
+              disabled={
+                errors.email ||
+                errors.password ||
+                values.email === '' ||
+                values.password === ''
+                  ? true
+                  : false
+              }
               onPress={() => {
                 handleSubmit();
                 setShowLoader(true);

@@ -1,11 +1,13 @@
 import {
+  ActivityIndicator,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -13,9 +15,13 @@ import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import firestore from '@react-native-firebase/firestore';
 import {useDispatch, useSelector} from 'react-redux';
 import {refreshDetails} from '../redux/refreshHomeScreen';
+import {createClassSchema} from './FormValidationSchemas/CreateClassValidationSchema';
 
-const CreateClassForm = () => {
+const CreateClassForm = props => {
+  const {isClassCreationDone} = props;
   const {uid} = useSelector(state => state.authDetails);
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
   const getInitials = subject => {
@@ -45,13 +51,8 @@ const CreateClassForm = () => {
       section = section.trim();
 
       const createClass = await firestore().collection('Classes').add({
-        subject: subject,
-        branch: branch,
-        semester: semester,
-        section: section,
-        initials: initials,
         studentDetails: [],
-        totalAttendance : [],
+        totalAttendance: [],
       });
 
       const getOldClassesArray = await firestore()
@@ -79,20 +80,30 @@ const CreateClassForm = () => {
           })
           .then(() => {
             dispatch(refreshDetails());
+            isClassCreationDone();
+            setTimeout(() => {
+              setShowLoader(false);
+            }, 5000);
           });
       }
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setShowLoader(false);
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
   return (
     <>
       <Formik
+        validationSchema={createClassSchema}
         initialValues={{subject: '', branch: '', semester: '', section: ''}}
         onSubmit={values => handleCreateClass(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
-          <View style={styles.CreateClassForm}>
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+          <ScrollView style={styles.CreateClassForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
                 <Ionicons
@@ -169,12 +180,53 @@ const CreateClassForm = () => {
             </View>
 
             <TouchableOpacity
-              onPress={handleSubmit}
+              disabled={
+                errors.subject ||
+                errors.branch ||
+                errors.semester ||
+                errors.section ||
+                values.branch === '' ||
+                values.subject === '' ||
+                values.semester === '' ||
+                values.section === ''
+                  ? true
+                  : false
+              }
+              onPress={() => {
+                handleSubmit();
+                setError(null);
+                setShowLoader(true);
+              }}
               activeOpacity={0.6}
               style={styles.CreateClassBtn}>
-              <Text style={styles.CreateClassText}>Create</Text>
+              {!showLoader && (
+                <Text style={styles.CreateClassText}>Create</Text>
+              )}
+              {showLoader && (
+                <ActivityIndicator
+                  animating={showLoader}
+                  size={26}
+                  color={COLORS.primaryLight}
+                />
+              )}
             </TouchableOpacity>
-          </View>
+
+            <View style={{marginTop: SPACING.space_15}}>
+              {error && <Text style={styles.FormFieldError}>{error}</Text>}
+              {errors.subject && (
+                <Text style={styles.FormFieldError}>{errors.subject}</Text>
+              )}
+              {errors.branch && (
+                <Text style={styles.FormFieldError}>{errors.branch}</Text>
+              )}
+              {errors.semester && (
+                <Text style={styles.FormFieldError}>{errors.semester}</Text>
+              )}
+              {errors.section && (
+                <Text style={styles.FormFieldError}>{errors.section}</Text>
+              )}
+            </View>
+          </ScrollView>
         )}
       </Formik>
     </>
@@ -224,5 +276,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
+  },
+  FormFieldError: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

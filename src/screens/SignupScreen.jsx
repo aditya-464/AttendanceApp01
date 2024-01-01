@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_28,
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
+    color : COLORS.primaryDark,
+    opacity : 0.9,
   },
   LoginOption: {
     paddingBottom: SPACING.space_20,

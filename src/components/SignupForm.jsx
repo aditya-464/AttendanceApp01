@@ -174,7 +174,11 @@ const SignupForm = props => {
                 errors.name ||
                 errors.email ||
                 errors.password ||
-                errors.confirmPassword
+                errors.confirmPassword ||
+                values.name === '' ||
+                values.email === '' ||
+                values.password === '' ||
+                values.confirmPassword === ''
                   ? true
                   : false
               }

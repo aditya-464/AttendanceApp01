@@ -12,8 +12,14 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 
 const CreateClassScreen = props => {
   const {navigation} = props;
+
+  const isClassCreationDone = () => {
+    navigation.navigate('HomeScreen');
+  };
+
   return (
-    <SafeAreaView style={{backgroundColor: COLORS.primaryLight}}>
+    <SafeAreaView
+      style={{height: '100%', backgroundColor: COLORS.primaryLight}}>
       <View style={styles.CreateClassContainer}>
         <View style={styles.TitleBar}>
           <TouchableOpacity
@@ -28,7 +34,8 @@ const CreateClassScreen = props => {
           </TouchableOpacity>
           <Text style={styles.CreateClassText}>Create Class</Text>
         </View>
-        <CreateClassForm></CreateClassForm>
+        <CreateClassForm
+          isClassCreationDone={isClassCreationDone}></CreateClassForm>
       </View>
     </SafeAreaView>
   );
