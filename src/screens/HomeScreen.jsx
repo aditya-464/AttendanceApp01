@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
@@ -141,6 +142,7 @@ const FlatListItem = ({
 
 const HomeScreen = props => {
   const [classesData, setClassesData] = useState([]);
+  const [showLoader, setShowLoader] = useState(true);
   const {navigation} = props;
   const {uid} = useSelector(state => state.authDetails);
   const {refreshHomeValue} = useSelector(state => state.refreshHomeDetails);
@@ -150,8 +152,10 @@ const HomeScreen = props => {
       const user = await firestore().collection('Users').doc(uid).get();
       if (user._data) {
         setClassesData(user._data.classes);
+        setShowLoader(false);
       }
     } catch (error) {
+      setShowLoader(false);
       console.log(error);
     }
   };
@@ -187,28 +191,38 @@ const HomeScreen = props => {
             color={COLORS.primaryLight}></Ionicons>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={classesData}
-        renderItem={({item}) => (
-          <FlatListItem
-            navigation={navigation}
-            id={item.id}
-            subject={item.subject}
-            branch={item.branch}
-            semester={item.semester}
-            section={item.section}
-            initials={item.initials}
-            bgcolor={item.bgcolor}
-          />
-        )}
-        keyExtractor={item => item.id}
-        scrollEnabled={true}
-        ListEmptyComponent={
-          <View style={styles.EmptyListView}>
-            <Text style={styles.EmptyListViewText}>No Classes</Text>
-          </View>
-        }
-      />
+
+      {!showLoader && (
+        <FlatList
+          data={classesData}
+          renderItem={({item}) => (
+            <FlatListItem
+              navigation={navigation}
+              id={item.id}
+              subject={item.subject}
+              branch={item.branch}
+              semester={item.semester}
+              section={item.section}
+              initials={item.initials}
+              bgcolor={item.bgcolor}
+            />
+          )}
+          keyExtractor={item => item.id}
+          scrollEnabled={true}
+          ListEmptyComponent={
+            <View style={styles.EmptyListView}>
+              <Text style={styles.EmptyListViewText}>No Classes</Text>
+            </View>
+          }
+        />
+      )}
+      {showLoader && (
+        <ActivityIndicator
+          animating={showLoader}
+          size={30}
+          color={COLORS.placeholder}
+        />
+      )}
     </SafeAreaView>
   );
 };
