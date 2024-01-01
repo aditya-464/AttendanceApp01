@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -105,6 +106,7 @@ const ViewClassScreen = props => {
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
   const [selectDateModalView, setSelectDateModalView] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const route = useRoute();
   const {refreshClassValue} = useSelector(state => state.refreshClassDetails);
 
@@ -181,9 +183,11 @@ const ViewClassScreen = props => {
         .get();
       if (classDetails._data.studentDetails) {
         setStudentsData(classDetails._data.studentDetails);
+        setShowLoader(false);
       }
     } catch (error) {
       console.log(error);
+      setShowLoader(false);
     }
   };
 
@@ -351,49 +355,68 @@ const ViewClassScreen = props => {
         studentsData={studentsData}
         id={route.params.id}
       />
-      {
+
+      {!showLoader && (
         <>
-          <View style={styles.ColumnHeadings}>
-            <View style={styles.RollHeading}>
-              <Text style={styles.RollHeadingText}>Roll</Text>
+          {studentsData.length !== 0 && (
+            <View style={styles.ColumnHeadings}>
+              <View style={styles.RollHeading}>
+                <Text style={styles.RollHeadingText}>Roll</Text>
+              </View>
+              <View style={styles.NameHeading}>
+                <Text style={styles.NameHeadingText}>Name</Text>
+              </View>
             </View>
-            <View style={styles.NameHeading}>
-              <Text style={styles.NameHeadingText}>Name</Text>
-            </View>
-          </View>
-          {studentsData != [] && (
-            <FlatList
-              data={studentsData}
-              renderItem={({item}) => (
-                <FlatListItem
-                  id={item.id}
-                  roll={item.roll}
-                  name={item.name}
-                  present={item.present}
-                />
-              )}
-              keyExtractor={item => item.id.toString()}
-              scrollEnabled={true}
-              ListFooterComponentStyle={{height: 150}}
-            />
           )}
 
-          <View style={styles.ActionButtons}>
-            <TouchableOpacity
-              onPress={handleResetAttendance}
-              activeOpacity={0.6}
-              style={styles.CancelButton}>
-              <Text style={styles.CancelButtonText}>Reset</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleOpenSelectDateModal(true)}
-              activeOpacity={0.6}
-              style={styles.SubmitButton}>
-              <Text style={styles.SubmitButtonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+          <FlatList
+            data={studentsData}
+            renderItem={({item}) => (
+              <FlatListItem
+                id={item.id}
+                roll={item.roll}
+                name={item.name}
+                present={item.present}
+              />
+            )}
+            keyExtractor={item => item.id.toString()}
+            scrollEnabled={true}
+            ListFooterComponentStyle={{height: 150}}
+            ListEmptyComponent={
+              <View style={styles.EmptyListView}>
+                <Text style={styles.EmptyListViewText}>No Data</Text>
+              </View>
+            }
+          />
+
+          {studentsData.length !== 0 && (
+            <View style={styles.ActionButtons}>
+              <TouchableOpacity
+                onPress={handleResetAttendance}
+                activeOpacity={0.6}
+                style={styles.CancelButton}>
+                <Text style={styles.CancelButtonText}>Reset</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleOpenSelectDateModal(true)}
+                activeOpacity={0.6}
+                style={styles.SubmitButton}>
+                <Text style={styles.SubmitButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </>
-      }
+      )}
+
+      {showLoader && (
+        <View style={{marginTop: SPACING.space_15}}>
+          <ActivityIndicator
+            size={30}
+            color={COLORS.placeholder}
+            animating={showLoader}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -535,6 +558,15 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
+    textAlign: 'center',
+  },
+  EmptyListView: {
+    marginTop: SPACING.space_15,
+  },
+  EmptyListViewText: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_18,
+    color: COLORS.placeholder,
     textAlign: 'center',
   },
 });
