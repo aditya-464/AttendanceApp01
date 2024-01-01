@@ -47,11 +47,15 @@ const GenerateReportModal = props => {
             </Text>
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                onPress={() => {
+                  handleCloseGenerateReportModal(false);
+                }}
                 activeOpacity={0.6}
                 style={styles.GenerateReportButton}>
                 <Text style={styles.GenerateReportText}>Okay</Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.DummyText}>-</Text>
           </View>
         </View>
       </Modal>
@@ -103,5 +107,11 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
   },
 });

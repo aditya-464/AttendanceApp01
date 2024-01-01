@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -29,6 +30,7 @@ const DeleteClassModal = props => {
   const {uid} = useSelector(state => state.authDetails);
   const dispatch = useDispatch();
   const [classesData, setClassesData] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleDeleteClass = async () => {
     try {
@@ -56,10 +58,14 @@ const DeleteClassModal = props => {
             dispatch(refreshDetails());
             handleMoveToHomeScreen();
             handleCloseDeleteClassModal(false);
+            setTimeout(() => {
+              setShowLoader(false);
+            }, 3000);
           });
       }
     } catch (error) {
       console.log(error);
+      setShowLoader(false);
     }
   };
 
@@ -104,18 +110,23 @@ const DeleteClassModal = props => {
             </Text>
             <View style={styles.ButtonView}>
               <TouchableOpacity
-                onPress={() => handleCloseDeleteClassModal(false)}
-                activeOpacity={0.6}
-                style={styles.CancelButton}>
-                <Text style={styles.CancelText}>No</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleDeleteClass}
+                onPress={() => {
+                  handleDeleteClass();
+                  setShowLoader(true);
+                }}
                 activeOpacity={0.6}
                 style={styles.DeleteClassButton}>
-                <Text style={styles.DeleteClassText}>Yes</Text>
+                {!showLoader && <Text style={styles.DeleteClassText}>Yes</Text>}
+                {showLoader && (
+                  <ActivityIndicator
+                    animating={showLoader}
+                    size={26}
+                    color={COLORS.primaryLight}
+                  />
+                )}
               </TouchableOpacity>
             </View>
+            <Text style={styles.DummyText}>-</Text>
           </View>
         </View>
       </Modal>
@@ -153,22 +164,8 @@ const styles = StyleSheet.create({
     marginTop: SPACING.space_20,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  CancelButton: {
-    width: '48%',
-    backgroundColor: COLORS.primaryLight,
-    padding: SPACING.space_12,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: COLORS.primaryDark,
-  },
-  CancelText: {
-    fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_16,
-    color: COLORS.primaryDark,
-    textAlign: 'center',
   },
   DeleteClassButton: {
     width: '48%',
@@ -183,5 +180,11 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
   },
 });
