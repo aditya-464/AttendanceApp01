@@ -12,9 +12,10 @@ const ViewClassScreenOptionsModal = props => {
   const {
     top,
     optionsModalView,
+    handleOptionsModal,
     handleOpenImportDataModal,
-    handleOpenAddStudentModal,
-    handleOpenRemoveStudentModal,
+    // handleOpenAddStudentModal,
+    // handleOpenRemoveStudentModal,
     handleOpenViewRecordModal,
     handleOpenGenerateReportModal,
     handleOpenDeleteClassModal,
@@ -27,12 +28,15 @@ const ViewClassScreenOptionsModal = props => {
         {top: top, display: optionsModalView ? 'flex' : 'none'},
       ]}>
       <TouchableOpacity
-        onPress={() => handleOpenImportDataModal(true)}
+        onPress={() => {
+          handleOpenImportDataModal(true);
+          handleOptionsModal();
+        }}
         activeOpacity={0.4}
         style={styles.ImportData}>
         <Text style={styles.ImportDataText}>Import Data</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => handleOpenAddStudentModal(true)}
         activeOpacity={0.4}
         style={styles.AddStudent}>
@@ -43,21 +47,30 @@ const ViewClassScreenOptionsModal = props => {
         activeOpacity={0.4}
         style={styles.RemoveStudent}>
         <Text style={styles.RemoveStudentText}>Remove Student</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
-        onPress={() => handleOpenViewRecordModal(true)}
+        onPress={() => {
+          handleOpenViewRecordModal(true);
+          handleOptionsModal();
+        }}
         activeOpacity={0.4}
         style={styles.ViewRecord}>
         <Text style={styles.ViewRecordText}>View Record</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handleOpenGenerateReportModal(true)}
+        onPress={() => {
+          handleOpenGenerateReportModal(true);
+          handleOptionsModal();
+        }}
         activeOpacity={0.4}
         style={styles.GenerateReport}>
         <Text style={styles.GenerateReportText}>Generate Report</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => handleOpenDeleteClassModal(true)}
+        onPress={() => {
+          handleOpenDeleteClassModal(true);
+          handleOptionsModal();
+        }}
         activeOpacity={0.4}
         style={styles.DeleteClass}>
         <Text style={styles.DeleteClassText}>Delete Class</Text>

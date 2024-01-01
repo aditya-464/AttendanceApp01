@@ -22,7 +22,12 @@ import {useDispatch} from 'react-redux';
 import {refreshClassDetailsFunc} from '../redux/refreshViewClassScreen';
 
 const ImportDataModal = props => {
-  const {handleCloseImportDataModal, importDataModalView, id} = props;
+  const {
+    handleCloseImportDataModal,
+    importDataModalView,
+    id,
+    handleShowLoader,
+  } = props;
   const dispatch = useDispatch();
 
   const selectFile = async () => {
@@ -94,6 +99,7 @@ const ImportDataModal = props => {
                 onPress={() => {
                   handleCloseImportDataModal(false);
                   selectFile();
+                  handleShowLoader();
                 }}
                 activeOpacity={0.6}
                 style={styles.ImportDataButton}>

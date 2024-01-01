@@ -100,8 +100,8 @@ const ViewClassScreen = props => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
   const [importDataModalView, setImportDataModalView] = useState(false);
-  const [addStudentModalView, setAddStudentModalView] = useState(false);
-  const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
+  // const [addStudentModalView, setAddStudentModalView] = useState(false);
+  // const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
@@ -119,6 +119,10 @@ const ViewClassScreen = props => {
     setOptionsModalView(prev => !prev);
   };
 
+  const handleShowLoader = () => {
+    setShowLoader(true);
+  };
+
   // ImportDataModalView Functions
   const handleOpenImportDataModal = value => {
     setImportDataModalView(value);
@@ -128,20 +132,20 @@ const ViewClassScreen = props => {
   };
 
   // AddStudentModalView Functions
-  const handleOpenAddStudentModal = value => {
-    setAddStudentModalView(value);
-  };
-  const handleCloseAddStudentModal = value => {
-    setAddStudentModalView(value);
-  };
+  // const handleOpenAddStudentModal = value => {
+  //   setAddStudentModalView(value);
+  // };
+  // const handleCloseAddStudentModal = value => {
+  //   setAddStudentModalView(value);
+  // };
 
   // RemoveStudentModalView Functions
-  const handleOpenRemoveStudentModal = value => {
-    setRemoveStudentModalView(value);
-  };
-  const handleCloseRemoveStudentModal = value => {
-    setRemoveStudentModalView(value);
-  };
+  // const handleOpenRemoveStudentModal = value => {
+  //   setRemoveStudentModalView(value);
+  // };
+  // const handleCloseRemoveStudentModal = value => {
+  //   setRemoveStudentModalView(value);
+  // };
 
   // ViewRecordModalView Functions
   const handleOpenViewRecordModal = value => {
@@ -242,20 +246,6 @@ const ViewClassScreen = props => {
     </TouchableOpacity>
   );
 
-  const NoDataComponent = () => {
-    <View style={{marginTop: SPACING.space_15}}>
-      <Text
-        style={{
-          fontFamily: FONTFAMILY.poppins_semibold,
-          fontSize: FONTSIZE.size_18,
-          color: COLORS.placeholder,
-          textAlign: 'center',
-        }}>
-        No Data Available
-      </Text>
-    </View>;
-  };
-
   const handleMoveToViewRecordScreen = ({dateAsKey, attendanceBinaryArray}) => {
     navigation.navigate('ViewRecordScreen', {
       initials: route.params.initials,
@@ -313,9 +303,10 @@ const ViewClassScreen = props => {
       <ViewClassScreenOptionsModal
         top={titleBarHeight}
         optionsModalView={optionsModalView}
+        handleOptionsModal={handleOptionsModal}
         handleOpenImportDataModal={handleOpenImportDataModal}
-        handleOpenAddStudentModal={handleOpenAddStudentModal}
-        handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
+        // handleOpenAddStudentModal={handleOpenAddStudentModal}
+        // handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
         handleOpenViewRecordModal={handleOpenViewRecordModal}
         handleOpenGenerateReportModal={handleOpenGenerateReportModal}
         handleOpenDeleteClassModal={handleOpenDeleteClassModal}
@@ -324,15 +315,16 @@ const ViewClassScreen = props => {
         handleCloseImportDataModal={handleCloseImportDataModal}
         importDataModalView={importDataModalView}
         id={route.params.id}
+        handleShowLoader={handleShowLoader}
       />
-      <AddStudentModal
+      {/* <AddStudentModal
         handleCloseAddStudentModal={handleCloseAddStudentModal}
         addStudentModalView={addStudentModalView}
       />
       <RemoveStudentModal
         handleCloseRemoveStudentModal={handleCloseRemoveStudentModal}
         removeStudentModalView={removeStudentModalView}
-      />
+      /> */}
       <ViewRecordModal
         handleCloseViewRecordModal={handleCloseViewRecordModal}
         viewRecordModalView={viewRecordModalView}
