@@ -17,8 +17,8 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
-import {useDispatch} from 'react-redux';
-import {refreshClassDetailsFunc} from '../redux/refreshViewClassScreen';
+import {useDispatch, useSelector} from 'react-redux';
+import {refreshTotalAttendanceFunc} from '../redux/refreshTotalAttendance';
 
 const SelectDateModal = props => {
   const {handleCloseSelectDateModal, selectDateModalView, studentsData, id} =
@@ -28,6 +28,10 @@ const SelectDateModal = props => {
   const [year, setYear] = useState(null);
   const [attendanceBinaryArray, setAttendanceBinaryArray] = useState([]);
   const [previousTotalAttendance, setPreviousTotalAttendance] = useState([]);
+  const {refreshTotalAttendanceValue} = useSelector(
+    state => state.refreshTotalAttendanceDetails,
+  );
+  const dispatch = useDispatch();
 
   const getNewTotalAttendance = subtractData => {
     const tempArray = [];
@@ -51,7 +55,8 @@ const SelectDateModal = props => {
     try {
       const dateAsKey = '' + date + '-' + month + '-' + year;
       if (previousTotalAttendance.length === 0) {
-        const updateTotalAttendace = await firestore()
+        // Update total attendance
+        firestore()
           .collection('Classes')
           .doc(id)
           .set(
@@ -59,9 +64,13 @@ const SelectDateModal = props => {
               totalAttendance: attendanceBinaryArray,
             },
             {merge: true},
-          );
+          )
+          .then(() => {
+            dispatch(refreshTotalAttendanceFunc());
+          });
 
-        const setAttendance = await firestore()
+        // Marking current attendance
+        const markAttendance = await firestore()
           .collection('Attendance')
           .doc(id)
           .set(
@@ -81,7 +90,9 @@ const SelectDateModal = props => {
             const newTotalAttendanceArray = getNewTotalAttendance(
               attendanceDetails._data[dateAsKey],
             );
-            const updateTotalAttendace = await firestore()
+
+            // Update total attendance
+            firestore()
               .collection('Classes')
               .doc(id)
               .set(
@@ -89,8 +100,12 @@ const SelectDateModal = props => {
                   totalAttendance: newTotalAttendanceArray,
                 },
                 {merge: true},
-              );
+              )
+              .then(() => {
+                dispatch(refreshTotalAttendanceFunc());
+              });
 
+            // Marking current attendance
             const markAttendance = await firestore()
               .collection('Attendance')
               .doc(id)
@@ -102,7 +117,9 @@ const SelectDateModal = props => {
               );
           } else {
             const newTotalAttendanceArray = getNewTotalAttendance(null);
-            const updateTotalAttendace = await firestore()
+
+            // Update total attendance
+            firestore()
               .collection('Classes')
               .doc(id)
               .set(
@@ -110,8 +127,12 @@ const SelectDateModal = props => {
                   totalAttendance: newTotalAttendanceArray,
                 },
                 {merge: true},
-              );
+              )
+              .then(() => {
+                dispatch(refreshTotalAttendanceFunc());
+              });
 
+            // Marking current attendance
             const markAttendance = await firestore()
               .collection('Attendance')
               .doc(id)
@@ -158,7 +179,7 @@ const SelectDateModal = props => {
   useEffect(() => {
     getPreviousTotalAttendance();
     getAttendanceBinaryArray(studentsData);
-  }, [studentsData]);
+  }, [studentsData, refreshTotalAttendanceValue]);
 
   return (
     <SafeAreaView>
