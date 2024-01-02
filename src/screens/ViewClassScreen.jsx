@@ -12,8 +12,6 @@ import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import ViewClassScreenOptionsModal from '../components/ViewClassScreenOptionsModal';
-import AddStudentModal from '../components/AddStudentModal';
-import RemoveStudentModal from '../components/RemoveStudentModal';
 import ViewRecordModal from '../components/ViewRecordModal';
 import GenerateReportModal from '../components/GenerateReportModal';
 import DeleteClassModal from '../components/DeleteClassModal';
@@ -100,8 +98,6 @@ const ViewClassScreen = props => {
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
   const [importDataModalView, setImportDataModalView] = useState(false);
-  // const [addStudentModalView, setAddStudentModalView] = useState(false);
-  // const [removeStudentModalView, setRemoveStudentModalView] = useState(false);
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
   const [generateReportModalView, setGenerateReportModalView] = useState(false);
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
@@ -130,22 +126,6 @@ const ViewClassScreen = props => {
   const handleCloseImportDataModal = value => {
     setImportDataModalView(value);
   };
-
-  // AddStudentModalView Functions
-  // const handleOpenAddStudentModal = value => {
-  //   setAddStudentModalView(value);
-  // };
-  // const handleCloseAddStudentModal = value => {
-  //   setAddStudentModalView(value);
-  // };
-
-  // RemoveStudentModalView Functions
-  // const handleOpenRemoveStudentModal = value => {
-  //   setRemoveStudentModalView(value);
-  // };
-  // const handleCloseRemoveStudentModal = value => {
-  //   setRemoveStudentModalView(value);
-  // };
 
   // ViewRecordModalView Functions
   const handleOpenViewRecordModal = value => {
@@ -305,8 +285,6 @@ const ViewClassScreen = props => {
         optionsModalView={optionsModalView}
         handleOptionsModal={handleOptionsModal}
         handleOpenImportDataModal={handleOpenImportDataModal}
-        // handleOpenAddStudentModal={handleOpenAddStudentModal}
-        // handleOpenRemoveStudentModal={handleOpenRemoveStudentModal}
         handleOpenViewRecordModal={handleOpenViewRecordModal}
         handleOpenGenerateReportModal={handleOpenGenerateReportModal}
         handleOpenDeleteClassModal={handleOpenDeleteClassModal}
@@ -317,14 +295,6 @@ const ViewClassScreen = props => {
         id={route.params.id}
         handleShowLoader={handleShowLoader}
       />
-      {/* <AddStudentModal
-        handleCloseAddStudentModal={handleCloseAddStudentModal}
-        addStudentModalView={addStudentModalView}
-      />
-      <RemoveStudentModal
-        handleCloseRemoveStudentModal={handleCloseRemoveStudentModal}
-        removeStudentModalView={removeStudentModalView}
-      /> */}
       <ViewRecordModal
         handleCloseViewRecordModal={handleCloseViewRecordModal}
         viewRecordModalView={viewRecordModalView}

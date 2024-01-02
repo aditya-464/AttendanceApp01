@@ -15,8 +15,6 @@ const ViewClassScreenOptionsModal = props => {
     optionsModalView,
     handleOptionsModal,
     handleOpenImportDataModal,
-    // handleOpenAddStudentModal,
-    // handleOpenRemoveStudentModal,
     handleOpenViewRecordModal,
     handleOpenGenerateReportModal,
     handleOpenDeleteClassModal,
@@ -40,18 +38,6 @@ const ViewClassScreenOptionsModal = props => {
           style={styles.ImportData}>
           <Text style={styles.ImportDataText}>Import Data</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-        onPress={() => handleOpenAddStudentModal(true)}
-        activeOpacity={0.4}
-        style={styles.AddStudent}>
-        <Text style={styles.AddStudentText}>Add Student</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleOpenRemoveStudentModal(true)}
-        activeOpacity={0.4}
-        style={styles.RemoveStudent}>
-        <Text style={styles.RemoveStudentText}>Remove Student</Text>
-      </TouchableOpacity> */}
         <TouchableOpacity
           onPress={() => {
             handleOpenViewRecordModal(true);

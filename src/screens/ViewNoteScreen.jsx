@@ -106,6 +106,7 @@ const ViewNoteScreen = props => {
       <ViewNoteScreenOptionsModal
         top={titleBarHeight}
         modalView={modalView}
+        handleOptionsModal={handleOptionsModal}
         handleOpenEditNoteModalView={handleOpenEditNoteModalView}
         handleOpenDeleteNoteModalView={handleOpenDeleteNoteModalView}
       />
