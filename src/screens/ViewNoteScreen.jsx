@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -6,20 +7,27 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import ViewNoteScreenOptionsModal from '../components/ViewNoteScreenOptionsModal';
 import EditNoteModal from '../components/EditNoteModal';
 import DeleteNoteModal from '../components/DeleteNoteModal';
+import {useRoute} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
 const ViewNoteScreen = props => {
   const {navigation} = props;
+  const [content, setContent] = useState(null);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [modalView, setModalView] = useState(false);
   const [editNoteModalView, setEditNoteModalView] = useState(false);
   const [deleteNoteModalView, setDeleteNoteModalView] = useState(false);
+  const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
+  const [showLoader, setShowLoader] = useState(true);
+  const route = useRoute();
 
   const handleOptionsModal = () => {
     setModalView(prev => !prev);
@@ -45,6 +53,23 @@ const ViewNoteScreen = props => {
     const {height} = event.nativeEvent.layout;
     setTitleBarHeight(height);
   };
+
+  const getNoteDetails = async id => {
+    try {
+      const noteDetails = await firestore().collection('Notes').doc(id).get();
+      if (noteDetails._data.content) {
+        setContent(noteDetails._data.content);
+        setShowLoader(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setShowLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    getNoteDetails(route.params.id);
+  }, [refreshNotesValue]);
 
   return (
     <SafeAreaView
@@ -92,23 +117,26 @@ const ViewNoteScreen = props => {
         handleCloseDeleteNoteModalView={handleCloseDeleteNoteModalView}
         deleteNoteModalView={deleteNoteModalView}
       />
-      <ScrollView>
-        <View style={styles.NoteSubject}>
-          <Text style={styles.NoteSubjectText}>
-            Operating Systems Unit Test - II
-          </Text>
+      {!showLoader && (
+        <ScrollView>
+          <View style={styles.NoteSubject}>
+            <Text style={styles.NoteSubjectText}>{route.params.subject}</Text>
+          </View>
+          <View style={styles.NoteContent}>
+            <Text style={styles.NoteContentText}>{content}</Text>
+          </View>
+        </ScrollView>
+      )}
+
+      {showLoader && (
+        <View style={{marginTop: SPACING.space_15}}>
+          <ActivityIndicator
+            size={30}
+            color={COLORS.placeholder}
+            animating={showLoader}
+          />
         </View>
-        <View style={styles.NoteContent}>
-          <Text style={styles.NoteContentText}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio
-            tenetur sit numquam nam odit maxime, animi modi earum odio, dolore
-            voluptate ex quisquam unde iure. Quos commodi quaerat voluptatem
-            laboriosam temporibus, non nesciunt, alias odit minus blanditiis
-            rerum quo placeat maxime voluptate dignissimos nam quidem earum
-            asperiores numquam quod obcaecati et sint dolores delectus.
-          </Text>
-        </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

@@ -54,9 +54,9 @@ import firestore from '@react-native-firebase/firestore';
 //   },
 // ];
 
-const FlatListItem = ({navigation, subject, bgcolor}) => (
+const FlatListItem = ({navigation, id, subject, bgcolor}) => (
   <TouchableOpacity
-    onPress={() => navigation.navigate('ViewNoteScreen')}
+    onPress={() => navigation.navigate('ViewNoteScreen', {id, subject})}
     activeOpacity={0.6}
     style={[
       styles.NotesListItem,
@@ -137,6 +137,7 @@ const NotesScreen = props => {
           renderItem={({item}) => (
             <FlatListItem
               navigation={navigation}
+              id={item.id}
               subject={item.subject}
               bgcolor={item.bgcolor}
             />
