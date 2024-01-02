@@ -71,7 +71,11 @@ const ImportDataModal = props => {
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={importDataModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={importDataModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',

@@ -21,7 +21,11 @@ const GenerateReportModal = props => {
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={generateReportModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={generateReportModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',

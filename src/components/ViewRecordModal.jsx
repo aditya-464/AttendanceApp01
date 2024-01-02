@@ -57,7 +57,6 @@ const ViewRecordModal = props => {
 
   const handleViewRecord = async () => {
     try {
-      Keyboard.dismiss();
       const dateAsKey = '' + date + '-' + month + '-' + year;
       const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
 
@@ -95,7 +94,11 @@ const ViewRecordModal = props => {
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={viewRecordModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={viewRecordModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',
@@ -111,6 +114,7 @@ const ViewRecordModal = props => {
                 onPress={() => {
                   handleCloseViewRecordModal(false);
                   clearDateValues();
+                  Keyboard.dismiss();
                 }}>
                 <Ionicons
                   name="close"
@@ -155,6 +159,7 @@ const ViewRecordModal = props => {
                 onPress={() => {
                   handleViewRecord();
                   setShowLoader(true);
+                  Keyboard.dismiss();
                 }}
                 activeOpacity={0.6}
                 style={styles.ViewRecordButton}>

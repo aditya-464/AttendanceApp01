@@ -7,6 +7,7 @@ import {
   FONTSIZE,
   SPACING,
 } from '../themes/Theme';
+import Modal from 'react-native-modal';
 
 const ViewClassScreenOptionsModal = props => {
   const {
@@ -22,21 +23,24 @@ const ViewClassScreenOptionsModal = props => {
   } = props;
 
   return (
-    <View
-      style={[
-        styles.OptionsModal,
-        {top: top, display: optionsModalView ? 'flex' : 'none'},
-      ]}>
-      <TouchableOpacity
-        onPress={() => {
-          handleOpenImportDataModal(true);
-          handleOptionsModal();
-        }}
-        activeOpacity={0.4}
-        style={styles.ImportData}>
-        <Text style={styles.ImportDataText}>Import Data</Text>
-      </TouchableOpacity>
-      {/* <TouchableOpacity
+    <Modal
+      isVisible={optionsModalView}
+      onBackdropPress={handleOptionsModal}
+      backdropOpacity={0}
+      animationIn={'fadeInDown'}
+      animationOut={'fadeOutUp'}
+      useNativeDriver={true}>
+      <View style={[styles.OptionsModal, {top: top}]}>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenImportDataModal(true);
+            handleOptionsModal();
+          }}
+          activeOpacity={0.4}
+          style={styles.ImportData}>
+          <Text style={styles.ImportDataText}>Import Data</Text>
+        </TouchableOpacity>
+        {/* <TouchableOpacity
         onPress={() => handleOpenAddStudentModal(true)}
         activeOpacity={0.4}
         style={styles.AddStudent}>
@@ -48,34 +52,35 @@ const ViewClassScreenOptionsModal = props => {
         style={styles.RemoveStudent}>
         <Text style={styles.RemoveStudentText}>Remove Student</Text>
       </TouchableOpacity> */}
-      <TouchableOpacity
-        onPress={() => {
-          handleOpenViewRecordModal(true);
-          handleOptionsModal();
-        }}
-        activeOpacity={0.4}
-        style={styles.ViewRecord}>
-        <Text style={styles.ViewRecordText}>View Record</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          handleOpenGenerateReportModal(true);
-          handleOptionsModal();
-        }}
-        activeOpacity={0.4}
-        style={styles.GenerateReport}>
-        <Text style={styles.GenerateReportText}>Generate Report</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          handleOpenDeleteClassModal(true);
-          handleOptionsModal();
-        }}
-        activeOpacity={0.4}
-        style={styles.DeleteClass}>
-        <Text style={styles.DeleteClassText}>Delete Class</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenViewRecordModal(true);
+            handleOptionsModal();
+          }}
+          activeOpacity={0.4}
+          style={styles.ViewRecord}>
+          <Text style={styles.ViewRecordText}>View Record</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenGenerateReportModal(true);
+            handleOptionsModal();
+          }}
+          activeOpacity={0.4}
+          style={styles.GenerateReport}>
+          <Text style={styles.GenerateReportText}>Generate Report</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            handleOpenDeleteClassModal(true);
+            handleOptionsModal();
+          }}
+          activeOpacity={0.4}
+          style={styles.DeleteClass}>
+          <Text style={styles.DeleteClassText}>Delete Class</Text>
+        </TouchableOpacity>
+      </View>
+    </Modal>
   );
 };
 
@@ -83,7 +88,6 @@ export default ViewClassScreenOptionsModal;
 
 const styles = StyleSheet.create({
   OptionsModal: {
-    width: '50%',
     flexDirection: 'column',
     padding: SPACING.space_8,
     borderRadius: BORDERRADIUS.radius_10,
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: SPACING.space_12,
     zIndex: 10,
-    elevation: Platform.OS === 'android' ? 2 : 0,
+    elevation: Platform.OS === 'android' ? 3 : 0,
   },
   ImportData: {
     padding: SPACING.space_8,

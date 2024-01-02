@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  Keyboard,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -23,11 +25,14 @@ import {refreshTotalAttendanceFunc} from '../redux/refreshTotalAttendance';
 const SelectDateModal = props => {
   const {handleCloseSelectDateModal, selectDateModalView, studentsData, id} =
     props;
-  const [date, setDate] = useState(null);
-  const [month, setMonth] = useState(null);
-  const [year, setYear] = useState(null);
+  const [date, setDate] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   const [attendanceBinaryArray, setAttendanceBinaryArray] = useState([]);
   const [previousTotalAttendance, setPreviousTotalAttendance] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const {refreshTotalAttendanceValue} = useSelector(
     state => state.refreshTotalAttendanceDetails,
   );
@@ -51,97 +56,148 @@ const SelectDateModal = props => {
     return tempArray;
   };
 
+  const getDateAsKeyValidity = dateAsKey => {
+    if (dateAsKey.length !== 10) {
+      setError('Enter Date In Valid Format');
+      setShowLoader(false);
+      return false;
+    } else {
+      if (date > 31 || date < 1 || month > 12 || month < 1) {
+        setError('Enter Valid Date');
+        setShowLoader(false);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const clearDateValues = () => {
+    setDate('');
+    setMonth('');
+    setYear('');
+    setError(null);
+    setSuccess(null);
+  };
+
   const submitAttendance = async () => {
     try {
       const dateAsKey = '' + date + '-' + month + '-' + year;
-      if (previousTotalAttendance.length === 0) {
-        // Update total attendance
-        firestore()
-          .collection('Classes')
-          .doc(id)
-          .set(
-            {
-              totalAttendance: attendanceBinaryArray,
-            },
-            {merge: true},
-          )
-          .then(() => {
-            dispatch(refreshTotalAttendanceFunc());
-          });
+      const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
 
-        // Marking current attendance
-        const markAttendance = await firestore()
-          .collection('Attendance')
-          .doc(id)
-          .set(
-            {
-              [dateAsKey]: attendanceBinaryArray,
-            },
-            {merge: true},
-          );
-      } else {
-        const attendanceDetails = await firestore()
-          .collection('Attendance')
-          .doc(id)
-          .get();
+      if (isDateAsKeyValid) {
+        if (previousTotalAttendance.length === 0) {
+          // Update total attendance
+          firestore()
+            .collection('Classes')
+            .doc(id)
+            .set(
+              {
+                totalAttendance: attendanceBinaryArray,
+              },
+              {merge: true},
+            )
+            .then(() => {
+              dispatch(refreshTotalAttendanceFunc());
+            });
 
-        if (attendanceDetails) {
-          if (attendanceDetails._data[dateAsKey]) {
-            const newTotalAttendanceArray = getNewTotalAttendance(
-              attendanceDetails._data[dateAsKey],
-            );
+          // Marking current attendance
+          firestore()
+            .collection('Attendance')
+            .doc(id)
+            .set(
+              {
+                [dateAsKey]: attendanceBinaryArray,
+              },
+              {merge: true},
+            )
+            .then(() => {
+              setShowLoader(false);
+              setSuccess('Attendance Marked');
+              setTimeout(() => {
+                handleCloseSelectDateModal(false);
+                clearDateValues();
+              }, 2000);
+            });
+        } else {
+          const attendanceDetails = await firestore()
+            .collection('Attendance')
+            .doc(id)
+            .get();
 
-            // Update total attendance
-            firestore()
-              .collection('Classes')
-              .doc(id)
-              .set(
-                {
-                  totalAttendance: newTotalAttendanceArray,
-                },
-                {merge: true},
-              )
-              .then(() => {
-                dispatch(refreshTotalAttendanceFunc());
-              });
-
-            // Marking current attendance
-            const markAttendance = await firestore()
-              .collection('Attendance')
-              .doc(id)
-              .set(
-                {
-                  [dateAsKey]: attendanceBinaryArray,
-                },
-                {merge: true},
+          if (attendanceDetails) {
+            if (attendanceDetails._data[dateAsKey]) {
+              const newTotalAttendanceArray = getNewTotalAttendance(
+                attendanceDetails._data[dateAsKey],
               );
-          } else {
-            const newTotalAttendanceArray = getNewTotalAttendance(null);
 
-            // Update total attendance
-            firestore()
-              .collection('Classes')
-              .doc(id)
-              .set(
-                {
-                  totalAttendance: newTotalAttendanceArray,
-                },
-                {merge: true},
-              )
-              .then(() => {
-                dispatch(refreshTotalAttendanceFunc());
-              });
+              // Update total attendance
+              firestore()
+                .collection('Classes')
+                .doc(id)
+                .set(
+                  {
+                    totalAttendance: newTotalAttendanceArray,
+                  },
+                  {merge: true},
+                )
+                .then(() => {
+                  dispatch(refreshTotalAttendanceFunc());
+                });
 
-            // Marking current attendance
-            const markAttendance = await firestore()
-              .collection('Attendance')
-              .doc(id)
-              .set(
-                {
-                  [dateAsKey]: attendanceBinaryArray,
-                },
-                {merge: true},
-              );
+              // Marking current attendance
+              firestore()
+                .collection('Attendance')
+                .doc(id)
+                .set(
+                  {
+                    [dateAsKey]: attendanceBinaryArray,
+                  },
+                  {merge: true},
+                )
+                .then(() => {
+                  setShowLoader(false);
+                  setSuccess('Attendance Marked');
+                  setTimeout(() => {
+                    handleCloseSelectDateModal(false);
+                    clearDateValues();
+                  }, 2000);
+                });
+            } else {
+              const newTotalAttendanceArray = getNewTotalAttendance(null);
+
+              // Update total attendance
+              firestore()
+                .collection('Classes')
+                .doc(id)
+                .set(
+                  {
+                    totalAttendance: newTotalAttendanceArray,
+                  },
+                  {merge: true},
+                )
+                .then(() => {
+                  dispatch(refreshTotalAttendanceFunc());
+                });
+
+              // Marking current attendance
+              firestore()
+                .collection('Attendance')
+                .doc(id)
+                .set(
+                  {
+                    [dateAsKey]: attendanceBinaryArray,
+                  },
+                  {merge: true},
+                )
+                .then(() => {
+                  setShowLoader(false);
+                  setSuccess('Attendance Marked');
+                  setTimeout(() => {
+                    handleCloseSelectDateModal(false);
+                    clearDateValues();
+                  }, 2000);
+                });
+            }
           }
         }
       }
@@ -183,7 +239,11 @@ const SelectDateModal = props => {
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={selectDateModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={selectDateModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',
@@ -196,7 +256,11 @@ const SelectDateModal = props => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.CloseModalButton}
-                onPress={() => handleCloseSelectDateModal(false)}>
+                onPress={() => {
+                  handleCloseSelectDateModal(false);
+                  clearDateValues();
+                  Keyboard.dismiss();
+                }}>
                 <Ionicons
                   name="close"
                   size={FONTSIZE.size_30}
@@ -204,9 +268,6 @@ const SelectDateModal = props => {
               </TouchableOpacity>
             </View>
             <Text style={styles.SelectDateTitle}>Enter Date</Text>
-            {/* <Text style={styles.SelectDateTextInfo}>
-              Select the date for marking attendance
-            </Text> */}
             <View style={styles.DateInputFields}>
               <TextInput
                 style={styles.InputField}
@@ -237,15 +298,33 @@ const SelectDateModal = props => {
             </View>
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                disabled={
+                  date === '' || month === '' || year === '' ? true : false
+                }
                 onPress={() => {
-                  handleCloseSelectDateModal(false);
+                  setShowLoader(true);
                   submitAttendance();
+                  Keyboard.dismiss();
                 }}
                 activeOpacity={0.6}
                 style={styles.SelectDateButton}>
-                <Text style={styles.SelectDateText}>Submit</Text>
+                {!showLoader && (
+                  <Text style={styles.SelectDateText}>Submit</Text>
+                )}
+                {showLoader && (
+                  <ActivityIndicator
+                    size={30}
+                    color={COLORS.primaryLight}
+                    animating={showLoader}
+                  />
+                )}
               </TouchableOpacity>
             </View>
+            {error === null && success === null && (
+              <Text style={styles.DummyText}>-</Text>
+            )}
+            {error && <Text style={styles.ErrorText}>{error}</Text>}
+            {success && <Text style={styles.SuccessText}>{success}</Text>}
           </View>
         </View>
       </Modal>
@@ -312,5 +391,23 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
+  },
+  SuccessText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.present,
   },
 });

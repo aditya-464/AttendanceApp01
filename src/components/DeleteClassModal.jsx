@@ -84,7 +84,11 @@ const DeleteClassModal = props => {
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={deleteClassModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={deleteClassModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',
