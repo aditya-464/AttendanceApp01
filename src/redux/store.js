@@ -3,6 +3,7 @@ import authReducer from './auth.js';
 import refreshHomeReducer from './refreshHomeScreen.js';
 import refreshClassReducer from './refreshViewClassScreen.js';
 import refreshTotalAttendanceReducer from './refreshTotalAttendance.js';
+import refreshNotesReducer from './refreshNotesScreen.js';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     refreshHomeDetails: refreshHomeReducer,
     refreshClassDetails: refreshClassReducer,
     refreshTotalAttendanceDetails: refreshTotalAttendanceReducer,
+    refreshNotesDetails: refreshNotesReducer,
   },
 });

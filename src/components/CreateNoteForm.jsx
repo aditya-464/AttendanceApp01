@@ -1,24 +1,85 @@
 import {
+  ActivityIndicator,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Formik} from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
+import {createNoteSchema} from './FormValidationSchemas/CreateNoteValidationSchema';
+import {useDispatch, useSelector} from 'react-redux';
+import {refreshNotesDetails} from '../redux/refreshNotesScreen';
+import firestore from '@react-native-firebase/firestore';
 
-const CreateNoteForm = () => {
+const CreateNoteForm = props => {
+  const {isNoteCreationDone} = props;
+  const {uid} = useSelector(state => state.authDetails);
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  const handleCreateNote = async values => {
+    try {
+      let {subject, content} = values;
+      subject = subject.trim();
+      content = content.trim();
+
+      const createNote = await firestore().collection('Notes').add({
+        subject: subject,
+        content: content,
+      });
+
+      const getOldNotesArray = await firestore()
+        .collection('Users')
+        .doc(uid)
+        .get();
+
+      if (getOldNotesArray && createNote) {
+        const tempArray = getOldNotesArray._data.notes;
+        tempArray.push({
+          id: createNote.id,
+          subject: subject,
+          bgcolor: tempArray.length % 2 == 0 ? 'dark' : 'light',
+        });
+
+        firestore()
+          .collection('Users')
+          .doc(uid)
+          .update({
+            notes: tempArray,
+          })
+          .then(() => {
+            dispatch(refreshNotesDetails());
+            isNoteCreationDone();
+            setTimeout(() => {
+              setShowLoader(false);
+            }, 3000);
+          });
+      }
+    } catch (error) {
+      setError(error.message);
+      setShowLoader(false);
+
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+    }
+  };
+
   return (
     <>
       <Formik
+        validationSchema={createNoteSchema}
         initialValues={{subject: '', content: ''}}
-        onSubmit={values => console.log(values)}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
-          <View style={styles.CreateNoteForm}>
+        onSubmit={values => handleCreateNote(values)}>
+        {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+          <ScrollView style={styles.CreateNoteForm}>
             <View style={styles.FormField}>
               <View style={styles.FormFieldIonicons}>
                 <Ionicons
@@ -51,17 +112,50 @@ const CreateNoteForm = () => {
                 onChangeText={handleChange('content')}
                 onBlur={handleBlur('content')}
                 value={values.content}
-                numberOfLines={1}
+                keyboardType="default"
+                // numberOfLines={3}
+                // multiline={true}
                 placeholder="Content"
                 placeholderTextColor={COLORS.placeholder}
-                multiline
               />
             </View>
 
-            <TouchableOpacity activeOpacity={0.6} style={styles.CreateNoteBtn}>
-              <Text style={styles.CreateNoteText}>Create</Text>
+            <TouchableOpacity
+              disabled={
+                errors.content ||
+                errors.subject ||
+                values.content === '' ||
+                values.subject === ''
+                  ? true
+                  : false
+              }
+              onPress={() => {
+                handleSubmit();
+                setShowLoader(true);
+                setError(null);
+              }}
+              activeOpacity={0.6}
+              style={styles.CreateNoteBtn}>
+              {!showLoader && <Text style={styles.CreateNoteText}>Create</Text>}
+              {showLoader && (
+                <ActivityIndicator
+                  animating={showLoader}
+                  size={26}
+                  color={COLORS.primaryLight}
+                />
+              )}
             </TouchableOpacity>
-          </View>
+
+            <View style={{marginTop: SPACING.space_15}}>
+              {error && <Text style={styles.FormFieldError}>{error}</Text>}
+              {errors.subject && (
+                <Text style={styles.FormFieldError}>{errors.subject}</Text>
+              )}
+              {errors.content && (
+                <Text style={styles.FormFieldError}>{errors.content}</Text>
+              )}
+            </View>
+          </ScrollView>
         )}
       </Formik>
     </>
@@ -74,7 +168,7 @@ const styles = StyleSheet.create({
   CreateNoteForm: {
     paddingLeft: SPACING.space_12,
     paddingRight: SPACING.space_12,
-    backgroundColor : COLORS.primaryLight,
+    backgroundColor: COLORS.primaryLight,
   },
   FormField: {
     display: 'flex',
@@ -111,5 +205,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_16,
+  },
+  FormFieldError: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

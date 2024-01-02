@@ -83,7 +83,7 @@ const CreateClassForm = props => {
             isClassCreationDone();
             setTimeout(() => {
               setShowLoader(false);
-            }, 5000);
+            }, 3000);
           });
       }
     } catch (error) {

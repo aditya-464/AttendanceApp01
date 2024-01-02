@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   FlatList,
   SafeAreaView,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -17,48 +18,51 @@ import {
 } from '../themes/Theme';
 import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
-const FlatListData = [
-  {
-    id: 'item1',
-    title: 'Operating Systems Test',
-    subject: 'Exam to be taken on Memory Management and File System',
-    bgcolor: 'dark',
-  },
-  {
-    id: 'item2',
-    title: 'Data Structure and Algorithms Notes',
-    subject: 'Exam to be taken on Memory Management and File System',
-    bgcolor: 'light',
-  },
-  {
-    id: 'item3',
-    title: 'Mock Test Preparation',
-    subject: 'Exam to be taken on Memory Management and File System',
-    bgcolor: 'dark',
-  },
-  {
-    id: 'item4',
-    title: 'Avenir and Inceptra Donation',
-    subject: 'Exam to be taken on Memory Management and File System',
-    bgcolor: 'light',
-  },
-  {
-    id: 'item5',
-    title: '5th Semester Marksheet Distribution',
-    subject: 'Exam to be taken on Memory Management and File System',
-    bgcolor: 'dark',
-  },
-];
+// const FlatListData = [
+//   {
+//     id: 'item1',
+//     title: 'Operating Systems Test',
+//     subject: 'Exam to be taken on Memory Management and File System',
+//     bgcolor: 'dark',
+//   },
+//   {
+//     id: 'item2',
+//     title: 'Data Structure and Algorithms Notes',
+//     subject: 'Exam to be taken on Memory Management and File System',
+//     bgcolor: 'light',
+//   },
+//   {
+//     id: 'item3',
+//     title: 'Mock Test Preparation',
+//     subject: 'Exam to be taken on Memory Management and File System',
+//     bgcolor: 'dark',
+//   },
+//   {
+//     id: 'item4',
+//     title: 'Avenir and Inceptra Donation',
+//     subject: 'Exam to be taken on Memory Management and File System',
+//     bgcolor: 'light',
+//   },
+//   {
+//     id: 'item5',
+//     title: '5th Semester Marksheet Distribution',
+//     subject: 'Exam to be taken on Memory Management and File System',
+//     bgcolor: 'dark',
+//   },
+// ];
 
-const FlatListItem = ({navigation, title, bgcolor}) => (
+const FlatListItem = ({navigation, subject, bgcolor}) => (
   <TouchableOpacity
     onPress={() => navigation.navigate('ViewNoteScreen')}
     activeOpacity={0.6}
     style={[
       styles.NotesListItem,
       {
-        backgroundColor: bgcolor === 'dark' ? COLORS.primaryDark : 'white',
+        backgroundColor:
+          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
       },
     ]}>
     <View style={styles.NotesListItemTop}>
@@ -70,14 +74,35 @@ const FlatListItem = ({navigation, title, bgcolor}) => (
               bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
           },
         ]}>
-        {title}
+        {subject}
       </Text>
     </View>
   </TouchableOpacity>
 );
 
 const NotesScreen = props => {
+  const [notesData, setNotesData] = useState([]);
+  const [showLoader, setShowLoader] = useState(true);
   const {navigation} = props;
+  const {uid} = useSelector(state => state.authDetails);
+  const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
+
+  const getUserDetails = async uid => {
+    try {
+      const user = await firestore().collection('Users').doc(uid).get();
+      if (user._data) {
+        setNotesData(user._data.notes);
+        setShowLoader(false);
+      }
+    } catch (error) {
+      setShowLoader(false);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails(uid);
+  }, [refreshNotesValue, uid]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
@@ -106,18 +131,32 @@ const NotesScreen = props => {
             color={COLORS.primaryLight}></Ionicons>
         </TouchableOpacity>
       </View>
-      <FlatList
-        data={FlatListData}
-        renderItem={({item}) => (
-          <FlatListItem
-            navigation={navigation}
-            title={item.title}
-            bgcolor={item.bgcolor}
-          />
-        )}
-        keyExtractor={item => item.id}
-        scrollEnabled={true}
-      />
+      {!showLoader && (
+        <FlatList
+          data={notesData}
+          renderItem={({item}) => (
+            <FlatListItem
+              navigation={navigation}
+              subject={item.subject}
+              bgcolor={item.bgcolor}
+            />
+          )}
+          keyExtractor={item => item.id}
+          scrollEnabled={true}
+          ListEmptyComponent={
+            <View style={styles.EmptyListView}>
+              <Text style={styles.EmptyListViewText}>No Notes</Text>
+            </View>
+          }
+        />
+      )}
+      {showLoader && (
+        <ActivityIndicator
+          animating={showLoader}
+          size={30}
+          color={COLORS.placeholder}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -182,5 +221,14 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.size_18,
     color: COLORS.primaryDark,
+  },
+  EmptyListView: {
+    marginTop: SPACING.space_15,
+  },
+  EmptyListViewText: {
+    fontFamily: FONTFAMILY.poppins_semibold,
+    fontSize: FONTSIZE.size_18,
+    color: COLORS.placeholder,
+    textAlign: 'center',
   },
 });

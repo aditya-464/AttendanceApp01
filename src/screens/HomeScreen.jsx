@@ -18,9 +18,8 @@ import {
 } from '../themes/Theme';
 import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-import {setClassesData} from '../redux/refreshHomeScreen';
 
 // const FlatListData = [
 //   {

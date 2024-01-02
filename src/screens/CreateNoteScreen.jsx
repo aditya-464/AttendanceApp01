@@ -12,8 +12,14 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 
 const CreateNoteScreen = props => {
   const {navigation} = props;
+
+  const isNoteCreationDone = () => {
+    navigation.navigate('NotesScreen');
+  };
+
   return (
-    <SafeAreaView style={{backgroundColor: COLORS.primaryLight}}>
+    <SafeAreaView
+      style={{height: '100%', backgroundColor: COLORS.primaryLight}}>
       <View style={styles.CreateNoteContainer}>
         <View style={styles.TitleBar}>
           <TouchableOpacity
@@ -28,7 +34,8 @@ const CreateNoteScreen = props => {
           </TouchableOpacity>
           <Text style={styles.CreateNoteText}>Create Note</Text>
         </View>
-        <CreateNoteForm></CreateNoteForm>
+        <CreateNoteForm
+          isNoteCreationDone={isNoteCreationDone}></CreateNoteForm>
       </View>
     </SafeAreaView>
   );
