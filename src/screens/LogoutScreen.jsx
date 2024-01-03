@@ -1,17 +1,56 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {removeAuthDetails} from '../redux/auth';
 
 const LogoutScreen = props => {
   const {navigation} = props;
+  const [showLoader, setShowLoader] = useState(false);
+  const dispatch = useDispatch();
+
+  const clearAllStoredData = async () => {
+    try {
+      await AsyncStorage.removeItem('name');
+      await AsyncStorage.removeItem('email');
+      await AsyncStorage.removeItem('uid');
+      await AsyncStorage.removeItem('password');
+      dispatch(removeAuthDetails());
+      setShowLoader(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      auth()
+        .signOut()
+        .then(() => {
+          clearAllStoredData();
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Welcome'}],
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
@@ -34,11 +73,27 @@ const LogoutScreen = props => {
           Are you certain you wish to Logout?
         </Text>
         <View style={styles.ActionButtons}>
-          <TouchableOpacity activeOpacity={0.6} style={styles.NoButton}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('HomeStackNavigator')}
+            activeOpacity={0.6}
+            style={styles.NoButton}>
             <Text style={styles.NoButtonText}>No</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.6} style={styles.YesButton}>
-            <Text style={styles.YesButtonText}>Yes</Text>
+          <TouchableOpacity
+            onPress={() => {
+              handleLogout();
+              setShowLoader(true);
+            }}
+            activeOpacity={0.6}
+            style={styles.YesButton}>
+            {!showLoader && <Text style={styles.YesButtonText}>Yes</Text>}
+            {showLoader && (
+              <ActivityIndicator
+                size={30}
+                color={COLORS.placeholder}
+                animating={showLoader}
+              />
+            )}
           </TouchableOpacity>
         </View>
       </View>

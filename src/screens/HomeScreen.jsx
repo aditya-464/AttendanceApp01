@@ -89,7 +89,7 @@ const FlatListItem = ({
       styles.ClassListItem,
       {
         backgroundColor:
-          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
+          bgcolor === 'dark' ? COLORS.secondaryLight : COLORS.primaryLight,
       },
     ]}>
     <View style={styles.ClassListItemTop}>
@@ -97,8 +97,7 @@ const FlatListItem = ({
         style={[
           styles.ClassListItemTopText,
           {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+            color: bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryDark,
           },
         ]}>
         {subject}
@@ -109,8 +108,7 @@ const FlatListItem = ({
         style={[
           styles.ClassListItemBottomText,
           {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+            color: bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryDark,
           },
         ]}>
         {branch + ' - '}
@@ -119,8 +117,7 @@ const FlatListItem = ({
         style={[
           styles.ClassListItemBottomText,
           {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+            color: bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryDark,
           },
         ]}>
         {semester + ' - '}
@@ -129,8 +126,7 @@ const FlatListItem = ({
         style={[
           styles.ClassListItemBottomText,
           {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+            color: bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryDark,
           },
         ]}>
         {section}
@@ -274,6 +270,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     backgroundColor: COLORS.secondaryLight,
+    marginTop: SPACING.space_8,
     marginBottom: SPACING.space_20,
     borderRadius: BORDERRADIUS.radius_10,
     padding: SPACING.space_20,
