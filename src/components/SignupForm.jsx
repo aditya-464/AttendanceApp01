@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SignupForm = props => {
   const {isSignupDone} = props;
   const [showLoader, setShowLoader] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
@@ -86,7 +87,7 @@ const SignupForm = props => {
     <>
       <Formik
         validationSchema={signupSchema}
-        initialValues={{name: '', email: '', password: '', confirmPassword: ''}}
+        initialValues={{name: '', email: '', password: ''}}
         onSubmit={values => handleSignup(values)}>
         {({handleChange, handleBlur, handleSubmit, values, errors}) => (
           <ScrollView style={styles.SignupForm}>
@@ -144,28 +145,19 @@ const SignupForm = props => {
                 maxLength={20}
                 placeholder="Password"
                 placeholderTextColor={COLORS.placeholder}
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
               />
-            </View>
-            <View style={styles.FormField}>
-              <View style={styles.FormFieldIonicons}>
-                <Ionicons
-                  name="lock-open-outline"
-                  size={FONTSIZE.size_24}
-                  color={COLORS.placeholder}></Ionicons>
+              <View>
+                <TouchableOpacity
+                  onPress={() => setShowPassword(prev => !prev)}
+                  activeOpacity={0.6}
+                  style={styles.PasswordIconButton}>
+                  <Ionicons
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={FONTSIZE.size_24}
+                    color={COLORS.placeholder}></Ionicons>
+                </TouchableOpacity>
               </View>
-              <TextInput
-                name="confirmPassword"
-                style={styles.InputField}
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={handleBlur('confirmPassword')}
-                value={values.confirmPassword}
-                numberOfLines={1}
-                maxLength={20}
-                placeholder="Confirm Password"
-                placeholderTextColor={COLORS.placeholder}
-                secureTextEntry={true}
-              />
             </View>
 
             <TouchableOpacity
@@ -173,11 +165,9 @@ const SignupForm = props => {
                 errors.name ||
                 errors.email ||
                 errors.password ||
-                errors.confirmPassword ||
                 values.name === '' ||
                 values.email === '' ||
-                values.password === '' ||
-                values.confirmPassword === ''
+                values.password === ''
                   ? true
                   : false
               }
@@ -208,11 +198,6 @@ const SignupForm = props => {
               )}
               {errors.password && (
                 <Text style={styles.FormFieldError}>{errors.password}</Text>
-              )}
-              {errors.confirmPassword && (
-                <Text style={styles.FormFieldError}>
-                  {errors.confirmPassword}
-                </Text>
               )}
             </View>
           </ScrollView>
@@ -252,6 +237,9 @@ const styles = StyleSheet.create({
     marginTop: SPACING.space_4,
     borderBottomWidth: 0.2,
     borderColor: '#cccccc',
+  },
+  PasswordIconButton: {
+    paddingHorizontal: SPACING.space_12,
   },
   SignupBtn: {
     width: '100%',

@@ -95,7 +95,7 @@ const ProfileScreen = props => {
               editable={showUpdateAndCancelButtons}
               value={password}
               onChangeText={text => setPassword(text)}></TextInput>
-            <View style={{borderLeftWidth: 1, borderColor: COLORS.placeholder}}>
+            <View>
               <TouchableOpacity
                 onPress={() => setShowPassword(prev => !prev)}
                 activeOpacity={0.6}
