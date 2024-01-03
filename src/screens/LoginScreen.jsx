@@ -13,7 +13,10 @@ const LoginScreen = props => {
   const {navigation} = props;
   const isLoginDone = value => {
     if (value) {
-      navigation.navigate('DrawerNavigator');
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'DrawerNavigator'}],
+      });
     }
   };
 
@@ -53,8 +56,8 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_28,
     marginVertical: SPACING.space_16,
     paddingHorizontal: SPACING.space_12,
-    color : COLORS.primaryDark,
-    opacity : 0.9,
+    color: COLORS.primaryDark,
+    opacity: 0.9,
   },
   SignupOption: {
     paddingBottom: SPACING.space_20,

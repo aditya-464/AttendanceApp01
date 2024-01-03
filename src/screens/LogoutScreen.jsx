@@ -89,8 +89,8 @@ const LogoutScreen = props => {
             {!showLoader && <Text style={styles.YesButtonText}>Yes</Text>}
             {showLoader && (
               <ActivityIndicator
-                size={30}
-                color={COLORS.placeholder}
+                size={26}
+                color={COLORS.primaryLight}
                 animating={showLoader}
               />
             )}

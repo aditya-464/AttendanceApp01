@@ -313,7 +313,7 @@ const SelectDateModal = props => {
                 )}
                 {showLoader && (
                   <ActivityIndicator
-                    size={30}
+                    size={26}
                     color={COLORS.primaryLight}
                     animating={showLoader}
                   />

@@ -151,8 +151,8 @@ const EditNoteModal = props => {
                 {!showLoader && <Text style={styles.EditNoteText}>Edit</Text>}
                 {showLoader && (
                   <ActivityIndicator
-                    size={30}
-                    color={COLORS.placeholder}
+                    size={26}
+                    color={COLORS.primaryLight}
                     animating={showLoader}
                   />
                 )}

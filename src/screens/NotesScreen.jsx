@@ -62,7 +62,7 @@ const FlatListItem = ({navigation, id, subject, bgcolor}) => (
       styles.NotesListItem,
       {
         backgroundColor:
-          bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryLight,
+          bgcolor === 'dark' ? COLORS.secondaryLight : COLORS.primaryLight,
       },
     ]}>
     <View style={styles.NotesListItemTop}>
@@ -70,8 +70,7 @@ const FlatListItem = ({navigation, id, subject, bgcolor}) => (
         style={[
           styles.NotesListItemTopText,
           {
-            color:
-              bgcolor === 'dark' ? COLORS.primaryLight : COLORS.primaryDark,
+            color: bgcolor === 'dark' ? COLORS.primaryDark : COLORS.primaryDark,
           },
         ]}>
         {subject}
