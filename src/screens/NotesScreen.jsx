@@ -21,39 +21,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
-// const FlatListData = [
-//   {
-//     id: 'item1',
-//     title: 'Operating Systems Test',
-//     subject: 'Exam to be taken on Memory Management and File System',
-//     bgcolor: 'dark',
-//   },
-//   {
-//     id: 'item2',
-//     title: 'Data Structure and Algorithms Notes',
-//     subject: 'Exam to be taken on Memory Management and File System',
-//     bgcolor: 'light',
-//   },
-//   {
-//     id: 'item3',
-//     title: 'Mock Test Preparation',
-//     subject: 'Exam to be taken on Memory Management and File System',
-//     bgcolor: 'dark',
-//   },
-//   {
-//     id: 'item4',
-//     title: 'Avenir and Inceptra Donation',
-//     subject: 'Exam to be taken on Memory Management and File System',
-//     bgcolor: 'light',
-//   },
-//   {
-//     id: 'item5',
-//     title: '5th Semester Marksheet Distribution',
-//     subject: 'Exam to be taken on Memory Management and File System',
-//     bgcolor: 'dark',
-//   },
-// ];
-
 const FlatListItem = ({navigation, id, subject, bgcolor}) => (
   <TouchableOpacity
     onPress={() => navigation.navigate('ViewNoteScreen', {id, subject})}
@@ -86,11 +53,32 @@ const NotesScreen = props => {
   const {uid} = useSelector(state => state.authDetails);
   const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
 
+  const getUpdatedNotesData = oldArray => {
+    let newArray = [];
+    for (let i = 0; i < oldArray.length; i++) {
+      if (i & 1) {
+        newArray.push({
+          id: oldArray[i].id,
+          subject: oldArray[i].subject,
+          bgcolor: 'light',
+        });
+      } else {
+        newArray.push({
+          id: oldArray[i].id,
+          subject: oldArray[i].subject,
+          bgcolor: 'dark',
+        });
+      }
+    }
+    return newArray;
+  };
+
   const getUserDetails = async uid => {
     try {
       const user = await firestore().collection('Users').doc(uid).get();
       if (user._data) {
-        setNotesData(user._data.notes);
+        const newArray = getUpdatedNotesData(user._data.notes);
+        setNotesData(newArray);
         setShowLoader(false);
       }
     } catch (error) {
@@ -209,6 +197,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     backgroundColor: COLORS.secondaryLight,
+    marginTop: SPACING.space_8,
     marginBottom: SPACING.space_20,
     borderRadius: BORDERRADIUS.radius_10,
     padding: SPACING.space_20,

@@ -69,7 +69,6 @@ const CreateClassForm = props => {
           semester: semester,
           section: section,
           initials: initials,
-          bgcolor: tempArray.length % 2 == 0 ? 'dark' : 'light',
         });
 
         firestore()

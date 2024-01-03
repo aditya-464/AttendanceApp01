@@ -21,49 +21,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 
-// const FlatListData = [
-//   {
-//     id: 'item1',
-//     subject: 'Operating Systems',
-//     branch: 'IT',
-//     semester: '5',
-//     section: 'C',
-//     bgcolor: 'dark',
-//   },
-//   {
-//     id: 'item2',
-//     subject: 'Artificial Intelligence',
-//     branch: 'IT',
-//     semester: '5',
-//     section: 'C',
-//     bgcolor: 'light',
-//   },
-//   {
-//     id: 'item3',
-//     subject: 'Computer Networks',
-//     branch: 'IT',
-//     semester: '5',
-//     section: 'C',
-//     bgcolor: 'dark',
-//   },
-//   {
-//     id: 'item4',
-//     subject: 'Data Base Management System',
-//     branch: 'IT',
-//     semester: '5',
-//     section: 'C',
-//     bgcolor: 'light',
-//   },
-//   {
-//     id: 'item5',
-//     subject: 'Object Oriented Programming Language',
-//     branch: 'IT',
-//     semester: '5',
-//     section: 'C',
-//     bgcolor: 'dark',
-//   },
-// ];
-
 const FlatListItem = ({
   navigation,
   id,
@@ -142,11 +99,40 @@ const HomeScreen = props => {
   const {uid} = useSelector(state => state.authDetails);
   const {refreshHomeValue} = useSelector(state => state.refreshHomeDetails);
 
+  const getUpdatedClassesData = oldArray => {
+    let newArray = [];
+    for (let i = 0; i < oldArray.length; i++) {
+      if (i & 1) {
+        newArray.push({
+          id: oldArray[i].id,
+          subject: oldArray[i].subject,
+          branch: oldArray[i].branch,
+          semester: oldArray[i].semester,
+          section: oldArray[i].section,
+          initials: oldArray[i].initials,
+          bgcolor: 'light',
+        });
+      } else {
+        newArray.push({
+          id: oldArray[i].id,
+          subject: oldArray[i].subject,
+          branch: oldArray[i].branch,
+          semester: oldArray[i].semester,
+          section: oldArray[i].section,
+          initials: oldArray[i].initials,
+          bgcolor: 'dark',
+        });
+      }
+    }
+    return newArray;
+  };
+
   const getUserDetails = async uid => {
     try {
       const user = await firestore().collection('Users').doc(uid).get();
       if (user._data) {
-        setClassesData(user._data.classes);
+        const newArray = getUpdatedClassesData(user._data.classes);
+        setClassesData(newArray);
         setShowLoader(false);
       }
     } catch (error) {
