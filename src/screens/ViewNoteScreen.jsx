@@ -20,6 +20,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const ViewNoteScreen = props => {
   const {navigation} = props;
+  const [subject, setSubject] = useState(null);
   const [content, setContent] = useState(null);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
   const [modalView, setModalView] = useState(false);
@@ -28,6 +29,7 @@ const ViewNoteScreen = props => {
   const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
   const [showLoader, setShowLoader] = useState(true);
   const route = useRoute();
+  const {uid} = useSelector(state => state.authDetails);
 
   const handleOptionsModal = () => {
     setModalView(prev => !prev);
@@ -57,8 +59,17 @@ const ViewNoteScreen = props => {
   const getNoteDetails = async id => {
     try {
       const noteDetails = await firestore().collection('Notes').doc(id).get();
-      if (noteDetails._data.content) {
+      const userDetails = await firestore().collection('Users').doc(uid).get();
+      if (noteDetails._data.content && userDetails._data) {
         setContent(noteDetails._data.content);
+        const notes = userDetails._data.notes;
+        console.log(notes);
+        for (let i = 0; i < notes.length; i++) {
+          if (notes[i].id === id) {
+            setSubject(notes[i].subject);
+            break;
+          }
+        }
         setShowLoader(false);
       }
     } catch (error) {
@@ -113,15 +124,17 @@ const ViewNoteScreen = props => {
       <EditNoteModal
         handleCloseEditNoteModalView={handleCloseEditNoteModalView}
         editNoteModalView={editNoteModalView}
+        id={route.params.id}
       />
       <DeleteNoteModal
         handleCloseDeleteNoteModalView={handleCloseDeleteNoteModalView}
         deleteNoteModalView={deleteNoteModalView}
+        id={route.params.id}
       />
       {!showLoader && (
         <ScrollView>
           <View style={styles.NoteSubject}>
-            <Text style={styles.NoteSubjectText}>{route.params.subject}</Text>
+            <Text style={styles.NoteSubjectText}>{subject}</Text>
           </View>
           <View style={styles.NoteContent}>
             <Text style={styles.NoteContentText}>{content}</Text>

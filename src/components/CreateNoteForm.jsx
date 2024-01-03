@@ -31,7 +31,6 @@ const CreateNoteForm = props => {
       content = content.trim();
 
       const createNote = await firestore().collection('Notes').add({
-        subject: subject,
         content: content,
       });
 

@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  Keyboard,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -16,15 +18,90 @@ import {
 } from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import firestore from '@react-native-firebase/firestore';
+import {useRoute} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {refreshNotesDetails} from '../redux/refreshNotesScreen';
 
 const EditNoteModal = props => {
-  const [subject, setSubject] = useState(null);
-  const [content, setContent] = useState(null);
-  const {handleCloseEditNoteModalView, editNoteModalView} = props;
+  const {handleCloseEditNoteModalView, editNoteModalView, id} = props;
+  const [subject, setSubject] = useState('');
+  const [content, setContent] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(null);
+  const {uid} = useSelector(state => state.authDetails);
+  const dispatch = useDispatch();
+
+  const handleEditNote = async () => {
+    try {
+      console.log(subject);
+      console.log(content);
+      if (subject === '' || content === '') {
+        setError('All Fields Are Required');
+        setShowLoader(false);
+      } else {
+        setShowLoader(true);
+        const userDetails = await firestore()
+          .collection('Users')
+          .doc(uid)
+          .get();
+
+        const updateContent = await firestore()
+          .collection('Notes')
+          .doc(id)
+          .set({
+            content: content,
+          });
+
+        if (userDetails) {
+          let oldNotesArray = userDetails._data.notes;
+          for (let i = 0; i < oldNotesArray.length; i++) {
+            if (oldNotesArray[i].id === id) {
+              oldNotesArray[i].subject = subject;
+            }
+          }
+
+          firestore()
+            .collection('Users')
+            .doc(uid)
+            .set(
+              {
+                notes: oldNotesArray,
+              },
+              {merge: true},
+            )
+            .then(() => {
+              dispatch(refreshNotesDetails());
+              setShowLoader(false);
+              setSuccess('Note Edited');
+              setError(null);
+
+              setTimeout(() => {
+                handleCloseEditNoteModalView(false);
+                setSuccess(null);
+                setContent('');
+                setSubject('');
+                setError(null);
+              }, 3000);
+            });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      setError(error);
+      showLoader(false);
+      setSuccess(null);
+    }
+  };
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={editNoteModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={editNoteModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',
@@ -37,7 +114,14 @@ const EditNoteModal = props => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.CloseModalButton}
-                onPress={() => handleCloseEditNoteModalView(false)}>
+                onPress={() => {
+                  handleCloseEditNoteModalView(false);
+                  setSubject('');
+                  setContent('');
+                  setError(null);
+                  setSuccess(null);
+                  setShowLoader(false);
+                }}>
                 <Ionicons
                   name="close"
                   size={FONTSIZE.size_30}
@@ -54,17 +138,33 @@ const EditNoteModal = props => {
               style={styles.InputField}
               placeholder="Content"
               value={content}
-              multiline
-              numberOfLines={3}
+              numberOfLines={1}
               onChangeText={text => setContent(text)}></TextInput>
 
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                onPress={() => {
+                  Keyboard.dismiss();
+                  handleEditNote();
+                }}
                 activeOpacity={0.6}
                 style={styles.EditNoteButton}>
-                <Text style={styles.EditNoteText}>Edit</Text>
+                {!showLoader && <Text style={styles.EditNoteText}>Edit</Text>}
+                {showLoader && (
+                  <ActivityIndicator
+                    size={30}
+                    color={COLORS.placeholder}
+                    animating={showLoader}
+                  />
+                )}
               </TouchableOpacity>
             </View>
+
+            {success === null && error === null && (
+              <Text style={styles.DummyText}>-</Text>
+            )}
+            {error && <Text style={styles.ErrorText}>{error}</Text>}
+            {success && <Text style={styles.SuccessText}>{success}</Text>}
           </View>
         </View>
       </Modal>
@@ -118,5 +218,23 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
+  },
+  SuccessText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.present,
   },
 });
