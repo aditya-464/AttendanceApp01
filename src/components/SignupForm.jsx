@@ -13,18 +13,13 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
-import {useDispatch} from 'react-redux';
-import {saveAuthDetails} from '../redux/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupForm = props => {
   const {isSignupDone} = props;
   const [showLoader, setShowLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
-  const dispatch = useDispatch();
 
   const handleSignup = async values => {
     try {
@@ -33,42 +28,17 @@ const SignupForm = props => {
         email,
         password,
       );
-      await signup.user.updateProfile({
-        displayName: name,
-      });
-      if (signup) {
-        // new code
-        auth()
-          .currentUser.sendEmailVerification()
-          .then(() => {
-            console.log('Email Verification Link Sent');
-            isSignupDone(true);
-          });
-        // new code
-
-        await firestore().collection('Users').doc(signup.user.uid).set({
-          name: name,
-          email: email,
-          classes: [],
-          notes: [],
+      signup.user
+        .updateProfile({
+          displayName: name,
+        })
+        .then(() => {
+          auth()
+            .currentUser.sendEmailVerification()
+            .then(() => {
+              isSignupDone(true);
+            });
         });
-        storeAuthDetailsLocally({
-          name,
-          email,
-          uid: signup.user.uid,
-          password: password,
-        });
-        dispatch(
-          saveAuthDetails({
-            name,
-            email,
-            uid: signup.user.uid,
-          }),
-        );
-        setTimeout(() => {
-          setShowLoader(false);
-        }, 5000);
-      }
     } catch (err) {
       setShowLoader(false);
       setError(err.message);
@@ -76,18 +46,6 @@ const SignupForm = props => {
       setTimeout(() => {
         setError(null);
       }, 5000);
-    }
-  };
-
-  const storeAuthDetailsLocally = async values => {
-    try {
-      const {name, email, uid, password} = values;
-      await AsyncStorage.setItem('name', name);
-      await AsyncStorage.setItem('email', email);
-      await AsyncStorage.setItem('uid', uid);
-      await AsyncStorage.setItem('password', password);
-    } catch (error) {
-      console.log(error);
     }
   };
 

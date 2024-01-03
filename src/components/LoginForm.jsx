@@ -14,6 +14,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import {loginSchema} from './FormValidationSchemas/LoginFormValidationSchema';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {saveAuthDetails} from '../redux/auth';
@@ -29,8 +30,29 @@ const LoginForm = props => {
     try {
       const {email, password} = values;
       const login = await auth().signInWithEmailAndPassword(email, password);
-      if (login) {
-        isLoginDone(true);
+      if (login.user.emailVerified) {
+        const isUserDetailsSet = await firestore()
+          .collection('Users')
+          .doc(login.user.uid)
+          .get();
+
+        if (!isUserDetailsSet._exists) {
+          firestore()
+            .collection('Users')
+            .doc(login.user.uid)
+            .set({
+              name: login.user.displayName,
+              email: email,
+              classes: [],
+              notes: [],
+            })
+            .then(() => {
+              isLoginDone(true);
+            });
+        } else {
+          isLoginDone(true);
+        }
+
         storeAuthDetailsLocally({
           name: login.user.displayName,
           email: email,
@@ -47,11 +69,16 @@ const LoginForm = props => {
         setTimeout(() => {
           setShowLoader(false);
         }, 5000);
+      } else {
+        setError('Email Not Verified');
+        setShowLoader(false);
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
       }
     } catch (err) {
       setShowLoader(false);
       setError(err.message);
-
       setTimeout(() => {
         setError(null);
       }, 5000);

@@ -29,14 +29,12 @@ const EditNoteModal = props => {
   const [content, setContent] = useState('');
   const [showLoader, setShowLoader] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(null);
+  const [success, setSuccess] = useState('');
   const {uid} = useSelector(state => state.authDetails);
   const dispatch = useDispatch();
 
   const handleEditNote = async () => {
     try {
-      console.log(subject);
-      console.log(content);
       if (subject === '' || content === '') {
         setError('All Fields Are Required');
         setShowLoader(false);
@@ -75,22 +73,21 @@ const EditNoteModal = props => {
               dispatch(refreshNotesDetails());
               setShowLoader(false);
               setSuccess('Note Edited');
-              setError(null);
 
               setTimeout(() => {
                 handleCloseEditNoteModalView(false);
-                setSuccess(null);
+                setSuccess('');
                 setContent('');
                 setSubject('');
-              }, 3000);
+                setError('');
+              }, 2000);
             });
         }
       }
     } catch (error) {
-      console.log(error);
       setError(error);
       showLoader(false);
-      setSuccess(null);
+      setSuccess('');
     }
   };
 
@@ -159,7 +156,7 @@ const EditNoteModal = props => {
               </TouchableOpacity>
             </View>
 
-            {success === null && error === null && (
+            {success == '' && error == '' && (
               <Text style={styles.DummyText}>-</Text>
             )}
             {error && <Text style={styles.ErrorText}>{error}</Text>}

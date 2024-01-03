@@ -63,7 +63,6 @@ const ViewNoteScreen = props => {
       if (noteDetails._data.content && userDetails._data) {
         setContent(noteDetails._data.content);
         const notes = userDetails._data.notes;
-        console.log(notes);
         for (let i = 0; i < notes.length; i++) {
           if (notes[i].id === id) {
             setSubject(notes[i].subject);
