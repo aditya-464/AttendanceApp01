@@ -1,11 +1,12 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -15,13 +16,70 @@ import {
 } from '../themes/Theme';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import firestore from '@react-native-firebase/firestore';
+import {useDispatch, useSelector} from 'react-redux';
+import {refreshNotesDetails} from '../redux/refreshNotesScreen';
 
 const DeleteNoteModal = props => {
-  const {handleCloseDeleteNoteModalView, deleteNoteModalView} = props;
+  const {
+    handleCloseDeleteNoteModalView,
+    deleteNoteModalView,
+    id,
+    handleMoveToNotesScreen,
+  } = props;
+  const {uid} = useSelector(state => state.authDetails);
+  const dispatch = useDispatch();
+  const [notesData, setNotesData] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+
+  const handleDeleteNote = async () => {
+    try {
+      const deleteNote = await firestore().collection('Notes').doc(id).delete();
+
+      if (notesData) {
+        firestore()
+          .collection('Users')
+          .doc(uid)
+          .set(
+            {
+              notes: notesData,
+            },
+            {merge: true},
+          )
+          .then(() => {
+            dispatch(refreshNotesDetails());
+            handleMoveToNotesScreen();
+            setTimeout(() => {
+              setShowLoader(false);
+            }, 3000);
+          });
+      }
+    } catch (error) {
+      console.log(error);
+      setShowLoader(false);
+    }
+  };
+
+  const getUserDetails = async () => {
+    const userDetails = await firestore().collection('Users').doc(uid).get();
+    if (userDetails._exists) {
+      let tempArray = userDetails._data.notes;
+      tempArray = tempArray.filter(item => item.id !== id);
+      setNotesData(tempArray);
+    }
+  };
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   return (
     <SafeAreaView>
-      <Modal useNativeDriver={true} isVisible={deleteNoteModalView}>
+      <Modal
+        useNativeDriver={true}
+        isVisible={deleteNoteModalView}
+        animationIn={'fadeInUp'}
+        animationOut={'fadeOutDown'}>
         <View
           style={{
             height: '100%',
@@ -46,15 +104,24 @@ const DeleteNoteModal = props => {
               Are you certain you wish to delete this Note?
             </Text>
             <View style={styles.ButtonView}>
-              <TouchableOpacity activeOpacity={0.6} style={styles.CancelButton}>
-                <Text style={styles.CancelText}>No</Text>
-              </TouchableOpacity>
               <TouchableOpacity
+                onPress={() => {
+                  handleDeleteNote();
+                  setShowLoader(true);
+                }}
                 activeOpacity={0.6}
                 style={styles.DeleteNoteButton}>
-                <Text style={styles.DeleteNoteText}>Yes</Text>
+                {!showLoader && <Text style={styles.DeleteNoteText}>Yes</Text>}
+                {showLoader && (
+                  <ActivityIndicator
+                    animating={showLoader}
+                    size={26}
+                    color={COLORS.primaryLight}
+                  />
+                )}
               </TouchableOpacity>
             </View>
+            <Text style={styles.DummyText}>-</Text>
           </View>
         </View>
       </Modal>
@@ -92,22 +159,8 @@ const styles = StyleSheet.create({
     marginTop: SPACING.space_20,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-  },
-  CancelButton: {
-    width: '48%',
-    backgroundColor: COLORS.primaryLight,
-    padding: SPACING.space_12,
-    borderRadius: 50,
-    borderWidth: 1,
-    borderColor: COLORS.primaryDark,
-  },
-  CancelText: {
-    fontFamily: FONTFAMILY.poppins_medium,
-    fontSize: FONTSIZE.size_16,
-    color: COLORS.primaryDark,
-    textAlign: 'center',
   },
   DeleteNoteButton: {
     width: '48%',
@@ -122,5 +175,11 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  DummyText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.primaryLight,
   },
 });

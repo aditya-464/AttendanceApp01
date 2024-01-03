@@ -82,7 +82,6 @@ const EditNoteModal = props => {
                 setSuccess(null);
                 setContent('');
                 setSubject('');
-                setError(null);
               }, 3000);
             });
         }

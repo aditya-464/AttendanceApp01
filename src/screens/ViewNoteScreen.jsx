@@ -82,6 +82,10 @@ const ViewNoteScreen = props => {
     getNoteDetails(route.params.id);
   }, [refreshNotesValue]);
 
+  const handleMoveToNotesScreen = () => {
+    navigation.navigate('NotesScreen');
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -130,6 +134,7 @@ const ViewNoteScreen = props => {
         handleCloseDeleteNoteModalView={handleCloseDeleteNoteModalView}
         deleteNoteModalView={deleteNoteModalView}
         id={route.params.id}
+        handleMoveToNotesScreen={handleMoveToNotesScreen}
       />
       {!showLoader && (
         <ScrollView>
