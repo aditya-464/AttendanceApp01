@@ -47,14 +47,13 @@ const SignupForm = props => {
           name,
           email,
           uid: signup.user.uid,
-          password: '12345678',
+          password: password,
         });
         dispatch(
           saveAuthDetails({
             name,
             email,
             uid: signup.user.uid,
-            password: '12345678',
           }),
         );
         setTimeout(() => {

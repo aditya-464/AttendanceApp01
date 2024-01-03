@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -7,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -17,15 +18,40 @@ import {
 } from '../themes/Theme';
 import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ProfileScreen = props => {
   const {navigation} = props;
-  const [name, setName] = useState('Radhe Shyam');
-  const [email, setEmail] = useState('adityagiri1911@gmail.com');
-  const [password, setPassword] = useState('JaiShreeRadhe');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showUpdateAndCancelButtons, setShowUpdateAndCancelButtons] =
     useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+  const [error, setError] = useState(null);
+
+  const getLoggedInUserInfo = async () => {
+    try {
+      const userName = await AsyncStorage.getItem('name');
+      const userEmail = await AsyncStorage.getItem('email');
+      const userPassword = await AsyncStorage.getItem('password');
+
+      if (userName && userEmail && userPassword) {
+        setShowLoader(false);
+        setName(userName);
+        setEmail(userEmail);
+        setPassword(userPassword);
+      }
+    } catch (error) {
+      setError(error.message);
+      setShowLoader(false);
+    }
+  };
+
+  useEffect(() => {
+    getLoggedInUserInfo();
+  }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primaryLight}}>
@@ -43,71 +69,95 @@ const ProfileScreen = props => {
             color={COLORS.primaryDark}></Ionicons>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.ProfileContent}>
-        <Text style={styles.PlaceholderText}>Name</Text>
-        <TextInput
-          autoCorrect={false}
-          style={styles.Name}
-          editable={showUpdateAndCancelButtons}
-          value={name}
-          onChangeText={text => setName(text)}></TextInput>
-        <Text style={styles.PlaceholderText}>Email</Text>
-        <TextInput
-          autoCorrect={false}
-          style={styles.Email}
-          editable={showUpdateAndCancelButtons}
-          value={email}
-          onChangeText={text => setEmail(text)}></TextInput>
-        <Text style={styles.PlaceholderText}>Password</Text>
-        <View style={styles.PasswordContainer}>
+      {!showLoader && (
+        <ScrollView style={styles.ProfileContent}>
+          <Text style={styles.PlaceholderText}>Name</Text>
           <TextInput
             autoCorrect={false}
-            secureTextEntry={!showPassword}
-            style={styles.Password}
-            maxLength={20}
+            style={styles.Name}
             editable={showUpdateAndCancelButtons}
-            value={password}
-            onChangeText={text => setPassword(text)}></TextInput>
-          <View style={{borderLeftWidth: 1, borderColor: COLORS.placeholder}}>
-            <TouchableOpacity
-              onPress={() => setShowPassword(prev => !prev)}
-              activeOpacity={0.6}
-              style={styles.PasswordIconButton}>
-              <Ionicons
-                name={showPassword ? 'eye' : 'eye-off'}
-                size={FONTSIZE.size_24}
-                color={COLORS.placeholder}></Ionicons>
-            </TouchableOpacity>
+            value={name}
+            onChangeText={text => setName(text)}></TextInput>
+          <Text style={styles.PlaceholderText}>Email</Text>
+          <TextInput
+            autoCorrect={false}
+            style={styles.Email}
+            editable={showUpdateAndCancelButtons}
+            value={email}
+            onChangeText={text => setEmail(text)}></TextInput>
+          <Text style={styles.PlaceholderText}>Password</Text>
+          <View style={styles.PasswordContainer}>
+            <TextInput
+              autoCorrect={false}
+              secureTextEntry={!showPassword}
+              style={styles.Password}
+              maxLength={20}
+              editable={showUpdateAndCancelButtons}
+              value={password}
+              onChangeText={text => setPassword(text)}></TextInput>
+            <View style={{borderLeftWidth: 1, borderColor: COLORS.placeholder}}>
+              <TouchableOpacity
+                onPress={() => setShowPassword(prev => !prev)}
+                activeOpacity={0.6}
+                style={styles.PasswordIconButton}>
+                <Ionicons
+                  name={showPassword ? 'eye' : 'eye-off'}
+                  size={FONTSIZE.size_24}
+                  color={COLORS.placeholder}></Ionicons>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
 
-        {!showUpdateAndCancelButtons && (
-          <View style={styles.ActionButtons}>
-            <TouchableOpacity
-              onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-              activeOpacity={0.6}
-              style={styles.EditButton}>
-              <Text style={styles.EditButtonText}>Edit Profile</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {showUpdateAndCancelButtons && (
-          <View style={styles.ActionButtons}>
-            <TouchableOpacity
-              onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-              activeOpacity={0.6}
-              style={styles.CancelButton}>
-              <Text style={styles.CancelButtonText}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-              activeOpacity={0.6}
-              style={styles.UpdateButton}>
-              <Text style={styles.UpdateButtonText}>Update</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </ScrollView>
+          {!showUpdateAndCancelButtons && (
+            <View style={styles.ActionButtons}>
+              <TouchableOpacity
+                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
+                activeOpacity={0.6}
+                style={styles.EditButton}>
+                <Text style={styles.EditButtonText}>Edit Profile</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {showUpdateAndCancelButtons && (
+            <View style={styles.ActionButtons}>
+              <TouchableOpacity
+                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
+                activeOpacity={0.6}
+                style={styles.CancelButton}>
+                <Text style={styles.CancelButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
+                activeOpacity={0.6}
+                style={styles.UpdateButton}>
+                <Text style={styles.UpdateButtonText}>Update</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      )}
+      {showLoader && (
+        <View
+          style={{
+            marginTop: SPACING.space_15,
+            paddingHorizontal: SPACING.space_12,
+          }}>
+          <ActivityIndicator
+            size={30}
+            color={COLORS.placeholder}
+            animating={showLoader}
+          />
+        </View>
+      )}
+      {error && (
+        <View
+          style={{
+            marginTop: SPACING.space_15,
+            paddingHorizontal: SPACING.space_12,
+          }}>
+          <Text style={styles.ErrorText}>{error}</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -238,5 +288,10 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  ErrorText: {
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_16,
+    color: COLORS.absent,
   },
 });

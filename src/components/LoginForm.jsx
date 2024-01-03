@@ -32,16 +32,15 @@ const LoginForm = props => {
         isLoginDone(true);
         storeAuthDetailsLocally({
           name: login.user.displayName,
-          email,
+          email: email,
           uid: login.user.uid,
-          password: '12345678',
+          password: password,
         });
         dispatch(
           saveAuthDetails({
             name: login.user.displayName,
             email,
             uid: login.user.uid,
-            password: '12345678',
           }),
         );
         setTimeout(() => {
