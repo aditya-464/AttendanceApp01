@@ -10,6 +10,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import SignupScreen from '../screens/SignupScreen';
 import LoginScreen from '../screens/LoginScreen';
 import DrawerNavigator from './DrawerNavigator';
+import EmailVerificationScreen from '../screens/EmailVerificationScreen';
 
 const Stack = createStackNavigator();
 
@@ -56,6 +57,13 @@ const OuterStackNavigator = () => {
         <Stack.Screen
           name="Signup"
           component={SignupScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="EmailVerificationScreen"
+          component={EmailVerificationScreen}
           options={{
             headerShown: false,
           }}

@@ -37,7 +37,15 @@ const SignupForm = props => {
         displayName: name,
       });
       if (signup) {
-        isSignupDone(true);
+        // new code
+        auth()
+          .currentUser.sendEmailVerification()
+          .then(() => {
+            console.log('Email Verification Link Sent');
+            isSignupDone(true);
+          });
+        // new code
+
         await firestore().collection('Users').doc(signup.user.uid).set({
           name: name,
           email: email,
