@@ -21,6 +21,7 @@ import {saveAuthDetails} from '../redux/auth';
 const LoginForm = props => {
   const {isLoginDone} = props;
   const [showLoader, setShowLoader] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
@@ -112,8 +113,19 @@ const LoginForm = props => {
                 numberOfLines={1}
                 placeholder="Password"
                 placeholderTextColor={COLORS.placeholder}
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
               />
+              <View>
+                <TouchableOpacity
+                  onPress={() => setShowPassword(prev => !prev)}
+                  activeOpacity={0.6}
+                  style={styles.PasswordIconButton}>
+                  <Ionicons
+                    name={showPassword ? 'eye' : 'eye-off'}
+                    size={FONTSIZE.size_24}
+                    color={COLORS.placeholder}></Ionicons>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <TouchableOpacity
@@ -188,6 +200,9 @@ const styles = StyleSheet.create({
     marginTop: SPACING.space_4,
     borderBottomWidth: 0.2,
     borderColor: '#cccccc',
+  },
+  PasswordIconButton: {
+    paddingHorizontal: SPACING.space_12,
   },
   LoginBtn: {
     width: '100%',
