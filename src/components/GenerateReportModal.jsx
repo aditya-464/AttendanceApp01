@@ -7,7 +7,7 @@ import {
   PermissionsAndroid,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -22,8 +22,15 @@ import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
 
 const GenerateReportModal = props => {
-  const {handleCloseGenerateReportModal, generateReportModalView, id} = props;
-  const [jsonData, setJsonData] = useState(null);
+  const {
+    handleCloseGenerateReportModal,
+    generateReportModalView,
+    id,
+    initials,
+    branch,
+    semester,
+    section,
+  } = props;
   const [error, setError] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [success, setSuccess] = useState(null);
@@ -54,17 +61,19 @@ const GenerateReportModal = props => {
             Percentage: percentage,
           });
         }
-        setJsonData(tempArray);
+        return tempArray;
       }
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setShowLoader(false);
+      setSuccess(null);
     }
   };
 
   const handleGenerateReport = async () => {
     try {
-      getClassDetails(id);
-      if (jsonData !== null) {
+      const jsonData = await getClassDetails(id);
+      if (jsonData) {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         );
@@ -73,22 +82,29 @@ const GenerateReportModal = props => {
           var wb = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
           const wbout = XLSX.write(wb, {type: 'binary', bookType: 'xlsx'});
-          var file = '/storage/emulated/0/Download/new.xlsx';
+          var filename =
+            initials + '-' + branch + '-' + semester + '-' + section;
+          var file = `/storage/emulated/0/Download/${filename}.xlsx`;
           await writeFile(file, wbout, 'ascii')
             .then(() => {
               setShowLoader(false);
+              setError(null);
               setSuccess('Excel report will be downloaded shortly');
+              setTimeout(() => {
+                setSuccess(null);
+                handleCloseGenerateReportModal(false);
+              }, 2000);
             })
             .catch(error => {
               setError(error.message);
-              setSuccess(nul);
+              setSuccess(null);
             });
         } else {
           setError('Write external storage permission denied');
         }
       }
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     }
   };
 
@@ -111,7 +127,12 @@ const GenerateReportModal = props => {
               <TouchableOpacity
                 activeOpacity={0.6}
                 style={styles.CloseModalButton}
-                onPress={() => handleCloseGenerateReportModal(false)}>
+                onPress={() => {
+                  handleCloseGenerateReportModal(false);
+                  setShowLoader(null);
+                  setError(null);
+                  setSuccess(null);
+                }}>
                 <Ionicons
                   name="close"
                   size={FONTSIZE.size_30}
@@ -125,7 +146,6 @@ const GenerateReportModal = props => {
             <View style={styles.ButtonView}>
               <TouchableOpacity
                 onPress={() => {
-                  // handleCloseGenerateReportModal(false);
                   setShowLoader(true);
                   handleGenerateReport();
                 }}
@@ -143,8 +163,11 @@ const GenerateReportModal = props => {
                 )}
               </TouchableOpacity>
             </View>
-            <Text style={styles.DummyText}>-</Text>
+            {error === null && success === null && (
+              <Text style={styles.DummyText}>-</Text>
+            )}
             {error && <Text style={styles.ErrorText}>{error}</Text>}
+            {success && <Text style={styles.SuccessText}>{success}</Text>}
           </View>
         </View>
       </Modal>
@@ -208,5 +231,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_regular,
     fontSize: FONTSIZE.size_14,
     color: COLORS.absent,
+  },
+  SuccessText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.present,
   },
 });
