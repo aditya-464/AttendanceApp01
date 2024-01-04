@@ -22,6 +22,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {refreshNotesDetails} from '../redux/refreshNotesScreen';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const EditNoteModal = props => {
   const {handleCloseEditNoteModalView, editNoteModalView, id} = props;
@@ -30,26 +31,40 @@ const EditNoteModal = props => {
   const [showLoader, setShowLoader] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [userDetails, setUserDetails] = useState(null);
   const {uid} = useSelector(state => state.authDetails);
   const dispatch = useDispatch();
+  const {isConnected} = useNetInfo();
 
   const handleEditNote = async () => {
     try {
-      if (subject === '' || content === '') {
-        setError('All Fields Are Required');
-        setShowLoader(false);
-      } else {
+      if (isConnected) {
+        setError('');
+        setSuccess('');
         setShowLoader(true);
-        const userDetails = await firestore()
+        await firestore()
           .collection('Users')
           .doc(uid)
-          .get();
+          .get()
+          .then(res => {
+            setUserDetails(res);
+          })
+          .catch(error => {
+            console.log(error);
+            setError(error);
+            setShowLoader(false);
+          });
 
-        const updateContent = await firestore()
+        await firestore()
           .collection('Notes')
           .doc(id)
           .set({
             content: content,
+          })
+          .catch(error => {
+            console.log(error);
+            setError(error);
+            setShowLoader(false);
           });
 
         if (userDetails) {
@@ -81,10 +96,19 @@ const EditNoteModal = props => {
                 setSubject('');
                 setError('');
               }, 2000);
+            })
+            .catch(error => {
+              console.log(error);
+              setError(error);
+              setShowLoader(false);
             });
         }
+      } else {
+        setError('No Internet');
+        setShowLoader(false);
       }
     } catch (error) {
+      console.log(error);
       setError(error);
       showLoader(false);
       setSuccess('');
@@ -114,8 +138,8 @@ const EditNoteModal = props => {
                   handleCloseEditNoteModalView(false);
                   setSubject('');
                   setContent('');
-                  setError(null);
-                  setSuccess(null);
+                  setError('');
+                  setSuccess('');
                   setShowLoader(false);
                 }}>
                 <Ionicons
@@ -139,6 +163,7 @@ const EditNoteModal = props => {
 
             <View style={styles.ButtonView}>
               <TouchableOpacity
+                disabled={subject === '' || content === '' ? true : false}
                 onPress={() => {
                   Keyboard.dismiss();
                   handleEditNote();
