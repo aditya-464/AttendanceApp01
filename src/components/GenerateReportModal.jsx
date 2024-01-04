@@ -57,7 +57,8 @@ const GenerateReportModal = props => {
           tempArray.push({
             Roll: studentDetails[i].roll,
             Name: studentDetails[i].name,
-            Present: totalAttendance[i],
+            Total: totalDays,
+            Attendance: totalAttendance[i],
             Percentage: percentage,
           });
         }
