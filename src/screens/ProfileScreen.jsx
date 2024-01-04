@@ -25,8 +25,6 @@ const ProfileScreen = props => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showUpdateAndCancelButtons, setShowUpdateAndCancelButtons] =
-    useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [error, setError] = useState(null);
@@ -75,14 +73,14 @@ const ProfileScreen = props => {
           <TextInput
             autoCorrect={false}
             style={styles.Name}
-            editable={showUpdateAndCancelButtons}
+            editable={false}
             value={name}
             onChangeText={text => setName(text)}></TextInput>
           <Text style={styles.PlaceholderText}>Email</Text>
           <TextInput
             autoCorrect={false}
             style={styles.Email}
-            editable={showUpdateAndCancelButtons}
+            editable={false}
             value={email}
             onChangeText={text => setEmail(text)}></TextInput>
           <Text style={styles.PlaceholderText}>Password</Text>
@@ -92,7 +90,7 @@ const ProfileScreen = props => {
               secureTextEntry={!showPassword}
               style={styles.Password}
               maxLength={20}
-              editable={showUpdateAndCancelButtons}
+              editable={false}
               value={password}
               onChangeText={text => setPassword(text)}></TextInput>
             <View>
@@ -107,33 +105,6 @@ const ProfileScreen = props => {
               </TouchableOpacity>
             </View>
           </View>
-
-          {!showUpdateAndCancelButtons && (
-            <View style={styles.ActionButtons}>
-              <TouchableOpacity
-                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-                activeOpacity={0.6}
-                style={styles.EditButton}>
-                <Text style={styles.EditButtonText}>Edit Profile</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          {showUpdateAndCancelButtons && (
-            <View style={styles.ActionButtons}>
-              <TouchableOpacity
-                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-                activeOpacity={0.6}
-                style={styles.CancelButton}>
-                <Text style={styles.CancelButtonText}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setShowUpdateAndCancelButtons(prev => !prev)}
-                activeOpacity={0.6}
-                style={styles.UpdateButton}>
-                <Text style={styles.UpdateButtonText}>Update</Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </ScrollView>
       )}
       {showLoader && (
