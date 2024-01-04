@@ -37,7 +37,7 @@ const LoginForm = props => {
           .get();
 
         if (!isUserDetailsSet._exists) {
-          firestore()
+          await firestore()
             .collection('Users')
             .doc(login.user.uid)
             .set({

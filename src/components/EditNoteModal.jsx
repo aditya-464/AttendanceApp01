@@ -60,7 +60,7 @@ const EditNoteModal = props => {
             }
           }
 
-          firestore()
+          await firestore()
             .collection('Users')
             .doc(uid)
             .set(

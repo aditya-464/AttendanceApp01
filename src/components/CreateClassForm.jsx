@@ -71,7 +71,7 @@ const CreateClassForm = props => {
           initials: initials,
         });
 
-        firestore()
+        await firestore()
           .collection('Users')
           .doc(uid)
           .update({

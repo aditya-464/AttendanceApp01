@@ -45,7 +45,7 @@ const DeleteClassModal = props => {
         .delete();
 
       if (classesData) {
-        firestore()
+        await firestore()
           .collection('Users')
           .doc(uid)
           .set(

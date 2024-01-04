@@ -35,7 +35,7 @@ const LogoutScreen = props => {
 
   const handleLogout = async () => {
     try {
-      auth()
+      await auth()
         .signOut()
         .then(() => {
           clearAllStoredData();

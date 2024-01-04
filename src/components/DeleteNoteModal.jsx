@@ -37,7 +37,7 @@ const DeleteNoteModal = props => {
       const deleteNote = await firestore().collection('Notes').doc(id).delete();
 
       if (notesData) {
-        firestore()
+        await firestore()
           .collection('Users')
           .doc(uid)
           .set(

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -15,6 +16,7 @@ const ViewRecordScreen = props => {
   const {navigation} = props;
   const [studentsDataArray, setStudentsDataArray] = useState([]);
   const [presentStudents, setPresentStudents] = useState(null);
+  const [showLoader, setShowLoader] = useState(true);
   const route = useRoute();
 
   useEffect(() => {
@@ -33,8 +35,12 @@ const ViewRecordScreen = props => {
         ++count;
       }
     }
-    setStudentsDataArray(tempArray);
-    setPresentStudents(count);
+
+    setTimeout(() => {
+      setShowLoader(false);
+      setStudentsDataArray(tempArray);
+      setPresentStudents(count);
+    }, 1500);
   }, []);
 
   const FlatListItem = ({id, roll, name, present}) => (
@@ -84,15 +90,18 @@ const ViewRecordScreen = props => {
         </View>
       </View>
 
-      <View style={styles.ColumnHeadings}>
-        <View style={styles.RollHeading}>
-          <Text style={styles.RollHeadingText}>Roll</Text>
+      {!showLoader && (
+        <View style={styles.ColumnHeadings}>
+          <View style={styles.RollHeading}>
+            <Text style={styles.RollHeadingText}>Roll</Text>
+          </View>
+          <View style={styles.NameHeading}>
+            <Text style={styles.NameHeadingText}>Name</Text>
+          </View>
         </View>
-        <View style={styles.NameHeading}>
-          <Text style={styles.NameHeadingText}>Name</Text>
-        </View>
-      </View>
-      {studentsDataArray.length !== 0 && (
+      )}
+
+      {studentsDataArray.length !== 0 && !showLoader && (
         <FlatList
           data={studentsDataArray}
           renderItem={({item}) => (
@@ -109,45 +118,60 @@ const ViewRecordScreen = props => {
         />
       )}
 
-      <View style={styles.AttendanceInfo}>
-        <View style={styles.AttendanceDate}>
-          <Text style={styles.AttendanceDateText}>Date</Text>
-          <Text style={styles.AttendanceDateText}>-</Text>
-          <Text style={styles.AttendanceDateText}>
-            {route.params.dateAsKey}
-          </Text>
-        </View>
-        <View style={styles.AttendanceStudentInfo}>
-          <View
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.AttendanceStudentInfoText}>Total</Text>
-            <Text style={styles.AttendanceStudentInfoText}>-</Text>
-            <Text style={styles.AttendanceStudentInfoText}>
-              {studentsDataArray.length}
+      {!showLoader && (
+        <View style={styles.AttendanceInfo}>
+          <View style={styles.AttendanceDate}>
+            <Text style={styles.AttendanceDateText}>Date</Text>
+            <Text style={styles.AttendanceDateText}>-</Text>
+            <Text style={styles.AttendanceDateText}>
+              {route.params.dateAsKey}
             </Text>
           </View>
-          <View
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            }}>
-            <Text style={styles.AttendanceStudentInfoText}>Present</Text>
-            <Text style={styles.AttendanceStudentInfoText}>-</Text>
-            <Text style={styles.AttendanceStudentInfoText}>
-              {presentStudents}
-            </Text>
+          <View style={styles.AttendanceStudentInfo}>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.AttendanceStudentInfoText}>Total</Text>
+              <Text style={styles.AttendanceStudentInfoText}>-</Text>
+              <Text style={styles.AttendanceStudentInfoText}>
+                {studentsDataArray.length}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.AttendanceStudentInfoText}>Present</Text>
+              <Text style={styles.AttendanceStudentInfoText}>-</Text>
+              <Text style={styles.AttendanceStudentInfoText}>
+                {presentStudents}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      )}
+
+      {showLoader && (
+        <View
+          style={{
+            marginTop: SPACING.space_15,
+          }}>
+          <ActivityIndicator
+            size={30}
+            color={COLORS.placeholder}
+            animating={showLoader}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

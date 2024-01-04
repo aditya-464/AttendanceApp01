@@ -28,7 +28,7 @@ const SignupForm = props => {
         email,
         password,
       );
-      signup.user
+      await signup.user
         .updateProfile({
           displayName: name,
         })

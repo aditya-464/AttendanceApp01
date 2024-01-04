@@ -47,7 +47,7 @@ const CreateNoteForm = props => {
           bgcolor: tempArray.length % 2 == 0 ? 'dark' : 'light',
         });
 
-        firestore()
+        await firestore()
           .collection('Users')
           .doc(uid)
           .update({

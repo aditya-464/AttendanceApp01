@@ -87,7 +87,7 @@ const SelectDateModal = props => {
       if (isDateAsKeyValid) {
         if (previousTotalAttendance.length === 0) {
           // Update total attendance
-          firestore()
+          await firestore()
             .collection('Classes')
             .doc(id)
             .set(
@@ -101,7 +101,7 @@ const SelectDateModal = props => {
             });
 
           // Marking current attendance
-          firestore()
+          await firestore()
             .collection('Attendance')
             .doc(id)
             .set(
@@ -131,7 +131,7 @@ const SelectDateModal = props => {
               );
 
               // Update total attendance
-              firestore()
+              await firestore()
                 .collection('Classes')
                 .doc(id)
                 .set(
@@ -145,7 +145,7 @@ const SelectDateModal = props => {
                 });
 
               // Marking current attendance
-              firestore()
+              await firestore()
                 .collection('Attendance')
                 .doc(id)
                 .set(
@@ -166,7 +166,7 @@ const SelectDateModal = props => {
               const newTotalAttendanceArray = getNewTotalAttendance(null);
 
               // Update total attendance
-              firestore()
+              await firestore()
                 .collection('Classes')
                 .doc(id)
                 .set(
@@ -180,7 +180,7 @@ const SelectDateModal = props => {
                 });
 
               // Marking current attendance
-              firestore()
+              await firestore()
                 .collection('Attendance')
                 .doc(id)
                 .set(

@@ -79,7 +79,7 @@ const ViewRecordModal = props => {
 
             setTimeout(() => {
               setShowLoader(false);
-            }, 3000);
+            }, 2000);
           } else {
             setError('No Data Available');
             setShowLoader(false);

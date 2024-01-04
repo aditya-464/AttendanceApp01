@@ -48,7 +48,7 @@ const ImportDataModal = props => {
               present: 0,
             });
           }
-          firestore()
+          await firestore()
             .collection('Classes')
             .doc(id)
             .update({
