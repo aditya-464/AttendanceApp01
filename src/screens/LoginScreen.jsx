@@ -32,14 +32,24 @@ const LoginScreen = props => {
         <Text style={styles.LoginText}>Hello User!</Text>
         <LoginForm isLoginDone={isLoginDone}></LoginForm>
       </View>
-      <View style={styles.SignupOption}>
-        <TouchableOpacity disabled={true}>
-          <Text style={styles.SignupText}>Don't have an Account? </Text>
+
+      <View style={styles.OtherOptions}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('ForgotPasswordScreen');
+          }}
+          style={styles.ForgotPasswordButton}>
+          <Text style={styles.ForgotPasswordButtonText}>Forgot Password?</Text>
         </TouchableOpacity>
-        <Text> </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.Signup}>Signup</Text>
-        </TouchableOpacity>
+        <View style={styles.SignupOption}>
+          <TouchableOpacity disabled={true}>
+            <Text style={styles.SignupText}>Don't have an Account? </Text>
+          </TouchableOpacity>
+          <Text> </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={styles.Signup}>Signup</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -59,8 +69,19 @@ const styles = StyleSheet.create({
     color: COLORS.primaryDark,
     opacity: 0.9,
   },
-  SignupOption: {
+  OtherOptions: {
     paddingBottom: SPACING.space_20,
+  },
+  ForgotPasswordButton: {
+    alignSelf: 'center',
+    marginBottom: SPACING.space_12,
+  },
+  ForgotPasswordButtonText: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.secondaryDark,
+  },
+  SignupOption: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
