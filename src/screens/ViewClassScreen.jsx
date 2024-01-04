@@ -304,6 +304,7 @@ const ViewClassScreen = props => {
       <GenerateReportModal
         handleCloseGenerateReportModal={handleCloseGenerateReportModal}
         generateReportModalView={generateReportModalView}
+        id={route.params.id}
       />
       <DeleteClassModal
         handleCloseDeleteClassModal={handleCloseDeleteClassModal}
