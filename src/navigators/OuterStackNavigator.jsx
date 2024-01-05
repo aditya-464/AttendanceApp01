@@ -1,5 +1,5 @@
 import {Easing, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   CardStyleInterpolators,
@@ -12,6 +12,9 @@ import LoginScreen from '../screens/LoginScreen';
 import DrawerNavigator from './DrawerNavigator';
 import EmailVerificationScreen from '../screens/EmailVerificationScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useDispatch} from 'react-redux';
+import {saveAuthDetails} from '../redux/auth';
 
 const Stack = createStackNavigator();
 
@@ -36,61 +39,83 @@ const closeConfig = {
 };
 
 const OuterStackNavigator = () => {
+  const [gotUid, setGotUid] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    try {
+      const getAsyncStorageData = async () => {
+        const uid = await AsyncStorage.getItem('uid');
+        if (uid === null) {
+          setGotUid(false);
+        } else {
+          setGotUid(true);
+          dispatch(saveAuthDetails(uid));
+        }
+      };
+      getAsyncStorageData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          transitionSpec: {
-            open: config,
-            close: closeConfig,
-          },
-          cardStyleInterpolator:
-            CardStyleInterpolators.forFadeFromBottomAndroid,
-        }}
-        initialRouteName="Welcome">
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{
-            headerShown: false,
+      {gotUid !== null && (
+        <Stack.Navigator
+          screenOptions={{
+            transitionSpec: {
+              open: config,
+              close: closeConfig,
+            },
+            cardStyleInterpolator:
+              CardStyleInterpolators.forFadeFromBottomAndroid,
           }}
-        />
-        <Stack.Screen
-          name="Signup"
-          component={SignupScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="EmailVerificationScreen"
-          component={EmailVerificationScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="DrawerNavigator"
-          component={DrawerNavigator}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+          initialRouteName={gotUid == true ? 'DrawerNavigator' : 'Welcome'}>
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Signup"
+            component={SignupScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="EmailVerificationScreen"
+            component={EmailVerificationScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ForgotPasswordScreen"
+            component={ForgotPasswordScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="DrawerNavigator"
+            component={DrawerNavigator}
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };

@@ -63,13 +63,7 @@ const LoginForm = props => {
           uid: login.user.uid,
           password: password,
         });
-        dispatch(
-          saveAuthDetails({
-            name: login.user.displayName,
-            email,
-            uid: login.user.uid,
-          }),
-        );
+        dispatch(saveAuthDetails(login.user.uid));
         setTimeout(() => {
           setShowLoader(false);
         }, 5000);

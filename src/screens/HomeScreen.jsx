@@ -104,33 +104,35 @@ const HomeScreen = props => {
 
   const getUpdatedClassesData = oldArray => {
     let newArray = [];
-    for (let i = 0; i < oldArray.length; i++) {
-      if (i & 1) {
-        newArray.push({
-          id: oldArray[i].id,
-          subject: oldArray[i].subject,
-          branch: oldArray[i].branch,
-          semester: oldArray[i].semester,
-          section: oldArray[i].section,
-          initials: oldArray[i].initials,
-          bgcolor: 'light',
-        });
-      } else {
-        newArray.push({
-          id: oldArray[i].id,
-          subject: oldArray[i].subject,
-          branch: oldArray[i].branch,
-          semester: oldArray[i].semester,
-          section: oldArray[i].section,
-          initials: oldArray[i].initials,
-          bgcolor: 'dark',
-        });
+    if (oldArray.length !== 0) {
+      for (let i = 0; i < oldArray.length; i++) {
+        if (i & 1) {
+          newArray.push({
+            id: oldArray[i].id,
+            subject: oldArray[i].subject,
+            branch: oldArray[i].branch,
+            semester: oldArray[i].semester,
+            section: oldArray[i].section,
+            initials: oldArray[i].initials,
+            bgcolor: 'light',
+          });
+        } else {
+          newArray.push({
+            id: oldArray[i].id,
+            subject: oldArray[i].subject,
+            branch: oldArray[i].branch,
+            semester: oldArray[i].semester,
+            section: oldArray[i].section,
+            initials: oldArray[i].initials,
+            bgcolor: 'dark',
+          });
+        }
       }
     }
     return newArray;
   };
 
-  const getUserDetails = async uid => {
+  const getUserDetails = async () => {
     try {
       const user = await firestore().collection('Users').doc(uid).get();
       if (user._data) {
@@ -146,7 +148,7 @@ const HomeScreen = props => {
   };
 
   useEffect(() => {
-    getUserDetails(uid);
+    getUserDetails();
   }, [refreshHomeValue, uid]);
 
   return (

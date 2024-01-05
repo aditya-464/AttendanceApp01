@@ -92,7 +92,7 @@ const GenerateReportModal = props => {
             .then(() => {
               setShowLoader(false);
               setError(null);
-              setSuccess('Excel report will be downloaded shortly');
+              setSuccess('Report Downloaded');
               setTimeout(() => {
                 setSuccess(null);
                 handleCloseGenerateReportModal(false);
