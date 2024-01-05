@@ -38,7 +38,8 @@ const closeConfig = {
   },
 };
 
-const OuterStackNavigator = () => {
+const OuterStackNavigator = props => {
+  const {handleSplashScreenHide} = props;
   const [gotUid, setGotUid] = useState(null);
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ const OuterStackNavigator = () => {
           setGotUid(true);
           dispatch(saveAuthDetails(uid));
         }
+        handleSplashScreenHide();
       };
       getAsyncStorageData();
     } catch (error) {

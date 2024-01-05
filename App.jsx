@@ -6,15 +6,20 @@ import {store} from './src/redux/store';
 import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
-  useEffect(() => {
+  const handleSplashScreenHide = () => {
     if (Platform.OS === 'android') {
       SplashScreen.hide();
     }
-  }, []);
+  };
+
+  // useEffect(() => {
+
+  // }, []);
 
   return (
     <Provider store={store}>
-      <OuterStackNavigator></OuterStackNavigator>
+      <OuterStackNavigator
+        handleSplashScreenHide={handleSplashScreenHide}></OuterStackNavigator>
     </Provider>
   );
 };
