@@ -14,12 +14,14 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../themes/Theme';
 import auth from '@react-native-firebase/auth';
 import {signupSchema} from './FormValidationSchemas/SignupFormValidationSchema';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const SignupForm = props => {
   const {isSignupDone} = props;
   const [showLoader, setShowLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
+  // const {isConnected} = useNetInfo();
 
   const handleSignup = async values => {
     try {

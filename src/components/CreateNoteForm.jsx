@@ -58,7 +58,7 @@ const CreateNoteForm = props => {
             isNoteCreationDone();
             setTimeout(() => {
               setShowLoader(false);
-            }, 3000);
+            }, 2000);
           });
       }
     } catch (error) {

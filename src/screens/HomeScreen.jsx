@@ -20,6 +20,7 @@ import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const FlatListItem = ({
   navigation,
@@ -95,9 +96,11 @@ const FlatListItem = ({
 const HomeScreen = props => {
   const [classesData, setClassesData] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+  const [error, setError] = useState(null);
   const {navigation} = props;
   const {uid} = useSelector(state => state.authDetails);
   const {refreshHomeValue} = useSelector(state => state.refreshHomeDetails);
+  // const {isConnected} = useNetInfo();
 
   const getUpdatedClassesData = oldArray => {
     let newArray = [];
@@ -134,10 +137,11 @@ const HomeScreen = props => {
         const newArray = getUpdatedClassesData(user._data.classes);
         setClassesData(newArray);
         setShowLoader(false);
+        setError(null);
       }
     } catch (error) {
+      setError(error.message);
       setShowLoader(false);
-      console.log(error);
     }
   };
 
@@ -204,6 +208,7 @@ const HomeScreen = props => {
           color={COLORS.placeholder}
         />
       )}
+      {error && <Text style={styles.ErrorText}>{error}</Text>}
     </SafeAreaView>
   );
 };
@@ -288,5 +293,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_18,
     color: COLORS.placeholder,
     textAlign: 'center',
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    textAlign: 'center',
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

@@ -20,6 +20,7 @@ import XLSX from 'xlsx';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const GenerateReportModal = props => {
   const {
@@ -34,6 +35,7 @@ const GenerateReportModal = props => {
   const [error, setError] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [success, setSuccess] = useState(null);
+  // const {isConnected} = useNetInfo();
 
   const getClassDetails = async id => {
     try {

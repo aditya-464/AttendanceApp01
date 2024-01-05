@@ -17,6 +17,7 @@ import DeleteNoteModal from '../components/DeleteNoteModal';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const ViewNoteScreen = props => {
   const {navigation} = props;
@@ -28,8 +29,10 @@ const ViewNoteScreen = props => {
   const [deleteNoteModalView, setDeleteNoteModalView] = useState(false);
   const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
   const [showLoader, setShowLoader] = useState(true);
+  const [error, setError] = useState(null);
   const route = useRoute();
   const {uid} = useSelector(state => state.authDetails);
+  // const {isConnected} = useNetInfo();
 
   const handleOptionsModal = () => {
     setModalView(prev => !prev);
@@ -70,15 +73,16 @@ const ViewNoteScreen = props => {
           }
         }
         setShowLoader(false);
+        setError(null);
       }
     } catch (error) {
-      console.log(error);
+      setError(error.message);
       setShowLoader(false);
     }
   };
 
   useEffect(() => {
-    getNoteDetails(route.params.id);
+    getNoteDetails(route.params?.id);
   }, [refreshNotesValue]);
 
   const handleMoveToNotesScreen = () => {
@@ -155,6 +159,8 @@ const ViewNoteScreen = props => {
           />
         </View>
       )}
+
+      {error && <Text style={styles.ErrorText}>{error}</Text>}
     </SafeAreaView>
   );
 };
@@ -214,5 +220,12 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryDark,
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    textAlign: 'center',
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

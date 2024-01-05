@@ -19,6 +19,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import firestore from '@react-native-firebase/firestore';
+import {useNetInfo} from '@react-native-community/netinfo';
 
 const ViewRecordModal = props => {
   const {
@@ -32,6 +33,7 @@ const ViewRecordModal = props => {
   const [year, setYear] = useState('');
   const [error, setError] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+  const {isConnected} = useNetInfo();
 
   const clearDateValues = () => {
     setDate('');
@@ -57,34 +59,40 @@ const ViewRecordModal = props => {
 
   const handleViewRecord = async () => {
     try {
-      const dateAsKey = '' + date + '-' + month + '-' + year;
-      const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
+      if (isConnected) {
+        setShowLoader(true);
+        const dateAsKey = '' + date + '-' + month + '-' + year;
+        const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
 
-      if (isDateAsKeyValid) {
-        const attendanceRecords = await firestore()
-          .collection('Attendance')
-          .doc(id)
-          .get();
+        if (isDateAsKeyValid) {
+          const attendanceRecords = await firestore()
+            .collection('Attendance')
+            .doc(id)
+            .get();
 
-        if (attendanceRecords) {
-          const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
-          if (attendanceBinaryArray) {
-            handleCloseViewRecordModal(false);
-            handleMoveToViewRecordScreen({
-              dateAsKey,
-              attendanceBinaryArray,
-            });
-            clearDateValues();
-            setError(null);
+          if (attendanceRecords) {
+            const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
+            if (attendanceBinaryArray) {
+              handleCloseViewRecordModal(false);
+              handleMoveToViewRecordScreen({
+                dateAsKey,
+                attendanceBinaryArray,
+              });
+              clearDateValues();
+              setError(null);
 
-            setTimeout(() => {
+              setTimeout(() => {
+                setShowLoader(false);
+              }, 2000);
+            } else {
+              setError('No Data Available');
               setShowLoader(false);
-            }, 2000);
-          } else {
-            setError('No Data Available');
-            setShowLoader(false);
+            }
           }
         }
+      } else {
+        setError('No Internet');
+        setShowLoader(false);
       }
     } catch (error) {
       console.log(error);
@@ -158,7 +166,6 @@ const ViewRecordModal = props => {
                 }
                 onPress={() => {
                   handleViewRecord();
-                  setShowLoader(true);
                   Keyboard.dismiss();
                 }}
                 activeOpacity={0.6}

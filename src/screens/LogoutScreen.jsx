@@ -14,11 +14,14 @@ import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {removeAuthDetails} from '../redux/auth';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const LogoutScreen = props => {
   const {navigation} = props;
   const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  // const {isConnected} = useNetInfo();
 
   const clearAllStoredData = async () => {
     try {
@@ -35,6 +38,7 @@ const LogoutScreen = props => {
 
   const handleLogout = async () => {
     try {
+      setShowLoader(true);
       await auth()
         .signOut()
         .then(() => {
@@ -45,10 +49,12 @@ const LogoutScreen = props => {
           });
         })
         .catch(error => {
-          console.log(error);
+          setError(error.message);
+          setShowLoader(false);
         });
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setShowLoader(false);
     }
   };
 
@@ -82,7 +88,6 @@ const LogoutScreen = props => {
           <TouchableOpacity
             onPress={() => {
               handleLogout();
-              setShowLoader(true);
             }}
             activeOpacity={0.6}
             style={styles.YesButton}>
@@ -95,6 +100,7 @@ const LogoutScreen = props => {
               />
             )}
           </TouchableOpacity>
+          {error && <Text style={styles.ErrorText}>{error}</Text>}
         </View>
       </View>
     </SafeAreaView>
@@ -173,5 +179,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_16,
     color: COLORS.primaryLight,
     textAlign: 'center',
+  },
+  ErrorText: {
+    textAlign: 'center',
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

@@ -18,6 +18,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useDispatch} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {saveAuthDetails} from '../redux/auth';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const LoginForm = props => {
   const {isLoginDone} = props;
@@ -25,9 +26,12 @@ const LoginForm = props => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  // const {isConnected} = useNetInfo();
 
   const handleLogin = async values => {
     try {
+      setShowLoader(true);
+      setError(null);
       const {email, password} = values;
       const login = await auth().signInWithEmailAndPassword(email, password);
       if (login.user.emailVerified) {
@@ -166,8 +170,6 @@ const LoginForm = props => {
               }
               onPress={() => {
                 handleSubmit();
-                setShowLoader(true);
-                setError(null);
               }}
               activeOpacity={0.6}
               style={styles.LoginBtn}>

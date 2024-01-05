@@ -22,7 +22,7 @@ import firestore from '@react-native-firebase/firestore';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {refreshNotesDetails} from '../redux/refreshNotesScreen';
-import {useNetInfo} from '@react-native-community/netinfo';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const EditNoteModal = props => {
   const {handleCloseEditNoteModalView, editNoteModalView, id} = props;
@@ -31,44 +31,34 @@ const EditNoteModal = props => {
   const [showLoader, setShowLoader] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [userDetails, setUserDetails] = useState(null);
   const {uid} = useSelector(state => state.authDetails);
   const dispatch = useDispatch();
-  const {isConnected} = useNetInfo();
+  // const {isConnected} = useNetInfo();
 
   const handleEditNote = async () => {
     try {
-      if (isConnected) {
-        setError('');
-        setSuccess('');
-        setShowLoader(true);
-        await firestore()
-          .collection('Users')
-          .doc(uid)
-          .get()
-          .then(res => {
-            setUserDetails(res);
-          })
-          .catch(error => {
-            console.log(error);
-            setError(error);
-            setShowLoader(false);
-          });
+      setError('');
+      setSuccess('');
+      setShowLoader(true);
 
-        await firestore()
-          .collection('Notes')
-          .doc(id)
-          .set({
-            content: content,
-          })
-          .catch(error => {
-            console.log(error);
-            setError(error);
-            setShowLoader(false);
-          });
+      await firestore()
+        .collection('Notes')
+        .doc(id)
+        .set({
+          content: content,
+        })
+        .catch(error => {
+          console.log(error);
+          setError(error);
+          setShowLoader(false);
+        });
 
-        if (userDetails) {
-          let oldNotesArray = userDetails._data.notes;
+      await firestore()
+        .collection('Users')
+        .doc(uid)
+        .get()
+        .then(async res => {
+          let oldNotesArray = res._data.notes;
           for (let i = 0; i < oldNotesArray.length; i++) {
             if (oldNotesArray[i].id === id) {
               oldNotesArray[i].subject = subject;
@@ -95,18 +85,19 @@ const EditNoteModal = props => {
                 setContent('');
                 setSubject('');
                 setError('');
-              }, 2000);
+              }, 1500);
             })
             .catch(error => {
               console.log(error);
               setError(error);
               setShowLoader(false);
             });
-        }
-      } else {
-        setError('No Internet');
-        setShowLoader(false);
-      }
+        })
+        .catch(error => {
+          console.log(error);
+          setError(error);
+          setShowLoader(false);
+        });
     } catch (error) {
       console.log(error);
       setError(error);

@@ -20,77 +20,7 @@ import SelectDateModal from '../components/SelectDateModal';
 import {useRoute} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-
-// const StudentDetailsData = [
-//   {
-//     id: 'item1',
-//     roll: 1,
-//     name: 'Radhe Shyam',
-//     present: 0,
-//   },
-//   {
-//     id: 'item2',
-//     roll: 2,
-//     name: 'Aditya Giri',
-//     present: 0,
-//   },
-//   {
-//     id: 'item3',
-//     roll: 3,
-//     name: 'Gauri Shankar',
-//     present: 0,
-//   },
-//   {
-//     id: 'item4',
-//     roll: 4,
-//     name: 'Siya Ram',
-//     present: 0,
-//   },
-//   {
-//     id: 'item5',
-//     roll: 5,
-//     name: 'Pinki Giri',
-//     present: 0,
-//   },
-
-//   {
-//     id: 'item6',
-//     roll: 1,
-//     name: 'Radhe Shyam',
-//     present: 0,
-//   },
-//   {
-//     id: 'item7',
-//     roll: 2,
-//     name: 'Aditya Giri',
-//     present: 0,
-//   },
-//   {
-//     id: 'item8',
-//     roll: 3,
-//     name: 'Gauri Shankar',
-//     present: 0,
-//   },
-
-//   {
-//     id: 'item9',
-//     roll: 1,
-//     name: 'Radhe Shyam',
-//     present: 0,
-//   },
-//   {
-//     id: 'item10',
-//     roll: 2,
-//     name: 'Aditya Giri',
-//     present: 0,
-//   },
-//   {
-//     id: 'item11',
-//     roll: 3,
-//     name: 'Gauri Shankar',
-//     present: 0,
-//   },
-// ];
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const ViewClassScreen = props => {
   const {navigation} = props;
@@ -103,8 +33,10 @@ const ViewClassScreen = props => {
   const [deleteClassModalView, setDeleteClassModalView] = useState(false);
   const [selectDateModalView, setSelectDateModalView] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
+  const [error, setError] = useState(null);
   const route = useRoute();
   const {refreshClassValue} = useSelector(state => state.refreshClassDetails);
+  // const {isConnected} = useNetInfo();
 
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
@@ -168,15 +100,16 @@ const ViewClassScreen = props => {
       if (classDetails._data.studentDetails) {
         setStudentsData(classDetails._data.studentDetails);
         setShowLoader(false);
+        setError(null);
       }
     } catch (error) {
-      console.log(error);
+      setError(error.message);
       setShowLoader(false);
     }
   };
 
   useEffect(() => {
-    getClassDetails(route.params.id);
+    getClassDetails(route.params?.id);
   }, [refreshClassValue]);
 
   const handleStudentClick = (id, roll, name, present) => {
@@ -384,6 +317,8 @@ const ViewClassScreen = props => {
           />
         </View>
       )}
+
+      {error && <Text style={styles.ErrorText}>{error}</Text>}
     </SafeAreaView>
   );
 };
@@ -535,5 +470,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_18,
     color: COLORS.placeholder,
     textAlign: 'center',
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    textAlign: 'center',
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

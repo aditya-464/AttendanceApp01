@@ -14,12 +14,14 @@ import {Formik} from 'formik';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {forgetPasswordSchema} from '../components/FormValidationSchemas/ForgetPasswordValidationSchema';
 import auth from '@react-native-firebase/auth';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const ForgotPasswordScreen = props => {
   const {navigation} = props;
   const [showLoader, setShowLoader] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  // const {isConnected} = useNetInfo();
 
   const handleForgotPassword = async values => {
     try {
@@ -30,6 +32,7 @@ const ForgotPasswordScreen = props => {
           setError(null);
           setSuccess('Reset Password Email Sent');
           setShowLoader(false);
+          setError(null);
         })
         .catch(error => {
           setError(error.message);

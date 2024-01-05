@@ -277,7 +277,7 @@ const SelectDateModal = props => {
                 value={date}
                 onChangeText={text => setDate(text)}
                 keyboardType="numeric"></TextInput>
-              <Text style={{marginHorizontal: SPACING.space_8}}>/</Text>
+              <Text style={{marginHorizontal: SPACING.space_8}}>-</Text>
               <TextInput
                 style={styles.InputField}
                 placeholder="MM"
@@ -286,7 +286,7 @@ const SelectDateModal = props => {
                 value={month}
                 onChangeText={text => setMonth(text)}
                 keyboardType="numeric"></TextInput>
-              <Text style={{marginHorizontal: SPACING.space_8}}>/</Text>
+              <Text style={{marginHorizontal: SPACING.space_8}}>-</Text>
               <TextInput
                 style={styles.InputField}
                 placeholder="YYYY"

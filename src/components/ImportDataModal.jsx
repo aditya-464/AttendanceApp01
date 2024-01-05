@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   BORDERRADIUS,
   COLORS,
@@ -20,6 +20,7 @@ import {excelToJson} from './excelToJson';
 import firestore from '@react-native-firebase/firestore';
 import {useDispatch} from 'react-redux';
 import {refreshClassDetailsFunc} from '../redux/refreshViewClassScreen';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const ImportDataModal = props => {
   const {
@@ -28,10 +29,13 @@ const ImportDataModal = props => {
     id,
     handleShowLoader,
   } = props;
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
+  // const {isConnected} = useNetInfo();
 
   const selectFile = async () => {
     try {
+      setError(null);
       const doc = await DocumentPicker.pick({
         type: [DocumentPicker.types.xls, DocumentPicker.types.xlsx],
         allowMultiSelection: false,
@@ -56,6 +60,10 @@ const ImportDataModal = props => {
             })
             .then(() => {
               dispatch(refreshClassDetailsFunc());
+              setError(null);
+            })
+            .catch(error => {
+              setError(error.message);
             });
         }
       }
@@ -111,7 +119,8 @@ const ImportDataModal = props => {
                 <Text style={styles.ImportDataText}>Select File</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.DummyText}>-</Text>
+            {error === null && <Text style={styles.DummyText}>-</Text>}
+            {error && <Text style={styles.ErrorText}>{error}</Text>}
           </View>
         </View>
       </Modal>
@@ -169,5 +178,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_14,
     color: COLORS.primaryLight,
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });

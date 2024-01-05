@@ -20,6 +20,7 @@ import {DrawerActions} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
+// import {useNetInfo} from '@react-native-community/netinfo';
 
 const FlatListItem = ({navigation, id, subject, bgcolor}) => (
   <TouchableOpacity
@@ -49,9 +50,11 @@ const FlatListItem = ({navigation, id, subject, bgcolor}) => (
 const NotesScreen = props => {
   const [notesData, setNotesData] = useState([]);
   const [showLoader, setShowLoader] = useState(true);
+  const [error, setError] = useState(null);
   const {navigation} = props;
   const {uid} = useSelector(state => state.authDetails);
   const {refreshNotesValue} = useSelector(state => state.refreshNotesDetails);
+  // const {isConnected} = useNetInfo();
 
   const getUpdatedNotesData = oldArray => {
     let newArray = [];
@@ -80,6 +83,7 @@ const NotesScreen = props => {
         const newArray = getUpdatedNotesData(user._data.notes);
         setNotesData(newArray);
         setShowLoader(false);
+        setError(null);
       }
     } catch (error) {
       setShowLoader(false);
@@ -145,6 +149,7 @@ const NotesScreen = props => {
           color={COLORS.placeholder}
         />
       )}
+      {error && <Text style={styles.ErrorText}>{error}</Text>}
     </SafeAreaView>
   );
 };
@@ -219,5 +224,12 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.size_18,
     color: COLORS.placeholder,
     textAlign: 'center',
+  },
+  ErrorText: {
+    marginTop: SPACING.space_10,
+    textAlign: 'center',
+    fontFamily: FONTFAMILY.poppins_regular,
+    fontSize: FONTSIZE.size_14,
+    color: COLORS.absent,
   },
 });
