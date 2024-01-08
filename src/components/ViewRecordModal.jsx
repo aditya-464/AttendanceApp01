@@ -70,13 +70,20 @@ const ViewRecordModal = props => {
             .doc(id)
             .get();
 
-          if (attendanceRecords) {
+          const topicRecord = await firestore()
+            .collection('Topics')
+            .doc(id)
+            .get();
+
+          if (attendanceRecords && topicRecord) {
             const attendanceBinaryArray = attendanceRecords._data[dateAsKey];
-            if (attendanceBinaryArray) {
+            const topic = topicRecord._data[dateAsKey];
+            if (attendanceBinaryArray && topic) {
               handleCloseViewRecordModal(false);
               handleMoveToViewRecordScreen({
                 dateAsKey,
                 attendanceBinaryArray,
+                topic,
               });
               clearDateValues();
               setError(null);

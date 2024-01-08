@@ -28,6 +28,7 @@ const SelectDateModal = props => {
   const [date, setDate] = useState('');
   const [month, setMonth] = useState('');
   const [year, setYear] = useState('');
+  const [topic, setTopic] = useState('');
   const [attendanceBinaryArray, setAttendanceBinaryArray] = useState([]);
   const [previousTotalAttendance, setPreviousTotalAttendance] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
@@ -75,6 +76,7 @@ const SelectDateModal = props => {
     setDate('');
     setMonth('');
     setYear('');
+    setTopic('');
     setError(null);
     setSuccess(null);
   };
@@ -84,7 +86,7 @@ const SelectDateModal = props => {
       const dateAsKey = '' + date + '-' + month + '-' + year;
       const isDateAsKeyValid = getDateAsKeyValidity(dateAsKey);
 
-      if (isDateAsKeyValid) {
+      if (isDateAsKeyValid && topic !== '') {
         if (previousTotalAttendance.length === 0) {
           // Update total attendance
           await firestore()
@@ -110,13 +112,21 @@ const SelectDateModal = props => {
               },
               {merge: true},
             )
-            .then(() => {
-              setShowLoader(false);
-              setSuccess('Attendance Marked');
-              setTimeout(() => {
-                handleCloseSelectDateModal(false);
-                clearDateValues();
-              }, 2000);
+            .then(async () => {
+              await firestore()
+                .collection('Topics')
+                .doc(id)
+                .set({
+                  [dateAsKey]: topic,
+                })
+                .then(() => {
+                  setShowLoader(false);
+                  setSuccess('Attendance Marked');
+                  setTimeout(() => {
+                    handleCloseSelectDateModal(false);
+                    clearDateValues();
+                  }, 1500);
+                });
             });
         } else {
           const attendanceDetails = await firestore()
@@ -154,13 +164,21 @@ const SelectDateModal = props => {
                   },
                   {merge: true},
                 )
-                .then(() => {
-                  setShowLoader(false);
-                  setSuccess('Attendance Marked');
-                  setTimeout(() => {
-                    handleCloseSelectDateModal(false);
-                    clearDateValues();
-                  }, 2000);
+                .then(async () => {
+                  await firestore()
+                    .collection('Topics')
+                    .doc(id)
+                    .set({
+                      [dateAsKey]: topic,
+                    })
+                    .then(() => {
+                      setShowLoader(false);
+                      setSuccess('Attendance Marked');
+                      setTimeout(() => {
+                        handleCloseSelectDateModal(false);
+                        clearDateValues();
+                      }, 1500);
+                    });
                 });
             } else {
               const newTotalAttendanceArray = getNewTotalAttendance(null);
@@ -189,13 +207,21 @@ const SelectDateModal = props => {
                   },
                   {merge: true},
                 )
-                .then(() => {
-                  setShowLoader(false);
-                  setSuccess('Attendance Marked');
-                  setTimeout(() => {
-                    handleCloseSelectDateModal(false);
-                    clearDateValues();
-                  }, 2000);
+                .then(async () => {
+                  await firestore()
+                    .collection('Topics')
+                    .doc(id)
+                    .set({
+                      [dateAsKey]: topic,
+                    })
+                    .then(() => {
+                      setShowLoader(false);
+                      setSuccess('Attendance Marked');
+                      setTimeout(() => {
+                        handleCloseSelectDateModal(false);
+                        clearDateValues();
+                      }, 1500);
+                    });
                 });
             }
           }
@@ -267,7 +293,7 @@ const SelectDateModal = props => {
                   color={COLORS.primaryDark}></Ionicons>
               </TouchableOpacity>
             </View>
-            <Text style={styles.SelectDateTitle}>Enter Date</Text>
+            <Text style={styles.SelectDateTitle}>Date & Topic</Text>
             <View style={styles.DateInputFields}>
               <TextInput
                 style={styles.InputField}
@@ -296,10 +322,22 @@ const SelectDateModal = props => {
                 onChangeText={text => setYear(text)}
                 keyboardType="numeric"></TextInput>
             </View>
+            <View style={styles.TopicInputField}>
+              <TextInput
+                style={styles.InputField}
+                placeholder="Topic"
+                placeholderTextColor={COLORS.placeholder}
+                numberOfLines={1}
+                value={topic}
+                onChangeText={text => setTopic(text)}
+                textAlign="left"></TextInput>
+            </View>
             <View style={styles.ButtonView}>
               <TouchableOpacity
                 disabled={
-                  date === '' || month === '' || year === '' ? true : false
+                  date === '' || month === '' || year === '' || topic === ''
+                    ? true
+                    : false
                 }
                 onPress={() => {
                   setShowLoader(true);
@@ -372,6 +410,9 @@ const styles = StyleSheet.create({
     color: COLORS.primaryDark,
     minWidth: 40,
     textAlign: 'center',
+  },
+  TopicInputField: {
+    marginTop: SPACING.space_4,
   },
   ButtonView: {
     marginTop: SPACING.space_20,

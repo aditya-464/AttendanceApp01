@@ -15,9 +15,15 @@ import {useRoute} from '@react-navigation/native';
 const ViewRecordScreen = props => {
   const {navigation} = props;
   const [studentsDataArray, setStudentsDataArray] = useState([]);
+  const [classInfoView, setClassInfoView] = useState(null);
   const [presentStudents, setPresentStudents] = useState(null);
   const [showLoader, setShowLoader] = useState(true);
   const route = useRoute();
+
+  const onLayoutClassInfoView = event => {
+    const {height} = event.nativeEvent.layout;
+    setClassInfoView(height);
+  };
 
   useEffect(() => {
     const tempArray = [];
@@ -114,12 +120,13 @@ const ViewRecordScreen = props => {
           )}
           keyExtractor={item => item.id.toString()}
           scrollEnabled={true}
-          ListFooterComponentStyle={{height: 150}}
+          ListFooterComponentStyle={{height: classInfoView}}
+          ListFooterComponent={<View></View>}
         />
       )}
 
       {!showLoader && (
-        <View style={styles.AttendanceInfo}>
+        <View onLayout={onLayoutClassInfoView} style={styles.AttendanceInfo}>
           <View style={styles.AttendanceDate}>
             <Text style={styles.AttendanceDateText}>Date</Text>
             <Text style={styles.AttendanceDateText}>-</Text>
@@ -154,6 +161,20 @@ const ViewRecordScreen = props => {
               <Text style={styles.AttendanceStudentInfoText}>-</Text>
               <Text style={styles.AttendanceStudentInfoText}>
                 {presentStudents}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+              }}>
+              <Text style={styles.AttendanceStudentInfoText}>Topic</Text>
+              <Text style={styles.AttendanceStudentInfoText}>-</Text>
+              <Text style={styles.AttendanceStudentInfoText}>
+                {route.params.topic}
               </Text>
             </View>
           </View>

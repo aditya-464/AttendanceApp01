@@ -26,6 +26,7 @@ const ViewClassScreen = props => {
   const {navigation} = props;
   const [studentsData, setStudentsData] = useState([]);
   const [titleBarHeight, setTitleBarHeight] = useState(null);
+  const [actionButtonsViewHeight, setActionButtonsViewHeight] = useState(null);
   const [optionsModalView, setOptionsModalView] = useState(false);
   const [importDataModalView, setImportDataModalView] = useState(false);
   const [viewRecordModalView, setViewRecordModalView] = useState(false);
@@ -41,6 +42,11 @@ const ViewClassScreen = props => {
   const onLayoutTitlebar = event => {
     const {height} = event.nativeEvent.layout;
     setTitleBarHeight(height);
+  };
+
+  const onLayoutActionButtonsView = event => {
+    const {height} = event.nativeEvent.layout;
+    setActionButtonsViewHeight(height);
   };
 
   const handleOptionsModal = () => {
@@ -159,7 +165,11 @@ const ViewClassScreen = props => {
     </TouchableOpacity>
   );
 
-  const handleMoveToViewRecordScreen = ({dateAsKey, attendanceBinaryArray}) => {
+  const handleMoveToViewRecordScreen = ({
+    dateAsKey,
+    attendanceBinaryArray,
+    topic,
+  }) => {
     navigation.navigate('ViewRecordScreen', {
       initials: route.params.initials,
       branch: route.params.branch,
@@ -168,6 +178,7 @@ const ViewClassScreen = props => {
       studentsData,
       attendanceBinaryArray,
       dateAsKey,
+      topic,
     });
   };
 
@@ -281,7 +292,8 @@ const ViewClassScreen = props => {
             )}
             keyExtractor={item => item.id.toString()}
             scrollEnabled={true}
-            ListFooterComponentStyle={{height: 150}}
+            ListFooterComponentStyle={{height: actionButtonsViewHeight}}
+            ListFooterComponent={<View></View>}
             ListEmptyComponent={
               <View style={styles.EmptyListView}>
                 <Text style={styles.EmptyListViewText}>No Data</Text>
@@ -290,7 +302,9 @@ const ViewClassScreen = props => {
           />
 
           {studentsData.length !== 0 && (
-            <View style={styles.ActionButtons}>
+            <View
+              onLayout={onLayoutActionButtonsView}
+              style={styles.ActionButtons}>
               <TouchableOpacity
                 onPress={handleResetAttendance}
                 activeOpacity={0.6}
