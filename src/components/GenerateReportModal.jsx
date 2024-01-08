@@ -58,6 +58,7 @@ const GenerateReportModal = props => {
           const percentage = Math.ceil((totalAttendance[i] / totalDays) * 100);
           tempArray.push({
             Roll: studentDetails[i].roll,
+            University_Roll: studentDetails[i].uniRoll,
             Name: studentDetails[i].name,
             Total: totalDays,
             Attendance: totalAttendance[i],

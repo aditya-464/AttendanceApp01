@@ -48,7 +48,8 @@ const ImportDataModal = props => {
             studentsDataArray.push({
               id: data[i][0],
               roll: data[i][0],
-              name: data[i][1],
+              uniRoll: data[i][1],
+              name: data[i][2],
               present: 0,
             });
           }
