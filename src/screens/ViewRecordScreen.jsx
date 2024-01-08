@@ -169,7 +169,7 @@ const ViewRecordScreen = props => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                alignItems: 'center',
+                alignItems: 'flex-start',
               }}>
               <Text style={styles.AttendanceStudentInfoText}>Topic</Text>
               <Text style={styles.AttendanceStudentInfoText}>-</Text>
